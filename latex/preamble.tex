@@ -1,0 +1,96 @@
+\usepackage[brazilian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lipsum}
+\usepackage{fullwidth}
+\usepackage{indentfirst}
+\usepackage[left=2.5cm, right=2.5cm, top=4cm, bottom=3.8cm]{geometry}
+\renewcommand{\familydefault}{\sfdefault}
+\PassOptionsToPackage{dvipsnames}{xcolor}
+\RequirePackage{xcolor} % [dvipsnames]
+\definecolor{halfgray}{gray}{0.55} % chapter numbers will be semi transparent .5 .55 .6 .0
+\definecolor{webgreen}{rgb}{0,.5,0}
+\definecolor{webbrown}{rgb}{.6,0,0}
+%\definecolor{Maroon}{cmyk}{0, 0.87, 0.68, 0.32}
+%\definecolor{RoyalBlue}{cmyk}{1, 0.50, 0, 0}
+%\definecolor{Black}{cmyk}{0, 0, 0, 0}
+\usepackage{fancyhdr}
+\usepackage{pdfpages}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{setspace}
+\usepackage{spverbatim}
+\usepackage{lipsum}
+\usepackage{natbib}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{background}
+
+\newcommand{\prestadorEmpresaFoot}{Associação Brasileira de Jurimetria}
+\newcommand{\prestadorEmpresa}{Associação Brasileira de Jurimetria}
+\newcommand{\prestadorRepr}{Marcelo Guedes Nunes}
+\newcommand{\prestadorEnderecoFoot}{Rua Gomes de Carvalho, 1356, 2º andar. CEP 04547-005 - São Paulo, SP, Brasil.}
+\newcommand{\prestadorEndereco}{Rua Gomes de Carvalho, 1356, 2º andar}
+\newcommand{\prestadorEnderecoComp}{CEP 04547-005 - São Paulo, SP, Brasil}
+\newcommand{\prestadorSite}{\url{http://abj.org.br}}
+\newcommand{\prestadorEmail}{contato@abj.org.br}
+% \includegraphics[trim=left bottom right top, clip]{file}
+\newcommand{\logo}{\includegraphics[width=0.21\textwidth, trim=0cm 0cm 0cm 11.1cm, clip]{imgs/logo_abj.png}}
+
+\newcommand{\tipoTrabalho}{}
+\newcommand{\numero}{XXX}
+
+\newcommand{\clienteEmpresa}{XXX}
+\newcommand{\clienteEndereco}{XXX}
+\newcommand{\clienteEnderecoComp}{XXX}
+\newcommand{\clienteRepr}{XXX}
+\newcommand{\clienteEmail}{XXX}
+
+% \fancypagestyle{firststyle}
+% {
+%     \pagestyle{fancy}
+%     \lhead{\thepage}
+%     \chead{}
+%     \rhead{\logo{}}
+%     \cfoot{
+%         \footnotesize{\prestadorEmpresaFoot{}} \\
+%         \footnotesize{\prestadorEnderecoFoot{}} \\
+%         \footnotesize{\prestadorSite{}}
+%     }
+%     \renewcommand{\headrulewidth}{0.5pt}
+%     \renewcommand{\footrulewidth}{0.5pt}
+%     \setlength{\headsep}{.5in}
+% }
+%
+% \pagestyle{firststyle}
+
+\setlength{\parindent}{2em}
+% \setlength{\parskip}{1em}
+% \renewcommand{\baselinestretch}{1.2}
+% % \usepackage{palatino}
+% \renewcommand{\familydefault}{\sfdefault} % sans serif
+% \fontfamily{ppl}\selectfont
+
+%\renewcommand{\baselinestretch}{1.4}
+
+\backgroundsetup{
+scale=1,
+angle=0,
+opacity=1,
+color=black,
+contents={\begin{tikzpicture}[remember picture,overlay]
+\node at ([xshift=-4.35cm,yshift=-2.5cm] current page.north east) % Adjust the position of the logo.
+{\logo}; % logo goes here
+\end{tikzpicture}}
+}
+
+\usepackage{float}
+\let\origfigure\figure
+\let\endorigfigure\endfigure
+\renewenvironment{figure}[1][2] {
+    \expandafter\origfigure\expandafter[H]
+} {
+    \endorigfigure
+}
