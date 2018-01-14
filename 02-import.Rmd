@@ -1,0 +1,48 @@
+# Work in progress
+
+## Pacote `esaj`
+
+### Download esaj
+
+```{r eval=FALSE}
+esaj::download_cjsg("homicídio", "data-raw/cjsg", max_page = 2)
+```
+
+### Parse esaj
+
+```{r eval=FALSE}
+files <- dir("data-raw/cjsg", full.names = TRUE, pattern = "page")
+d_cjsg <- esaj::parse_cjsg(files)
+d_cjsg
+```
+
+### Download CPOSG
+
+```{r eval=FALSE}
+processos <- unique(d_cjsg$id_lawsuit)
+esaj::download_cposg(processos, "data-raw/cposg")
+```
+
+### Parse CPOSG
+
+```{r eval=FALSE}
+files_cposg <- dir("data-raw/cposg", full.names = TRUE)
+parser <- esaj::make_parser() %>% 
+  esaj::parse_data() %>% 
+  esaj::parse_parts() %>% 
+  esaj::parse_movs() %>% 
+  esaj::parse_decisions()
+d_cposg <- esaj::run_parser(files_cposg, parser, "data-raw/cposg_rds")
+```
+
+### Download docs
+
+```{r eval=FALSE}
+decisoes <- unique(d_cjsg$id_decision)
+downloaded <- tools::file_path_sans_ext(dir("data-raw/decisions", full.names = FALSE))
+esaj::download_decision(setdiff(decisoes, downloaded), "data-raw/decisions")
+```
+
+## Pacote `dje`
+
+## Pacote `abjutils`

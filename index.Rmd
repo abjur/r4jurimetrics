@@ -1,0 +1,62 @@
+---
+title: "R para jurimetria"
+author: "Associação Brasileira de Jurimetria"
+date: "`r format(Sys.Date(), '%d de %B de %Y')`"
+knit: "bookdown::render_book"
+documentclass: report
+bibliography: [bibliography/book.bib, bibliography/packages.bib]
+biblio-style: apalike
+link-citations: yes
+fontsize: '12pt'
+colorlinks: yes 
+lot: yes
+lof: yes
+site: bookdown::bookdown_site
+description: "Template de relatório da ABJ."
+---
+
+```{r setup, include = FALSE}
+#options(xtable.comment = FALSE)
+knitr::opts_chunk$set(echo = FALSE, 
+                      message = FALSE, 
+                      comment = FALSE, 
+                      warning = FALSE, 
+                      fig.height = 5, 
+                      fig.width = 9)
+# options(OutDec = ',')
+# options(knitr.table.format = 'markdown')
+```
+
+```{r include_table, echo = F}
+library(tidyverse)
+library(abjTemplates)
+```
+
+# Apresentação
+
+Olá! Bem vindo ao curso R para Jurimetria :)
+
+Essa é a primeira iteração do curso de R para Jurimetria da ABJ. Nesse curso abordamos aspectos práticos da Jurimetria, essenciais para um profissional da Estatística que tenha interesse em trabalhar nessa área.
+
+O curso é voltado para graduandos em estatística e está organizado em cinco aulas. 
+
+- (15/01) Introdução à jurimetria e setup
+    - Definição
+    - Terminologia
+    - Tipos de pesquisa e exemplos
+    - Ambientação com R e RStudio
+    - RMarkdown
+- (17/01) Ferramentas da ABJ para importação
+    - Introdução ao web scraping com `httr` e `rvest`.
+    - Pacotes `abjutils`, `esaj` e `dje`.
+- (19/01) Tidyverse: vetores
+    - Vetores: pacotes `stringr`, `lubridate`, `forcats`.
+    - Programação funcional: `purrr`.
+- (22/01) Tidyverse: bd
+    - Transformação: pacotes `dplyr`, `tidyr`.
+    - Aplicação: Câmaras criminais.
+- (24/01) Modelagem
+    - Especialização de varas: pacotes `bnlearn` e `survival`.
+    - Captchas: pacotes `keras` e `decryptr`.
+
+Para o curso, será necessário ter conhecimentos do software estatístico R, como a lógica de programação, sintaxe do R e ambientação com o RStudio. 
