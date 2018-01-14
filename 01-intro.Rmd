@@ -230,6 +230,19 @@ Aplicando os critérios propostos, a carga de trabalho proporcionada pelos proce
 knitr::include_graphics("imgs/captcha.png")
 ```
 
+```{r, fig.width=8, fig.height=3}
+library(decryptr)
+# decryptr::captcha_download_tjmg(dest = "imgs")
+file_captcha <- read_captcha("imgs/captchafab7e91ea9c.jpeg")
+plot(file_captcha)
+```
+
+
+```{r eval=FALSE}
+modelo_captcha <- decryptrModels::read_model("tjmg")
+predict(modelo_captcha, arq = file_captcha)
+"65922"
+```
 
 ## Cuidado
 
@@ -265,10 +278,10 @@ knitr::include_graphics("imgs/tidyverse.jpeg")
 - Visualize: `ggplot2`.
 - Model: `survival`, `bnlearn`, `keras`
 
-## Tarefas para 17/01 (demora 30 min)
+## Suas tarefas para 17/01 (demora 30 min)
 
 - Entrar no grupo: t.me/rbrasil
-- Cadastrar na newsletter da ABJ www.abj.org.br
+- Cadastrar na newsletter da ABJ http://www.abj.org.br
 - Ler blog: http://www.abj.org.br/blog/2017/01/27/2017-01-28-assuntos/
 - Ler blog: http://www.abj.org.br/blog/2016/12/31/2016-12-31-tempos/
 - Dar uma olhada em https://abjur.github.io/tjspBook
