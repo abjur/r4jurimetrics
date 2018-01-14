@@ -4,23 +4,43 @@
 
 A jurimetria é o estudo empírico do direito. Ela se distingue das demais disciplinas jurídicas por tratar o direito de forma concreta. 
 
-A pesquisa em jurimetria utiliza dados do judiciário para avaliar desde o argumentos quantitativos a serem utilizados por juristas e advogados até o impacto de leis. No Brasil, é utilizada principalmente como ferramenta para auxiliar na formulação de políticas públicas e melhorar a administração dos tribunais. 
+```{r}
+knitr::include_graphics("imgs/empirical.png")
+```
 
-A jurimetria está para o Direito da mesma forma que a econometria, a biometria e a sociometria estão, respectivamente, para a Economia, Biologia e Sociologia. O Direito, embora conte com algumas áreas tradicionalmente mais empíricas que outras, ainda não reconheceu amplamente uma frente mais objetiva. 
+A pesquisa em jurimetria utiliza dados do judiciário para avaliar desde argumentos quantitativos a serem utilizados por juristas e advogados até o impacto de leis. No Brasil, é utilizada principalmente como ferramenta para 
+
+1. auxiliar na **formulação de políticas públicas** e 
+2. melhorar a **administração dos tribunais**. 
+
+A jurimetria está para o Direito da mesma forma que a econometria, a biometria e a sociometria estão, respectivamente, para a Economia, Biologia e Sociologia. O Direito, embora conte com algumas áreas tradicionalmente mais empíricas que outras, ainda não tem uma disciplina mais formalizada. 
 
 Nesse sentido, uma das missões da Associação Brasileira de Jurimetria (ABJ) é incentivar e divulgar a jurimetria aos seus associados e ao público em geral. Nossos estudos e pesquisas visam a difusão e o desenvolvimento do campo no Brasil, agregando pesquisadores e fornecendo o ferramental necessário para realização das análises.
 
+```{r}
+knitr::include_graphics("imgs/missoes_abj.png")
+```
+
 Neste curso, apresentaremos o ferramental de trabalho desenvolvido no laboratório da ABJ. As ferramentas servem principalmente para extração e arrumação de dados, deixando o caminho livre para realização de análises estatísticas mais aprofundadas. 
+
+```{r}
+knitr::include_graphics(c("imgs/esaj.png"))
+```
 
 ## Tipos de estudo
 
-No decorrer do curso trabalharemos dois tipos comuns de estudos jurimétricos: **prospectivo** e **retrospectivo**. É importante separar esses tipos de estudo tanto pela matéria desenvolvida quanto pelas fontes de dados disponíveis.
 
-Para entender como funcionam esses estudos, precisamos antes entender o fluxo do processo judicial. A Figura XXX mostra esse fluxo de forma resumida.
+```{r}
+knitr::include_graphics(c("imgs/download_esaj.png", 
+                          "imgs/tidy_esaj.png", 
+                          "imgs/model_esaj.png"))
+```
+
+No decorrer do curso trabalharemos dois tipos comuns de estudos jurimétricos: **prospectivo** e **retrospectivo**. É importante separar esses tipos de estudo tanto pela matéria desenvolvida quanto pelas fontes de dados disponíveis. Faremos isso através de um exemplo.
 
 ### Exemplo
 
-Digamos que a NET tenha colocado seu nome indevidamente no Serasa e vc processa ela.
+Digamos que a NET tenha colocado seu nome indevidamente no Serasa e você processa ela.
 
 1) Quando você entra com um *processo*, ele é *distribuído* (levado) numa *vara* (casinha do juiz), por exemplo uma vara cível de São Carlos, e seu processo estará na 1a instância. O juiz então irá decidir sobre o caso, produzindo uma *sentença* (um texto de 5-10 páginas que explica o que ele decidiu e por quê).
 
@@ -28,7 +48,19 @@ Digamos que a NET tenha colocado seu nome indevidamente no Serasa e vc processa 
 
 3) Se você ou a NET ficarem infelizes com o resultado, vocês podem novamente entrar com recursos, que irão para o STJ e posteriormente ao STF (em Brasília), a serem julgados por Ministros (evolução de desembargador).
 
+```{r}
+knitr::include_graphics("imgs/magistrado.png")
+```
+
 Nossos estudos restringem-se ao TJSP, envolvendo (1) e (2). O TJSP atualmente é o mais simples para obtenção automática de processos.
+
+### Divisão regional
+
+O TJSP é dividido em comarcas, circunscrições e regiões administrativas. As comarcas são conjuntos de um ou mais municípios e uma comarca deve sempre ter uma ou mais varas. Circunscrições e regiões administrativas existem somente para 
+
+```{r}
+knitr::include_graphics("imgs/mapa.png")
+```
 
 ### Qual tipo escolher?
 
@@ -57,15 +89,14 @@ Se quiser saber mais sobre isso, [veja esse texto](http://www.abj.org.br/blog/20
 
 O Direito Criminal é uma área que traz consigo diversas questões difíceis e importantes da nossa sociedade. Uma destas questões, que remete ao possível descolamento da teoria do Direito e o que ocorre no mundo real, trata do cumprimento da pena. Considerando-se o plano ideal e o princípio de ampla defesa, mas também a conhecida morosidade dos tribunais, qual é o momento do processo em que deveria ser iniciado o cumprimento de pena? Será que a taxa de reforma das decisões é tão pequena a ponto de justificar o início do cumprimento de pena após a sentença na primeira instância?
 
-Com o objetivo de obter essas taxas, a presente pesquisa utiliza como base de dados um levantamento de 157.379 decisões em segunda instância, das quais 57.000 envolvem apelações contra o Ministério Público, todas proferidas entre 01/01/2014 e 31/12/2014 nas dezesseis Câmaras de Direito Criminal do Estado de São Paulo, e nas Câmaras Extraordinárias. 
+Com o objetivo de obter essas taxas, a presente pesquisa utiliza como base de dados um levantamento de 157.379 decisões em segunda instância, das quais 57.625 envolvem apelações contra o Ministério Público, todas proferidas entre 01/01/2014 e 31/12/2014 nas dezesseis Câmaras de Direito Criminal do Estado de São Paulo, e nas quatro Câmaras Extraordinárias. 
 
-Todas as informações foram obtidas através de ferramentas computacionais a partir de bases de dados disponíveis publicamente, o que permitiria a reprodutibilidade da pesquisa. Os dados semiestruturados foram organizados a partir da utilização de técnicas de mineração de texto. Também foi necessário utilizar procedimentos estatísticos adequados para lidar com problemas de dados faltantes.
+A Figura \@ref(fig:freq-tipo-orgjulg) mostra a distribuição dos resultados dos processos em relação aos órgãos julgadores. Aqui, encontramos discrepâncias enormes, onde podemos encontrar câmaras com mais de 75% de recursos negados (quarta e sexta) e câmaras com menos de 30% de recursos negados (primeira, segunda e décima segunda). Este resultado poderia ser explicado por duas hipóteses: 
 
-Em relação ao órgão julgador espera-se, a priori, que o órgão não influencie na distribuição das decisões dos processos, pois os processos dentro de cada câmara podem ser considerados homogêneos. Essa explicação só seria válida, no entanto, em relação às câmaras ordinárias, pois as câmaras extraordinárias julgam, em teoria, processos com características distintas.
+i) os processos não são distribuídos aleatoriamente nas câmaras, e é feita uma triagem que envolve o tipo do recurso; ou 
+ii) os magistrados de cada câmara comportam-se de maneiras muito diferentes, mesmo para processos considerados homogêneos.
 
-A Figura \@ref(fig:freq-tipo-orgjulg) mostra a distribuição dos resultados dos processos em relação aos órgãos julgadores. Aqui, encontramos discrepâncias enormes, onde podemos encontrar câmaras com mais de 75% de recursos negados (quarta e sexta) e câmaras com menos de 30% de recursos negados (primeira, segunda e décima segunda). Este resultado poderia ser explicado por duas hipóteses: i) os processos não são distribuídos aleatoriamente nas câmaras, e é feita uma triagem que envolve a "qualidade" do recurso; ou ii) os magistrados de cada câmara comportam-se de maneiras muito diferentes, mesmo para processos considerados homogêneos.
-
-```{r freq-tipo-orgjulg, fig.width=9, fig.height=5}
+```{r freq-tipo-orgjulg, fig.width=9, fig.height=5, fig.cap="Resultados por câmara."}
 load("data/d_final.rda")
 d_final %>% 
   rename(court = orgao_julgador, decision = decisao) %>% 
@@ -142,6 +173,10 @@ $$
 
 Na nossa aplicação, isso foi feito estimando-se a probabilidade de um assunto genérico tratar da matéria empresarial, usando-se uma *rede bayesiana*. Para esse cálculo, utilizamos a parcela da base de dados que foi classificada corretamente e calculamos a proporção de processos empresariais para cada assunto. A cifra oculta é estimada somando-se as probabilidades obtidas.
 
+```{r}
+knitr::include_graphics("imgs/rb.png")
+```
+
 Nossos dados originais são:
 
 - No Foro Central Cível foram distribuídos 675 processos empresariais por ano.
@@ -156,7 +191,7 @@ Aplicando as correções, temos:
 
 ### Voltando à complexidade
 
-Vamos agora fazer comparações. O processo demora mais tempo como um todo?
+Agora vamos fazer comparações. O processo demora mais tempo como um todo?
 
 $$
 \text{Complexidade} = \text{Tempo entre distribuicao e sentenca}
@@ -189,7 +224,19 @@ Aplicando os critérios propostos, a carga de trabalho proporcionada pelos proce
     - 2.082 processos comuns, considerando o custo em tramitação;
     - 3.349 processos comuns, considerando o tempo gasto pelos magistrados.
 
+## Exemplo 3: CAPTCHAs
+
+```{r}
+knitr::include_graphics("imgs/captcha.png")
+```
+
+
 ## Cuidado
+
+```{r}
+knitr::include_graphics("imgs/beware.jpg")
+```
+
 
 As bases de dados utilizadas em estudos jurimétricos foram originalmente concebidas para fins gerenciais e não analíticos. Por isso, observamos muitos dados faltantes, mal formatados e com documentação inadequada. Uma boa porção dos dados só está disponível em páginas HTML e arquivos PDF e grande parte da informação útil está escondida em textos.
 
@@ -207,7 +254,11 @@ As aulas foram organizadas pelo *Ciclo de ciência de dados*.
 knitr::include_graphics("imgs/ds.png")
 ```
 
-Trabalharemos com
+Trabalharemos com o `tidyverse`
+
+```{r}
+knitr::include_graphics("imgs/tidyverse.jpeg")
+```
 
 - Import: `esaj` e `dje`.
 - Tidy / Transform: `abjutils`, `dplyr`, `stringr`, `lubridate`, `forcats`, `tidyr` e `purrr`.
@@ -224,6 +275,9 @@ Trabalharemos com
 - Dar uma olhada em http://material.curso-r.com
 - Dar uma olhada em https://tidyverse.org
 - Dar uma olhada em http://r4ds.had.co.nz
-- Dar uma olhada em https://github.com/abjur, https://github.com/courtsbr, https://github.com/curso-r
+- Dar uma olhada em 
+    - https://github.com/abjur, 
+    - https://github.com/courtsbr, 
+    - https://github.com/curso-r
 
 
