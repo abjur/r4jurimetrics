@@ -1,0 +1,21 @@
+language: r
+cache: packages
+
+addons:
+  apt:
+    packages:
+      - libv8-dev
+      - valgrind
+      - libtesseract-dev
+      - libleptonica-dev
+      - tesseract-ocr-eng
+      - libpoppler-cpp-dev
+      - libmagick++-dev
+
+before_script:
+  - chmod +x ./_build.sh
+  - chmod +x ./_deploy.sh
+
+script:
+  - ./_build.sh
+  - ./_deploy.sh
