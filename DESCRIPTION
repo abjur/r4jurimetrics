@@ -13,5 +13,6 @@ Imports: esaj,
     ggplot2,
     dplyr,
     tidyverse,
-    stringr
+    stringr,
+    bookdown
 Remotes: courtsbr/esaj
