@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>R para jurimetria</title>
+  <meta name="description" content="Template de relatório da ABJ.">
+  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+
+  <meta property="og:title" content="R para jurimetria" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Template de relatório da ABJ." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="R para jurimetria" />
+  
+  <meta name="twitter:description" content="Template de relatório da ABJ." />
+  
+
+<meta name="author" content="Associação Brasileira de Jurimetria">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="estudo-2-especializacao-de-varas-empresariais.html">
+<link rel="next" href="cuidado.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Apresentação</a></li>
+<li class="chapter" data-level="2" data-path="introducao.html"><a href="introducao.html"><i class="fa fa-check"></i><b>2</b> Introdução</a><ul>
+<li class="chapter" data-level="2.1" data-path="o-que-e-jurimetria.html"><a href="o-que-e-jurimetria.html"><i class="fa fa-check"></i><b>2.1</b> O que é Jurimetria?</a></li>
+<li class="chapter" data-level="2.2" data-path="tipos-de-estudo.html"><a href="tipos-de-estudo.html"><i class="fa fa-check"></i><b>2.2</b> Tipos de estudo</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="tipos-de-estudo.html"><a href="tipos-de-estudo.html#exemplo"><i class="fa fa-check"></i><b>2.2.1</b> Exemplo</a></li>
+<li class="chapter" data-level="2.2.2" data-path="tipos-de-estudo.html"><a href="tipos-de-estudo.html#divisao-regional"><i class="fa fa-check"></i><b>2.2.2</b> Divisão regional</a></li>
+<li class="chapter" data-level="2.2.3" data-path="tipos-de-estudo.html"><a href="tipos-de-estudo.html#qual-tipo-escolher"><i class="fa fa-check"></i><b>2.2.3</b> Qual tipo escolher?</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="estudo-1-camaras-criminais.html"><a href="estudo-1-camaras-criminais.html"><i class="fa fa-check"></i><b>2.3</b> Estudo 1: Câmaras criminais</a></li>
+<li class="chapter" data-level="2.4" data-path="estudo-2-especializacao-de-varas-empresariais.html"><a href="estudo-2-especializacao-de-varas-empresariais.html"><i class="fa fa-check"></i><b>2.4</b> Estudo 2: Especialização de varas empresariais</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="estudo-2-especializacao-de-varas-empresariais.html"><a href="estudo-2-especializacao-de-varas-empresariais.html#contextualizacao"><i class="fa fa-check"></i><b>2.4.1</b> Contextualização</a></li>
+<li class="chapter" data-level="2.4.2" data-path="estudo-2-especializacao-de-varas-empresariais.html"><a href="estudo-2-especializacao-de-varas-empresariais.html#desafio-adicional-cifra-oculta"><i class="fa fa-check"></i><b>2.4.2</b> Desafio adicional: cifra oculta</a></li>
+<li class="chapter" data-level="2.4.3" data-path="estudo-2-especializacao-de-varas-empresariais.html"><a href="estudo-2-especializacao-de-varas-empresariais.html#voltando-a-complexidade"><i class="fa fa-check"></i><b>2.4.3</b> Voltando à complexidade</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="exemplo-3-captchas.html"><a href="exemplo-3-captchas.html"><i class="fa fa-check"></i><b>2.5</b> Exemplo 3: CAPTCHAs</a></li>
+<li class="chapter" data-level="2.6" data-path="cuidado.html"><a href="cuidado.html"><i class="fa fa-check"></i><b>2.6</b> Cuidado</a></li>
+<li class="chapter" data-level="2.7" data-path="organizacao-do-curso.html"><a href="organizacao-do-curso.html"><i class="fa fa-check"></i><b>2.7</b> Organização do curso</a></li>
+<li class="chapter" data-level="2.8" data-path="tarefas-para-1701-demora-30-min.html"><a href="tarefas-para-1701-demora-30-min.html"><i class="fa fa-check"></i><b>2.8</b> Tarefas para 17/01 (demora 30 min)</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="work-in-progress.html"><a href="work-in-progress.html"><i class="fa fa-check"></i><b>3</b> Work in progress</a><ul>
+<li class="chapter" data-level="3.1" data-path="pacote-esaj.html"><a href="pacote-esaj.html"><i class="fa fa-check"></i><b>3.1</b> Pacote <code>esaj</code></a><ul>
+<li class="chapter" data-level="3.1.1" data-path="pacote-esaj.html"><a href="pacote-esaj.html#download-esaj"><i class="fa fa-check"></i><b>3.1.1</b> Download esaj</a></li>
+<li class="chapter" data-level="3.1.2" data-path="pacote-esaj.html"><a href="pacote-esaj.html#parse-esaj"><i class="fa fa-check"></i><b>3.1.2</b> Parse esaj</a></li>
+<li class="chapter" data-level="3.1.3" data-path="pacote-esaj.html"><a href="pacote-esaj.html#download-cposg"><i class="fa fa-check"></i><b>3.1.3</b> Download CPOSG</a></li>
+<li class="chapter" data-level="3.1.4" data-path="pacote-esaj.html"><a href="pacote-esaj.html#parse-cposg"><i class="fa fa-check"></i><b>3.1.4</b> Parse CPOSG</a></li>
+<li class="chapter" data-level="3.1.5" data-path="pacote-esaj.html"><a href="pacote-esaj.html#download-docs"><i class="fa fa-check"></i><b>3.1.5</b> Download docs</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="pacote-dje.html"><a href="pacote-dje.html"><i class="fa fa-check"></i><b>3.2</b> Pacote <code>dje</code></a></li>
+<li class="chapter" data-level="3.3" data-path="pacote-abjutils.html"><a href="pacote-abjutils.html"><i class="fa fa-check"></i><b>3.3</b> Pacote <code>abjutils</code></a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="work-in-progress-1.html"><a href="work-in-progress-1.html"><i class="fa fa-check"></i><b>4</b> Work in progress</a></li>
+<li class="chapter" data-level="5" data-path="work-in-progress-2.html"><a href="work-in-progress-2.html"><i class="fa fa-check"></i><b>5</b> Work in progress</a></li>
+<li class="chapter" data-level="6" data-path="work-in-progress-3.html"><a href="work-in-progress-3.html"><i class="fa fa-check"></i><b>6</b> Work in progress</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://bookdown.org" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R para jurimetria</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="exemplo-3-captchas" class="section level2">
+<h2><span class="header-section-number">2.5</span> Exemplo 3: CAPTCHAs</h2>
+<p><img src="imgs/captcha.png" width="489" /></p>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="estudo-2-especializacao-de-varas-empresariais.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="cuidado.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/yihui/bookdown-crc/edit/master/01-intro.Rmd",
+"text": "Edit"
+},
+"download": ["bookdown.pdf", "bookdown.epub"],
+"toc": {
+"collapse": "none"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
