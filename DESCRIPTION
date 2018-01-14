@@ -14,5 +14,7 @@ Imports: esaj,
     dplyr,
     tidyverse,
     stringr,
-    bookdown
-Remotes: courtsbr/esaj
+    bookdown,
+    abjTemplates
+Remotes: courtsbr/esaj,
+    abjur/abjTemplates
