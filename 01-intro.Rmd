@@ -4,7 +4,7 @@
 
 A jurimetria é o estudo empírico do direito. Ela se distingue das demais disciplinas jurídicas por tratar o direito de forma concreta. 
 
-```{r}
+```{r, out.width="40%", fig.align='center'}
 knitr::include_graphics("imgs/empirical.png")
 ```
 
@@ -17,20 +17,20 @@ A jurimetria está para o Direito da mesma forma que a econometria, a biometria 
 
 Nesse sentido, uma das missões da Associação Brasileira de Jurimetria (ABJ) é incentivar e divulgar a jurimetria aos seus associados e ao público em geral. Nossos estudos e pesquisas visam a difusão e o desenvolvimento do campo no Brasil, agregando pesquisadores e fornecendo o ferramental necessário para realização das análises.
 
-```{r}
+```{r, fig.align='center'}
 knitr::include_graphics("imgs/missoes_abj.png")
 ```
 
 Neste curso, apresentaremos o ferramental de trabalho desenvolvido no laboratório da ABJ. As ferramentas servem principalmente para extração e arrumação de dados, deixando o caminho livre para realização de análises estatísticas mais aprofundadas. 
 
-```{r}
+```{r, fig.align='center'}
 knitr::include_graphics(c("imgs/esaj.png"))
 ```
 
 ## Tipos de estudo
 
 
-```{r}
+```{r, out.width="51%", fig.align='center'}
 knitr::include_graphics(c("imgs/download_esaj.png", 
                           "imgs/tidy_esaj.png", 
                           "imgs/model_esaj.png"))
@@ -48,7 +48,7 @@ Digamos que a NET tenha colocado seu nome indevidamente no Serasa e você proces
 
 3) Se você ou a NET ficarem infelizes com o resultado, vocês podem novamente entrar com recursos, que irão para o STJ e posteriormente ao STF (em Brasília), a serem julgados por Ministros (evolução de desembargador).
 
-```{r}
+```{r, fig.align='center', out.width="100%"}
 knitr::include_graphics("imgs/magistrado.png")
 ```
 
@@ -58,7 +58,7 @@ Nossos estudos restringem-se ao TJSP, envolvendo (1) e (2). O TJSP atualmente é
 
 O TJSP é dividido em comarcas, circunscrições e regiões administrativas. As comarcas são conjuntos de um ou mais municípios e uma comarca deve sempre ter uma ou mais varas. Circunscrições e regiões administrativas existem somente para 
 
-```{r}
+```{r, out.width="100%"}
 knitr::include_graphics("imgs/mapa.png")
 ```
 
@@ -173,7 +173,7 @@ $$
 
 Na nossa aplicação, isso foi feito estimando-se a probabilidade de um assunto genérico tratar da matéria empresarial, usando-se uma *rede bayesiana*. Para esse cálculo, utilizamos a parcela da base de dados que foi classificada corretamente e calculamos a proporção de processos empresariais para cada assunto. A cifra oculta é estimada somando-se as probabilidades obtidas.
 
-```{r}
+```{r, fig.align='center', out.width="80%"}
 knitr::include_graphics("imgs/rb.png")
 ```
 
@@ -233,7 +233,7 @@ knitr::include_graphics("imgs/captcha.png")
 
 ## Cuidado
 
-```{r}
+```{r, fig.align='center', out.width="70%"}
 knitr::include_graphics("imgs/beware.jpg")
 ```
 
@@ -256,7 +256,7 @@ knitr::include_graphics("imgs/ds.png")
 
 Trabalharemos com o `tidyverse`
 
-```{r}
+```{r, fig.align='center', out.width="100%"}
 knitr::include_graphics("imgs/tidyverse.jpeg")
 ```
 
