@@ -16,6 +16,10 @@ Imports: esaj,
     stringr,
     svglite,
     bookdown,
-    abjTemplates
+    abjTemplates,
+    keras,
+    tensorflow,
+    decryptr
 Remotes: courtsbr/esaj,
-    abjur/abjTemplates
+    abjur/abjTemplates,
+    decryptr/decryptr
