@@ -48,6 +48,43 @@
 
 
 
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
 
 <link rel="stylesheet" href="css/style.css" type="text/css" />
 </head>
@@ -82,11 +119,11 @@
 <li class="chapter" data-level="2.5" data-path="exemplo-3-captchas.html"><a href="exemplo-3-captchas.html"><i class="fa fa-check"></i><b>2.5</b> Exemplo 3: CAPTCHAs</a></li>
 <li class="chapter" data-level="2.6" data-path="cuidado.html"><a href="cuidado.html"><i class="fa fa-check"></i><b>2.6</b> Cuidado</a></li>
 <li class="chapter" data-level="2.7" data-path="organizacao-do-curso.html"><a href="organizacao-do-curso.html"><i class="fa fa-check"></i><b>2.7</b> Organização do curso</a></li>
-<li class="chapter" data-level="2.8" data-path="suas-tarefas-para-1701-demora-30-min.html"><a href="suas-tarefas-para-1701-demora-30-min.html"><i class="fa fa-check"></i><b>2.8</b> Suas tarefas para 17/01 (demora 30 min)</a></li>
-<li class="chapter" data-level="2.9" data-path="configuracao-necessaria-para-o-curso.html"><a href="configuracao-necessaria-para-o-curso.html"><i class="fa fa-check"></i><b>2.9</b> Configuração necessária para o curso</a><ul>
-<li class="chapter" data-level="2.9.1" data-path="configuracao-necessaria-para-o-curso.html"><a href="configuracao-necessaria-para-o-curso.html#pacotes"><i class="fa fa-check"></i><b>2.9.1</b> Pacotes</a></li>
-<li class="chapter" data-level="2.9.2" data-path="configuracao-necessaria-para-o-curso.html"><a href="configuracao-necessaria-para-o-curso.html#fork-e-upstream-experimental"><i class="fa fa-check"></i><b>2.9.2</b> Fork e upstream (experimental)</a></li>
+<li class="chapter" data-level="2.8" data-path="configuracao-necessaria-para-o-curso.html"><a href="configuracao-necessaria-para-o-curso.html"><i class="fa fa-check"></i><b>2.8</b> Configuração necessária para o curso</a><ul>
+<li class="chapter" data-level="2.8.1" data-path="configuracao-necessaria-para-o-curso.html"><a href="configuracao-necessaria-para-o-curso.html#pacotes"><i class="fa fa-check"></i><b>2.8.1</b> Pacotes</a></li>
+<li class="chapter" data-level="2.8.2" data-path="configuracao-necessaria-para-o-curso.html"><a href="configuracao-necessaria-para-o-curso.html#fork-e-upstream-experimental"><i class="fa fa-check"></i><b>2.8.2</b> Fork e upstream (experimental)</a></li>
 </ul></li>
+<li class="chapter" data-level="2.9" data-path="suas-tarefas-para-1701-demora-30-min.html"><a href="suas-tarefas-para-1701-demora-30-min.html"><i class="fa fa-check"></i><b>2.9</b> Suas tarefas para 17/01 (demora 30 min)</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="importacao-de-dados.html"><a href="importacao-de-dados.html"><i class="fa fa-check"></i><b>3</b> Importação de dados</a><ul>
 <li class="chapter" data-level="3.1" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html"><i class="fa fa-check"></i><b>3.1</b> Pacotes <code>httr</code>, <code>xml2</code> e <code>rvest</code></a><ul>
@@ -145,18 +182,34 @@
 <p>Para garantir a reprodutibilidade, recomendamos a criação de um pacote no R cujo objetivo é somente baixar e processar esses dados, além da criação de um repositório na nuvem (Dropbox, por exemplo). No pacote que contém as funções de extração, guarde os dados já processados (se couberem) num arquivo <code>.rda</code> dentro da pasta <code>data</code> do pacote.</p>
 <div id="download-esaj" class="section level3">
 <h3><span class="header-section-number">3.4.1</span> Download esaj</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">esaj::<span class="kw">download_cjsg</span>(<span class="st">&quot;homicídio&quot;</span>, <span class="st">&quot;data-raw/cjsg&quot;</span>, <span class="dt">max_page =</span> <span class="dv">2</span>)</code></pre></div>
 </div>
 <div id="parse-esaj" class="section level3">
 <h3><span class="header-section-number">3.4.2</span> Parse esaj</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">files &lt;-<span class="st"> </span><span class="kw">dir</span>(<span class="st">&quot;data-raw/cjsg&quot;</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>, <span class="dt">pattern =</span> <span class="st">&quot;page&quot;</span>)
+d_cjsg &lt;-<span class="st"> </span>esaj::<span class="kw">parse_cjsg</span>(files)
+d_cjsg</code></pre></div>
 </div>
 <div id="download-cposg" class="section level3">
 <h3><span class="header-section-number">3.4.3</span> Download CPOSG</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">processos &lt;-<span class="st"> </span><span class="kw">unique</span>(d_cjsg$id_lawsuit)
+esaj::<span class="kw">download_cposg</span>(processos, <span class="st">&quot;data-raw/cposg&quot;</span>)</code></pre></div>
 </div>
 <div id="parse-cposg" class="section level3">
 <h3><span class="header-section-number">3.4.4</span> Parse CPOSG</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">files_cposg &lt;-<span class="st"> </span><span class="kw">dir</span>(<span class="st">&quot;data-raw/cposg&quot;</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>)
+parser &lt;-<span class="st"> </span>esaj::<span class="kw">make_parser</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span>esaj::<span class="kw">parse_data</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span>esaj::<span class="kw">parse_parts</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span>esaj::<span class="kw">parse_movs</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span>esaj::<span class="kw">parse_decisions</span>()
+d_cposg &lt;-<span class="st"> </span>esaj::<span class="kw">run_parser</span>(files_cposg, parser, <span class="st">&quot;data-raw/cposg_rds&quot;</span>)</code></pre></div>
 </div>
 <div id="download-docs" class="section level3">
 <h3><span class="header-section-number">3.4.5</span> Download docs</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">decisoes &lt;-<span class="st"> </span><span class="kw">unique</span>(d_cjsg$id_decision)
+downloaded &lt;-<span class="st"> </span>tools::<span class="kw">file_path_sans_ext</span>(<span class="kw">dir</span>(<span class="st">&quot;data-raw/decisions&quot;</span>, <span class="dt">full.names =</span> <span class="ot">FALSE</span>))
+esaj::<span class="kw">download_decision</span>(<span class="kw">setdiff</span>(decisoes, downloaded), <span class="st">&quot;data-raw/decisions&quot;</span>)</code></pre></div>
 </div>
 </div>
             </section>
