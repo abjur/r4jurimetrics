@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="estudo-2-especializacao-de-varas-empresariais.html">
-<link rel="next" href="cuidado.html">
+<link rel="prev" href="suas-tarefas-para-1701-demora-30-min.html">
+<link rel="next" href="importacao-de-dados.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -139,25 +139,65 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="exemplo-3-captchas" class="section level2">
-<h2><span class="header-section-number">2.5</span> Exemplo 3: CAPTCHAs</h2>
-<p>Apesar dos sistemas jurídicos serem públicos, seus dados não são acessíveis. Muitas vezes o acesso às páginas web são limitadas através de bloqueios de IP e</p>
-<p>Algumas justificativas para a existência de CAPTCHAs são: i) não onerar os sistemas ou ii) a ideia de que assim estão protegendo as pessoas. O primeiro argumento é frágil pois ambos poderiam ser resolvidos através de uma API de acesso público dos tribunais, ou mesmo uma API paga. O segundo argumento também é ruim, pois, ainda que limitado, esses dados serão obtidos e utilizados. Limitar o acesso só aumenta o custo para construção dessas bases, direcionando o poder para as empresas que têm mais dinheiro para investir nisso, causando viés no acesso à informação.</p>
-<p>Fazendo curta uma história longa, se um dado é público, ele deve ser acessível.</p>
-<p>Nos trabalhos da ABJ, esbarramos com CAPTCHAs inúmeras vezes. Recentemente, descobrimos formas de resolver CAPTCHAs automaticamente utilizando modelos estatísticos. Esses modelos são da recente (ou não) classe de modelos de <em>deep learning</em>, uma área que cresceu exponencialmente nos últimos anos.</p>
-<p>Incluímos esse exemplo no curso por dois motivos. Apesar de não ser um modelo jurimétrico, trata-se de um problema presente no contexto da jurimetria, logo é um conhecimento útil. Além disso, a técnica utilizada para quebrar CAPTCHAs é muito interessante e poderia ser adaptada para diversos contextos, inclusive estudos jurimétricos.</p>
-<p>Nossas soluções para quebrar captchas foram consolidadas num pacote chamado <code>decryptr</code>. Vamos discutir brevemente como ele foi criado e como usar. Também discutiremos superficialmente o modelo de redes neurais utilizado e como criar o seu próprio modelo.</p>
-<p><img src="imgs/captcha.png" width="489" /></p>
-<p>Veja um quebrador de captcha em funcionamento:</p>
-<p><img src="bookdown_files/figure-html/unnamed-chunk-13-1.svg" width="768" /></p>
+<div id="configuracao-necessaria-para-o-curso" class="section level2">
+<h2><span class="header-section-number">2.9</span> Configuração necessária para o curso</h2>
+<div id="pacotes" class="section level3">
+<h3><span class="header-section-number">2.9.1</span> Pacotes</h3>
+<p>Para poder rodar os códigos do curso, é importante que você instale todos os pacotes relacionados a este livro. Para isso, basta rodar</p>
+<p>Esse código teoricamente funciona pois este livro também é um pacote e adicionamos todas as dependências. Se você não conseguir instalar as dependências, abra o arquivo <code>DESCRIPTION</code> do material:</p>
+<p><a href="https://github.com/abjur/r4jurimetrics/blob/master/DESCRIPTION" class="uri">https://github.com/abjur/r4jurimetrics/blob/master/DESCRIPTION</a></p>
+<p>Nesse aquivo constam todos os pacotes que estamos utilizando. Se algo deu errado na instalação do <code>r4jurimetrics</code>, é porquê pelo menos um desses pacotes deu erro na instalação. Note que os pacotes dentro de <code>Remotes</code> devem ser instalados com <code>devtools::install_github()</code>. Note também que os pacotes que estão no <code>Remotes</code> também estão no <code>Imports</code>.</p>
 </div>
+<div id="fork-e-upstream-experimental" class="section level3">
+<h3><span class="header-section-number">2.9.2</span> Fork e upstream (experimental)</h3>
+<p>Para fazer essa parte funcionar, você precisará de uma conta ativa no GitHub. Se você não tiver uma, recomendamos fortemente que criem.</p>
+<p>Agora siga os passos abaixo:</p>
+<ol style="list-style-type: decimal">
+<li>Acesse no seu navegador: <a href="https://github.com/abjur/r4jurimetrics" class="uri">https://github.com/abjur/r4jurimetrics</a></li>
+<li>Certifique-se de que você está logado na sua conta.</li>
+<li>Dê um fork no repositório</li>
+<li>Volte ao RStudio</li>
+<li>Crie um projeto: Projetos &gt; New Project &gt; Version control &gt; git</li>
+<li>Na parte do link do repositório, coloque <a href="https://github.com/" class="uri">https://github.com/</a><seuLogin>/r4jurimetrics</li>
+<li>Dê OK e certifique-se de que o repositório foi criado.</li>
+<li>Abra um terminal: Tools &gt; Shell</li>
+<li>Arrume e rode</li>
+</ol>
+<pre><code>git config --global user.email &quot;seuEmail&quot;</code></pre>
+<p>e</p>
+<pre><code>git config --global user.name &quot;seuLogin&quot;</code></pre>
+<p>Esses comandos configuram seu usuário para registrar mudanças nos repositórios.</p>
+<ol start="11" style="list-style-type: decimal">
+<li>Rode</li>
+</ol>
+<pre><code>git remote add upstream https://github.com/abjur/r4jurimetrics.git</code></pre>
+<p>Esse comando faz com que seu repositório fique ligado ao repositório original</p>
+<ol start="12" style="list-style-type: decimal">
+<li>Rode</li>
+</ol>
+<pre><code>git fetch upstream</code></pre>
+<p>Esse comando baixa as atualizações do repositório pai, se houverem</p>
+<ol start="13" style="list-style-type: decimal">
+<li>Rode</li>
+</ol>
+<pre><code>git merge upstream/master -m &quot;merge with parent&quot;</code></pre>
+<p>Esse comando juntar o seu repositório com o código do reporitório pai. Nesse momento podem acontecer conflitos.</p>
+<p>Se tiver algum problema, veja:</p>
+<ul>
+<li><a href="https://help.github.com/articles/configuring-a-remote-for-a-fork/" class="uri">https://help.github.com/articles/configuring-a-remote-for-a-fork/</a></li>
+<li><a href="https://help.github.com/articles/syncing-a-fork/" class="uri">https://help.github.com/articles/syncing-a-fork/</a></li>
+</ul>
+
+</div>
+</div>
+<!-- </div> -->
             </section>
 
           </div>
         </div>
       </div>
-<a href="estudo-2-especializacao-de-varas-empresariais.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="cuidado.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="suas-tarefas-para-1701-demora-30-min.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="importacao-de-dados.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

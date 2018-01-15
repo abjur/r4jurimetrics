@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="estudo-2-especializacao-de-varas-empresariais.html">
-<link rel="next" href="cuidado.html">
+<link rel="prev" href="pacotes-httr-xml2-e-rvest.html">
+<link rel="next" href="baixando-dados-do-tjsp.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -139,25 +139,42 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="exemplo-3-captchas" class="section level2">
-<h2><span class="header-section-number">2.5</span> Exemplo 3: CAPTCHAs</h2>
-<p>Apesar dos sistemas jurídicos serem públicos, seus dados não são acessíveis. Muitas vezes o acesso às páginas web são limitadas através de bloqueios de IP e</p>
-<p>Algumas justificativas para a existência de CAPTCHAs são: i) não onerar os sistemas ou ii) a ideia de que assim estão protegendo as pessoas. O primeiro argumento é frágil pois ambos poderiam ser resolvidos através de uma API de acesso público dos tribunais, ou mesmo uma API paga. O segundo argumento também é ruim, pois, ainda que limitado, esses dados serão obtidos e utilizados. Limitar o acesso só aumenta o custo para construção dessas bases, direcionando o poder para as empresas que têm mais dinheiro para investir nisso, causando viés no acesso à informação.</p>
-<p>Fazendo curta uma história longa, se um dado é público, ele deve ser acessível.</p>
-<p>Nos trabalhos da ABJ, esbarramos com CAPTCHAs inúmeras vezes. Recentemente, descobrimos formas de resolver CAPTCHAs automaticamente utilizando modelos estatísticos. Esses modelos são da recente (ou não) classe de modelos de <em>deep learning</em>, uma área que cresceu exponencialmente nos últimos anos.</p>
-<p>Incluímos esse exemplo no curso por dois motivos. Apesar de não ser um modelo jurimétrico, trata-se de um problema presente no contexto da jurimetria, logo é um conhecimento útil. Além disso, a técnica utilizada para quebrar CAPTCHAs é muito interessante e poderia ser adaptada para diversos contextos, inclusive estudos jurimétricos.</p>
-<p>Nossas soluções para quebrar captchas foram consolidadas num pacote chamado <code>decryptr</code>. Vamos discutir brevemente como ele foi criado e como usar. Também discutiremos superficialmente o modelo de redes neurais utilizado e como criar o seu próprio modelo.</p>
-<p><img src="imgs/captcha.png" width="489" /></p>
-<p>Veja um quebrador de captcha em funcionamento:</p>
-<p><img src="bookdown_files/figure-html/unnamed-chunk-13-1.svg" width="768" /></p>
+<div id="web-scraping" class="section level2">
+<h2><span class="header-section-number">3.2</span> Web scraping</h2>
+<p>Esta seção contém algumas melhores práticas na contrução de ferramentas no R que baixam e processam informações de sites disponíveis na web. O objetivo é ajudar o jurimetrista a desenvolver programas que sejam fáceis de adaptar no tempo.</p>
+<p>É importante ressaltar que só estamos trabalhando com páginas que são acessíveis publicamente. Caso tenha interesse e “raspar” páginas que precisam de autenticação, recomendamos que estude os termos de uso do site.</p>
+<p>Para ilustrar este texto, usaremos como exemplo o código utilizado no trabalho das câmaras, que acessa o site do Tribunal de Justiça de São Paulo para obter informações de processos judiciais. Trabalharemos principalmente com a <a href="https://esaj.tjsp.jus.br/cjsg/consultaCompleta.do">Consulta de Jurisprudência</a> e a <a href="https://esaj.tjsp.jus.br/cpo/sg/open.do">Consulta de de Processos de Segundo Grau</a> do TJSP.</p>
+<div id="informacoes-iniciais" class="section level3">
+<h3><span class="header-section-number">3.2.1</span> Informações iniciais</h3>
+<p>Antes de iniciar um programa de web scraping, verifique se existe alguma forma mais fácil de conseguir os dados que necessita. Construir um web scraper do zero é muitas vezes uma tarefa dolorosa e, caso o site seja atualizado, pode ser que boa parte do trabalho seja inútil. Se os dados precisarem ser extraídos apenas uma vez, verifique com os responsáveis pela manutenção do site se eles podem fazer a extração que precisa. Se os dados precisarem ser atualizados, verifique se a entidade não possui uma API para acesso aos dados.</p>
+<p>Ao escrever um web scraper, as primeiras coisas que devemos pensar são</p>
+<ul>
+<li>Como o site a ser acessado foi contruído, se tem limites de requisições, utilização de cookies, states, etc.</li>
+<li>Como e com que frequência o site é atualizado, tanto em relação à sua interface como em relação aos dados que queremos extrair.</li>
+<li>Como conseguir a lista das páginas que queremos acessar.</li>
+<li>Qual o caminho percorrido para acessar uma página específica.</li>
+</ul>
+<p>Sugerimos como melhores práticas dividir todas as atividades em três tarefas principais: i) <em>buscar</em>; ii) <em>coletar</em> e iii) <em>processar</em>. Quando já sabemos de antemão quais são as URLs que vamos acessar, a etapa de busca é desnecessária.</p>
+<p>Na maior parte dos casos, deixar os algoritmos de <em>coleta</em> e <em>processamento</em> dos dados em funções distintas é uma boa prática pois aumenta o controle sobre o que as ferramentas estão fazendo, facilita o debug e a atualização. Por outro lado, em alguns casos isso pode tornar o código mais ineficiente e os arquivos obtidos podem ficar pesados.</p>
+</div>
+<div id="diferenca-entre-buscar-baixar-e-processar." class="section level3">
+<h3><span class="header-section-number">3.2.2</span> Diferença entre buscar, baixar e processar.</h3>
+<p>Buscar documentos significa, de uma forma geral, utilizar ferramentas de busca (ou acessar links de um site) para obter informações de uma nova requisição a ser realizada. Ou seja, essa etapa do scraper serve para “procurar links” que não sabíamos que existiam previamente. Isso será resolvido através da função <code>esaj::download_cjsg()</code>.</p>
+<p>Baixar documentos, no entando, significa simplesmente acessar páginas pré-estabelecidas e salvá-las em disco. Em algumas situações, os documentos baixados (depois de limpos) podem conter uma nova lista de páginas a serem baixadas, formando iterações de coletas. A tarefa de baixar documentos pré-estabelecidos será realizada pelas funções <code>esaj::download_cposg()</code> e <code>dje::download_dje()</code>.</p>
+<p>Finalmente, processar documentos significa carregar dados acessíveis em disco e transformar os dados brutos uma base <em>tidy</em>. Usualmente separamos a estruturação em duas etapas: i) transformar arquivos não-estruturados em um arquivos semi-estruturados (e.g. um arquivo HTML em uma tabela mais um conjunto de textos livres) e ii) transformar arquivos semi-estruturados em uma base analítica (estruturada). A tarefa de processar as páginas HTML será realizada pelas funções <code>esaj::parse_cjsg()</code> e <code>esaj::run_parser()</code>.</p>
+<p>Na pesquisa das câmaras, o fluxo é</p>
+<pre><code>buscar -&gt; coletar -&gt; processar -&gt; coletar -&gt; processar</code></pre>
+<p>Na pesquisa da especialização, o fluxo é</p>
+<pre><code>coletar -&gt; processar -&gt; coletar -&gt; processar</code></pre>
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="estudo-2-especializacao-de-varas-empresariais.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="cuidado.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="pacotes-httr-xml2-e-rvest.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="baixando-dados-do-tjsp.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -186,7 +203,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/yihui/bookdown-crc/edit/master/01-intro.Rmd",
+"link": "https://github.com/yihui/bookdown-crc/edit/master/02-import.Rmd",
 "text": "Edit"
 },
 "download": ["bookdown.pdf", "bookdown.epub"],
