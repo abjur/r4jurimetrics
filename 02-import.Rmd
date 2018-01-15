@@ -114,7 +114,7 @@ coletar -> processar -> coletar -> processar
 
 Dependendo do tipo de estudo, a fonte dos dados muda.
 
-- Se o estudo é **retrospectivo**, listamos os processos em pesquisas de julgados e 
+- Se o estudo é **retrospectivo**, listamos os processos em pesquisas de julgados
 - Se o estudo é **prospectivo**, listamos os processos
 
 Em ambos os casos, é recomendável que você tente obter os dados a partir de contato com os Tribunais, antes de baixar qualquer coisa da web.
@@ -127,13 +127,13 @@ Para garantir a reprodutibilidade, recomendamos a criação de um pacote no R cu
 
 ### Download esaj
 
-```{r eval=FALSE}
+```{r eval=FALSE, echo=TRUE}
 esaj::download_cjsg("homicídio", "data-raw/cjsg", max_page = 2)
 ```
 
 ### Parse esaj
 
-```{r eval=FALSE}
+```{r eval=FALSE, echo=TRUE}
 files <- dir("data-raw/cjsg", full.names = TRUE, pattern = "page")
 d_cjsg <- esaj::parse_cjsg(files)
 d_cjsg
@@ -141,14 +141,14 @@ d_cjsg
 
 ### Download CPOSG
 
-```{r eval=FALSE}
+```{r eval=FALSE, echo=TRUE}
 processos <- unique(d_cjsg$id_lawsuit)
 esaj::download_cposg(processos, "data-raw/cposg")
 ```
 
 ### Parse CPOSG
 
-```{r eval=FALSE}
+```{r eval=FALSE, echo=TRUE}
 files_cposg <- dir("data-raw/cposg", full.names = TRUE)
 parser <- esaj::make_parser() %>% 
   esaj::parse_data() %>% 
@@ -160,7 +160,7 @@ d_cposg <- esaj::run_parser(files_cposg, parser, "data-raw/cposg_rds")
 
 ### Download docs
 
-```{r eval=FALSE}
+```{r eval=FALSE, echo=TRUE}
 decisoes <- unique(d_cjsg$id_decision)
 downloaded <- tools::file_path_sans_ext(dir("data-raw/decisions", full.names = FALSE))
 esaj::download_decision(setdiff(decisoes, downloaded), "data-raw/decisions")
@@ -170,17 +170,17 @@ esaj::download_decision(setdiff(decisoes, downloaded), "data-raw/decisions")
 
 ### Download DJE
 
-```{r eval=FALSE}
+```{r eval=FALSE, echo=TRUE}
 dje::download_dje("TJSP", dates = "2018-01-12", path = "data-raw/dje")
 ```
 
 ### Parse DJE
 
-```{r eval=FALSE}
+```{r eval=FALSE, echo=TRUE}
 dje::dje_to_text("data-raw/dje/tjsp_dje_2018-01-12")
 ```
 
-```{r eval=FALSE}
+```{r eval=FALSE, echo=TRUE}
 dje::find_index()
 ```
 
