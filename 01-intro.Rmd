@@ -299,28 +299,13 @@ knitr::include_graphics("imgs/tidyverse.jpeg")
 - Visualize: `ggplot2`.
 - Model: `survival`, `bnlearn`, `keras`
 
-## Suas tarefas para 17/01 (demora 30 min)
-
-- Entrar no grupo: t.me/rbrasil
-- Cadastrar na newsletter da ABJ http://www.abj.org.br
-- Ler blog: http://www.abj.org.br/blog/2017/01/27/2017-01-28-assuntos/
-- Ler blog: http://www.abj.org.br/blog/2016/12/31/2016-12-31-tempos/
-- Dar uma olhada em https://abjur.github.io/tjspBook
-- Dar uma olhada em http://material.curso-r.com
-- Dar uma olhada em https://tidyverse.org
-- Dar uma olhada em http://r4ds.had.co.nz
-- Dar uma olhada em 
-    - https://github.com/abjur, 
-    - https://github.com/courtsbr, 
-    - https://github.com/curso-r
-
 ## Configuração necessária para o curso
 
 ### Pacotes 
 
 Para poder rodar os códigos do curso, é importante que você instale todos os pacotes relacionados a este livro. Para isso, basta rodar
 
-```{r eval=FALSE}
+```{r eval=FALSE, echo=TRUE}
 devtools::install_github("abjur/r4jurimetrics")
 ```
 
@@ -386,3 +371,18 @@ Se tiver algum problema, veja:
 
 - https://help.github.com/articles/configuring-a-remote-for-a-fork/
 - https://help.github.com/articles/syncing-a-fork/
+
+## Suas tarefas para 17/01 (demora 30 min)
+
+- Entrar no grupo: t.me/rbrasil
+- Cadastrar na newsletter da ABJ http://www.abj.org.br
+- Ler blog: http://www.abj.org.br/blog/2017/01/27/2017-01-28-assuntos/
+- Ler blog: http://www.abj.org.br/blog/2016/12/31/2016-12-31-tempos/
+- Dar uma olhada em https://abjur.github.io/tjspBook
+- Dar uma olhada em http://material.curso-r.com
+- Dar uma olhada em https://tidyverse.org
+- Dar uma olhada em http://r4ds.had.co.nz
+- Dar uma olhada em 
+    - https://github.com/abjur, 
+    - https://github.com/courtsbr, 
+    - https://github.com/curso-r
