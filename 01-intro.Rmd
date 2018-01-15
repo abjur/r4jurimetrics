@@ -25,6 +25,13 @@ A pesquisa em jurimetria utiliza dados do judiciário para avaliar desde argumen
 
 A jurimetria está para o Direito da mesma forma que a econometria, a biometria e a sociometria estão, respectivamente, para a Economia, Biologia e Sociologia. O Direito, embora conte com algumas áreas tradicionalmente mais empíricas que outras, ainda não tem uma disciplina mais formalizada. 
 
+No mundo corporativo, a jurimetria está se tornando essencial para departamentos jurídicos de grandes empresas e escritórios de advocacia. O movimento da tecnologia no Direito ganhou ainda mais força no ano de 2017 com o advento da AB2L e das lawtechs, as startups do meio jurídico.
+
+```{r, out.width="100%"}
+knitr::include_graphics("imgs/jurimetria_empresas.png")
+```
+
+
 Nesse sentido, uma das missões da Associação Brasileira de Jurimetria (ABJ) é incentivar e divulgar a jurimetria aos seus associados e ao público em geral. Nossos estudos e pesquisas visam a difusão e o desenvolvimento do campo no Brasil, agregando pesquisadores e fornecendo o ferramental necessário para realização das análises.
 
 ```{r, fig.align='center'}
