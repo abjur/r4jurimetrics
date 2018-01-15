@@ -1,5 +1,13 @@
 # Introdução
 
+Bem vinda ao maravilhoso mundo da jurimetria. 
+
+Essa é sua última chance. Está preparada?
+
+```{r out.width="100%"}
+knitr::include_graphics("imgs/pill.jpg")
+```
+
 ## O que é Jurimetria?
 
 A jurimetria é o estudo empírico do direito. Ela se distingue das demais disciplinas jurídicas por tratar o direito de forma concreta. 
@@ -226,9 +234,23 @@ Aplicando os critérios propostos, a carga de trabalho proporcionada pelos proce
 
 ## Exemplo 3: CAPTCHAs
 
+Apesar dos sistemas jurídicos serem públicos, seus dados não são acessíveis. Muitas vezes o acesso às páginas web são limitadas através de bloqueios de IP e 
+
+Algumas justificativas para a existência de CAPTCHAs são: i) não onerar os sistemas ou ii) a ideia de que assim estão protegendo as pessoas. O primeiro argumento é frágil pois ambos poderiam ser resolvidos através de uma API de acesso público dos tribunais, ou mesmo uma API paga. O segundo argumento também é ruim, pois, ainda que limitado, esses dados serão obtidos e utilizados. Limitar o acesso só aumenta o custo para construção dessas bases, direcionando o poder para as empresas que têm mais dinheiro para investir nisso, causando viés no acesso à informação. 
+
+Fazendo curta uma história longa, se um dado é público, ele deve ser acessível.
+
+Nos trabalhos da ABJ, esbarramos com CAPTCHAs inúmeras vezes. Recentemente, descobrimos formas de resolver CAPTCHAs automaticamente utilizando modelos estatísticos. Esses modelos são da recente (ou não) classe de modelos de *deep learning*, uma área que cresceu exponencialmente nos últimos anos.
+
+Incluímos esse exemplo no curso por dois motivos. Apesar de não ser um modelo jurimétrico, trata-se de um problema presente no contexto da jurimetria, logo é um conhecimento útil. Além disso, a técnica utilizada para quebrar CAPTCHAs é muito interessante e poderia ser adaptada para diversos contextos, inclusive estudos jurimétricos.
+
+Nossas soluções para quebrar captchas foram consolidadas num pacote chamado `decryptr`. Vamos discutir brevemente como ele foi criado e como usar. Também discutiremos superficialmente o modelo de redes neurais utilizado e como criar o seu próprio modelo.
+
 ```{r}
 knitr::include_graphics("imgs/captcha.png")
 ```
+
+Veja um quebrador de captcha em funcionamento:
 
 ```{r, fig.width=8, fig.height=3}
 library(decryptr)
@@ -237,11 +259,10 @@ file_captcha <- read_captcha("imgs/captchafab7e91ea9c.jpeg")
 plot(file_captcha)
 ```
 
-
 ```{r eval=FALSE}
 modelo_captcha <- decryptrModels::read_model("tjmg")
 predict(modelo_captcha, arq = file_captcha)
-"65922"
+# > "65922"
 ```
 
 ## Cuidado
@@ -293,4 +314,75 @@ knitr::include_graphics("imgs/tidyverse.jpeg")
     - https://github.com/courtsbr, 
     - https://github.com/curso-r
 
+## Configuração necessária para o curso
 
+### Pacotes 
+
+Para poder rodar os códigos do curso, é importante que você instale todos os pacotes relacionados a este livro. Para isso, basta rodar
+
+```{r eval=FALSE}
+devtools::install_github("abjur/r4jurimetrics")
+```
+
+Esse código teoricamente funciona pois este livro também é um pacote e adicionamos todas as dependências. Se você não conseguir instalar as dependências, abra o arquivo `DESCRIPTION` do material:
+
+https://github.com/abjur/r4jurimetrics/blob/master/DESCRIPTION
+
+Nesse aquivo constam todos os pacotes que estamos utilizando. Se algo deu errado na instalação do `r4jurimetrics`, é porquê pelo menos um desses pacotes deu erro na instalação. Note que os pacotes dentro de `Remotes` devem ser instalados com `devtools::install_github()`. Note também que os pacotes que estão no `Remotes` também estão no `Imports`.
+
+### Fork e upstream (experimental)
+
+Para fazer essa parte funcionar, você precisará de uma conta ativa no GitHub. Se você não tiver uma, recomendamos fortemente que criem.
+
+Agora siga os passos abaixo:
+
+1. Acesse no seu navegador: https://github.com/abjur/r4jurimetrics
+2. Certifique-se de que você está logado na sua conta.
+3. Dê um fork no repositório
+4. Volte ao RStudio
+5. Crie um projeto: Projetos > New Project > Version control > git
+6. Na parte do link do repositório, coloque https://github.com/<seuLogin>/r4jurimetrics
+7. Dê OK e certifique-se de que o repositório foi criado.
+8. Abra um terminal: Tools > Shell
+9. Arrume e rode 
+
+```
+git config --global user.email "seuEmail"
+```
+
+e
+
+```
+git config --global user.name "seuLogin"
+```
+
+Esses comandos configuram seu usuário para registrar mudanças nos repositórios.
+
+11. Rode
+
+```
+git remote add upstream https://github.com/abjur/r4jurimetrics.git
+```
+
+Esse comando faz com que seu repositório fique ligado ao repositório original
+
+12. Rode
+
+```
+git fetch upstream
+```
+
+Esse comando baixa as atualizações do repositório pai, se houverem
+
+13. Rode
+
+```
+git merge upstream/master -m "merge with parent"
+```
+
+Esse comando juntar o seu repositório com o código do reporitório pai. Nesse momento podem acontecer conflitos.
+
+Se tiver algum problema, veja: 
+
+- https://help.github.com/articles/configuring-a-remote-for-a-fork/
+- https://help.github.com/articles/syncing-a-fork/
