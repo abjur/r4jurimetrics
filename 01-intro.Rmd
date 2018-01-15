@@ -18,8 +18,10 @@ knitr::include_graphics("imgs/empirical.png")
 
 A pesquisa em jurimetria utiliza dados do judiciário para avaliar desde argumentos quantitativos a serem utilizados por juristas e advogados até o impacto de leis. No Brasil, é utilizada principalmente como ferramenta para 
 
-1. auxiliar na **formulação de políticas públicas** e 
-2. melhorar a **administração dos tribunais**. 
+1. auxiliar na **formulação de políticas públicas**,
+2. melhorar a **administração dos tribunais**,
+3. calcular o **risco** de carteiras de processos e 
+4. otimizar **estratégias** processuais.
 
 A jurimetria está para o Direito da mesma forma que a econometria, a biometria e a sociometria estão, respectivamente, para a Economia, Biologia e Sociologia. O Direito, embora conte com algumas áreas tradicionalmente mais empíricas que outras, ainda não tem uma disciplina mais formalizada. 
 
