@@ -1,6 +1,129 @@
-# Work in progress
+# Importação de dados
+
+## Pacotes `httr`, `xml2` e `rvest`
+
+Esses são os três pacotes mais modernos do R para fazer web scraping. O pacote `xml2` tem a finalidade de estruturar arquivos HTML ou XML de forma eficiente, tornando possível a obtenção de *tags* e seus atributos dentro de um arquivo. Já o pacote `httr` é responsável por realizar requisições web para obtenção das páginas de interesse, buscando reduzir ao máximo a complexidade da programação. O pacote `rvest` é escrito **sobre** os dois anteriores e por isso eleva ainda mais o nível de especialização para raspagem de dados.
+
+As características dos pacotes implicam na seguinte regra de bolso. Para trabalhar com páginas simples, basta carregar o `rvest` e utilizar suas funcionalidades. Caso o acesso à página exija ações mais complexas e/ou  artifícios de ferramentas web, será necessário utilizar o `httr`. O `xml2` só será usado explicitamente nos casos raros em que a página está em XML, que pode ser visto como uma generalização do HTML.
+
+Esses pacotes não são suficientes para acessar todo tipo de conteúdo da web. Um exemplo claro disso são páginas em que o conteúdo é produzido por `javascript`, o que acontece em alguns sites modernos. Para trabalhar com esses sites, é necessário realmente "simular" um navegador que acessa a página web. Uma das melhores ferramentas para isso é o `selenium`. Não discutiremos `selenium` nesse curso, mas caso queira se aprofundar, acesse [aqui](http://www.seleniumhq.org/) e o pacote `RSelenium`.
+
+### Sessões e cookies
+
+No momento que acessamos uma página web, nosso navegador baixa alguns arquivos que "identificam" nosso acesso à página. Esses arquivos são chamados cookies e são usados pelos sites para realizar diversas atividades, como carregar uma página pré-definida pelo usuário caso este acesse o site pela segunda vez.
+
+O `httr` e por consequência o `rvest` já guardam esses cookies de forma automática, de forma que o usuário não precise se preocupar com isso. Em casos raros, para construir o web scraper é necessário modificar esses cookies. Nesses casos, estude a função `cookies()` do `httr`.
+
+### `GET` e `POST`
+
+Uma requisição GET envia uma `url` ao servidor, possivelmente com alguns parâmetros nessa `url` (que ficam no final da `url` depois do `?`). O servidor, por sua vez, recebe essa `url`, processa os parâmetros e retorna uma página HTML para o navegador[^user].
+
+[^user]: para entender sobre server side e user side, acesse [server side e user side](http://programmers.stackexchange.com/a/171210 "diferencas").
+
+A requisição `POST`, no entanto, envia uma `url` não modificada para o servidor, mas envia também uma lista de dados preenchidos pelo usuário, que podem ser números, textos ou até imagens. Na maioria dos casos, ao submeter um formulário de um site, fazemos uma requisição `POST`.
+
+O `httr` possui os métodos `GET` e `POST` implementados e são muito similares. A lista de parâmetros enviados pelo usuário pode ser armazenado numa `list` nomeada, e adicionado ao `GET` pelo parâmetro `query` ou no `POST` pelo parâmetro `body`. Veremos exemplos disso mais adiante.
+
+### Outras funções do `httr`
+
+Outras funções úteis:
+
+- `write_disk()` para escrever uma requisição direto em disco, além de guardar na memória RAM.
+- `config()` para adicionar configurações adicionais. Por exemplo, quando acessar uma página `https` com certificados inadequados numa requisição GET, rode `GET('https://www...', config(ssl_verifypeer=F))`.
+- `oauth_app()` para trabalhar com APIs. Não discutiremos conexão com APIs nesse curso, mas é um importante conceito a ser estudado.
+
+### Principais funções do `rvest`
+
+```{r eval=FALSE}
+library(rvest)
+```
+
+**Para acessar páginas da web:**
+
+- `html_session()` abre uma sessão do usuário (baixa página, carrega cookies etc).
+- `follow_link()`, `jump_to()` acessa uma página web a partir de um link (tag `<a>`) ou url.
+- `html_form()` carrega todos os formulários contidos numa página.
+- `set_value()` atribui valores a parâmetros do formulário.
+- `submit_form()` submete um formulário obtido em `html_form`.
+
+**Para trabalhar com arquivos HTML:**
+
+- `read_html()` lê o arquivo HTML de forma estruturada e facilita impressão.
+- `html_nodes()` cria uma lista com os nós identificados por uma busca em CSS path ou XPath. `html_node()` é um caso especial que assume que só será encontrado um resultado.
+- `html_text()` extrai todo o conteúdo de um objeto e retorna um texto.
+- `html_table()` extrai o conteúdo de uma `<table>` e transforma em um `data_frame`.
+- `html_attr()` extrai um atributo de uma tag, por exemplo `href` da tag `<a>`.
+
+### CSS path e XPath
+
+O CSS path e o XPath são formas distintas de buscar tags dentro de um documento HTML. O CSS path é mais simples de implementar e tem uma sintaxe menos verborrágica, mas o XPath é mais poderoso. A regra de bolso é tentar fazer a seleção primeiro em CSS e, caso não seja possível, implementar em XPath.
+
+Esses paths serão mostrados *en passant* durante o curso, mas não serão abordados em detalhe. Caso queira se aprofundar no assunto, comece pela ajuda da função `?html_nodes`.
+
+### APIs com `httr`
+
+O `httr` foi criado pensando-se nas modernas APIs que vêm sendo desenvolvidas nos últimos anos. O `httr` já tem métodos apropriados para trabalhar com  Facebook, Twitter e Google, entre outros.
+
+Para um guia completo de como utilizar APIs no R, acesse [esse tutorial](https://cran.r-project.org/web/packages/httr/vignettes/api-packages.html). Um exemplo de pacote que utiliza API usando esse tutorial melhores práticas pode ser [acessado aqui](https://github.com/jtrecenti/sptrans).
+
+## Web scraping
+
+Esta seção contém algumas melhores práticas na contrução de ferramentas no R que baixam e processam informações de sites disponíveis na web. O objetivo é ajudar o jurimetrista a desenvolver programas que sejam fáceis de adaptar no tempo.
+
+É importante ressaltar que só estamos trabalhando com páginas que são acessíveis publicamente. Caso tenha interesse e "raspar" páginas que precisam de autenticação, recomendamos que estude os termos de uso do site.
+
+Para ilustrar este texto, usaremos como exemplo o código utilizado no trabalho das câmaras, que acessa o site do Tribunal de Justiça de São Paulo para obter informações de processos judiciais. Trabalharemos principalmente com a [Consulta de Jurisprudência](https://esaj.tjsp.jus.br/cjsg/consultaCompleta.do) e a [Consulta de de Processos de Segundo Grau](https://esaj.tjsp.jus.br/cpo/sg/open.do) do TJSP.
+
+### Informações iniciais
+
+Antes de iniciar um programa de web scraping, verifique se existe alguma forma mais fácil de conseguir os dados que necessita. Construir um web scraper do zero é muitas vezes uma tarefa dolorosa e, caso o site seja atualizado, pode ser que boa parte do trabalho seja inútil. Se os dados precisarem ser extraídos apenas uma vez, verifique com os responsáveis pela manutenção do site se eles podem fazer a extração que precisa. Se os dados precisarem ser atualizados, verifique se a entidade não possui uma API para acesso aos dados.
+
+Ao escrever um web scraper, as primeiras coisas que devemos pensar são
+
+- Como o site a ser acessado foi contruído, se tem limites de requisições, utilização de cookies, states, etc.
+- Como e com que frequência o site é atualizado, tanto em relação à sua interface como em relação aos dados que queremos extrair.
+- Como conseguir a lista das páginas que queremos acessar.
+- Qual o caminho percorrido para acessar uma página específica.
+
+Sugerimos como melhores práticas dividir todas as atividades em três tarefas principais: i) *buscar*; ii) *coletar* e iii) *processar*. Quando já sabemos de antemão quais são as URLs que vamos acessar, a etapa de busca é desnecessária.
+
+Na maior parte dos casos, deixar os algoritmos de *coleta* e *processamento* dos dados em funções distintas é uma boa prática pois aumenta o controle sobre o que as ferramentas estão fazendo, facilita o debug e a atualização. Por outro lado, em alguns casos isso pode tornar o código mais ineficiente e os arquivos obtidos podem ficar pesados.
+
+### Diferença entre buscar, baixar e processar.
+
+Buscar documentos significa, de uma forma geral, utilizar ferramentas de busca (ou acessar links de um site) para obter informações de uma nova requisição a ser realizada. Ou seja, essa etapa do scraper serve para "procurar links" que não sabíamos que existiam previamente. Isso será resolvido através da função `esaj::download_cjsg()`.
+
+Baixar documentos, no entando, significa simplesmente acessar páginas pré-estabelecidas e salvá-las em disco. Em algumas situações, os documentos baixados (depois de limpos) podem conter uma nova lista de páginas a serem baixadas, formando iterações de coletas. A tarefa de baixar documentos pré-estabelecidos será realizada pelas funções `esaj::download_cposg()` e `dje::download_dje()`.
+
+Finalmente, processar documentos significa carregar dados acessíveis em disco e transformar os dados brutos uma base *tidy*. Usualmente separamos a estruturação em duas etapas: i) transformar arquivos não-estruturados em um arquivos semi-estruturados (e.g. um arquivo HTML em uma tabela mais um conjunto de textos livres) e ii) transformar arquivos semi-estruturados em uma base analítica (estruturada). A tarefa de processar as páginas HTML será realizada pelas 
+funções `esaj::parse_cjsg()` e `esaj::run_parser()`.
+
+Na pesquisa das câmaras, o fluxo é
+
+```
+buscar -> coletar -> processar -> coletar -> processar
+```
+
+Na pesquisa da especialização, o fluxo é
+
+```
+coletar -> processar -> coletar -> processar
+```
+
+## Baixando dados do TJSP
+
+Dependendo do tipo de estudo, a fonte dos dados muda.
+
+- Se o estudo é **retrospectivo**, listamos os processos em pesquisas de julgados e 
+- Se o estudo é **prospectivo**, listamos os processos
+
+Em ambos os casos, é recomendável que você tente obter os dados a partir de contato com os Tribunais, antes de baixar qualquer coisa da web.
 
 ## Pacote `esaj`
+
+**Onde guardar os dados?** Ao construir um scraper, é importante guardar os dados brutos na máquina ou num servidor, para reprodutibilidade e manutenção do scraper. Se estiver construindo um pacote do R, o melhor lugar para guardar esses dados é na pasta `data-raw`, como sugerido no livro [r-pkgs](http://r-pkgs.had.co.nz). Se os dados forem muito volumosos, pode ser necessário colocar esses documentos numa pasta externa ao pacote. 
+
+Para garantir a reprodutibilidade, recomendamos a criação de um pacote no R cujo objetivo é somente baixar e processar esses dados, além da criação de um repositório na nuvem (Dropbox, por exemplo). No pacote que contém as funções de extração, guarde os dados já processados (se couberem) num arquivo `.rda` dentro da pasta  `data` do pacote.
 
 ### Download esaj
 
@@ -44,5 +167,22 @@ esaj::download_decision(setdiff(decisoes, downloaded), "data-raw/decisions")
 ```
 
 ## Pacote `dje`
+
+### Download DJE
+
+```{r eval=FALSE}
+dje::download_dje("TJSP", dates = "2018-01-12", path = "data-raw/dje")
+```
+
+### Parse DJE
+
+```{r eval=FALSE}
+dje::dje_to_text("data-raw/dje/tjsp_dje_2018-01-12")
+```
+
+```{r eval=FALSE}
+dje::find_index()
+```
+
 
 ## Pacote `abjutils`
