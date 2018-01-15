@@ -12,7 +12,7 @@ knitr::include_graphics("imgs/pill.jpg")
 
 A jurimetria é o estudo empírico do direito. Ela se distingue das demais disciplinas jurídicas por tratar o direito de forma concreta. 
 
-```{r, out.width="40%", fig.align='center'}
+```{r, out.width="60%", fig.align='center'}
 knitr::include_graphics("imgs/empirical.png")
 ```
 
