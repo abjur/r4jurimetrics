@@ -47,7 +47,7 @@ knitr::include_graphics(c("imgs/esaj.png"))
 ## Tipos de estudo
 
 
-```{r, out.width="51%", fig.align='center'}
+```{r, out.width="90%", fig.align='center'}
 knitr::include_graphics(c("imgs/download_esaj.png", 
                           "imgs/tidy_esaj.png", 
                           "imgs/model_esaj.png"))
