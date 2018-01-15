@@ -241,7 +241,7 @@ Aplicando os critérios propostos, a carga de trabalho proporcionada pelos proce
     - 2.082 processos comuns, considerando o custo em tramitação;
     - 3.349 processos comuns, considerando o tempo gasto pelos magistrados.
 
-## Exemplo 3: CAPTCHAs
+## Estudo 3: CAPTCHAs
 
 Apesar dos sistemas jurídicos serem públicos, seus dados não são acessíveis. Muitas vezes o acesso às páginas web são limitadas através de bloqueios de IP e 
 
