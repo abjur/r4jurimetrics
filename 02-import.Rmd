@@ -17,7 +17,9 @@ Nessa parte, vamos aprender a **baixar dados da web**. No contexto da jurimetria
 5. Abrir o arquivo 02-import.Rmd
 6. Rodar `library(tidyverse)`
 
-
+```{r}
+library(tidyverse)
+```
 
 
 <!-- ----------------------------------------------------------------------- -->
@@ -27,10 +29,6 @@ Nessa parte, vamos aprender a **baixar dados da web**. No contexto da jurimetria
 
 
 ## Pipe `%>%`
-
-```{r}
-library(magrittr)
-```
 
 ```{r, out.width="49%"}
 knitr::include_graphics(c("imgs/magrittr.png", "imgs/magritte.jpg"))
@@ -82,6 +80,15 @@ esfrie(
       untada = TRUE), duração = "50min"), 
   "geladeira", "20min")
 ```
+
+
+
+
+
+
+
+
+
 
 Desistiu? Agora veja como fica escrevendo com o `%>%`:
 
