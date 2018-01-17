@@ -8,6 +8,24 @@ knitr::include_graphics("imgs/wrangle.png")
 
 Nessa parte, vamos aprender a **baixar dados da web**. No contexto da jurimetria, isso é muito importante por dois motivos: i) você nunca pode esperar que alguém ofereça esses dados organizados para você e ii) isso é muito divertido e é um aprendizado para a vida.
 
+__Setup__:
+
+1. Logar no servidor http://r.abj.org.br
+2. Novo projeto > Version Control > GIT
+3. Colocar a URL https://github.com/abjur/r4jurimetrics
+4. Iniciar projeto
+5. Abrir o arquivo 02-import.Rmd
+6. Rodar `library(tidyverse)`
+
+
+
+
+<!-- ----------------------------------------------------------------------- -->
+
+
+
+
+
 ## Pipe `%>%`
 
 ```{r}
@@ -107,6 +125,16 @@ Tenha em mente que, para atingir seus objetivos, você usará duas ferramentas: 
 
 Nas páginas que seguem, faremos uma introdução aos principais pacotes do `tidyverse` utilizados para web scraping.
 
+
+
+
+<!-- ----------------------------------------------------------------------- -->
+
+
+
+
+
+
 ## Pacotes `httr`, `xml2` e `rvest`
 
 Esses são os três pacotes mais modernos do R para fazer web scraping. 
@@ -131,7 +159,28 @@ Uma requisição GET envia uma `url` ao servidor, possivelmente com alguns parâ
 
 A requisição `POST`, no entanto, envia uma `url` não modificada para o servidor, mas envia também uma lista de dados preenchidos pelo usuário, que podem ser números, textos ou até imagens. Na maioria dos casos, ao submeter um formulário de um site, fazemos uma requisição `POST`.
 
-O `httr` possui os métodos `GET` e `POST` implementados e são muito similares. A lista de parâmetros enviados pelo usuário pode ser armazenado numa `list` nomeada, e adicionado ao `GET` pelo parâmetro `query` ou no `POST` pelo parâmetro `body`. Veremos exemplos disso mais adiante.
+O `httr` possui os métodos `GET` e `POST` implementados e são muito similares. A lista de parâmetros enviados pelo usuário pode ser armazenado numa `list` nomeada, e adicionado ao `GET` pelo parâmetro `query` ou no `POST` pelo parâmetro `body`.
+
+Exemplo de `GET`
+
+```{r}
+httr::GET("http://google.com/search", query = list(q = "jurimetria"))
+```
+
+Exemplo de `POST`
+
+```{r}
+httr::POST("http://httpbin.org/post", 
+           body = list(x = "Mãe to na request"), 
+           encode = "json")
+```
+
+### Exercícios
+
+Use o Inspect:
+
+1. Qual o método usado na pesquisa de jurisprudência do TJSP?
+2. Qual o método usado na busca avançada de diários de justiça do TJSP?
 
 ### Outras funções do `httr`
 
@@ -163,23 +212,32 @@ library(rvest)
 - `html_table()` extrai o conteúdo de uma `<table>` e transforma em um `data_frame`.
 - `html_attr()` extrai um atributo de uma tag, por exemplo `href` da tag `<a>`.
 
+Se quiser ver exemplos, entre em http://material.curso-r.com/scrape/
+
 ### CSS path e XPath
 
 O CSS path e o XPath são formas distintas de buscar tags dentro de um documento HTML. O CSS path é mais simples de implementar e tem uma sintaxe menos verborrágica, mas o XPath é mais poderoso. A regra de bolso é tentar fazer a seleção primeiro em CSS e, caso não seja possível, implementar em XPath.
 
 Esses paths serão mostrados *en passant* durante o curso, mas não serão abordados em detalhe. Caso queira se aprofundar no assunto, comece pela ajuda da função `?html_nodes`.
 
-## Web scraping
 
-Esta seção contém algumas melhores práticas na contrução de ferramentas no `R` que baixam e processam informações de sites de tribunais. O objetivo é ajudar o jurimetrista a desenvolver programas que sejam fáceis de adaptar no tempo.
 
-É importante ressaltar que só estamos trabalhando com páginas que são acessíveis publicamente. Caso tenha interesse em raspar páginas que precisam de autenticação, recomendamos que estude os termos de uso do site.
 
-Para ilustrar, usaremos como exemplo o código utilizado no trabalho das câmaras, que acessa o site do Tribunal de Justiça de São Paulo para obter informações de processos judiciais. Trabalharemos principalmente com a [Consulta de Jurisprudência](https://esaj.tjsp.jus.br/cjsg/consultaCompleta.do) e a [Consulta de de Processos de Segundo Grau](https://esaj.tjsp.jus.br/cpo/sg/open.do) do TJSP, mas também teremos um pouco de pesquisas nos diários oficiais.
+<!-- ----------------------------------------------------------------------- -->
+
+
+
+
+
+## Melhores práticas para web scraping
+
+É importante ressaltar que só estamos trabalhando com dados públicos. Caso tenha interesse em raspar páginas que precisam de autenticação ou uma página `.com`, recomendamos que estude os termos de uso do site.
+
+Nessa parte, trabalharemos principalmente com a [Consulta de Jurisprudência](https://esaj.tjsp.jus.br/cjsg/consultaCompleta.do) e a [Consulta de de Processos de Segundo Grau](https://esaj.tjsp.jus.br/cpo/sg/open.do) do TJSP, mas também teremos um pouco de pesquisas nos [diários oficiais](https://www.dje.tjsp.jus.br/cdje/index.do).
 
 ### Informações iniciais
 
-Antes de iniciar um programa de web scraping, verifique se existe alguma forma mais fácil de conseguir os dados que necessita. Construir um web scraper do zero é muitas vezes uma tarefa dolorosa e, caso o site seja atualizado, pode ser que boa parte do trabalho seja inútil. Se os dados precisarem ser extraídos apenas uma vez, verifique com os responsáveis pela manutenção do site se eles podem fazer a extração que precisa. Se os dados precisarem ser atualizados, verifique se a entidade não possui uma API para acesso aos dados.
+Antes de iniciar um scraper, verifique se existe alguma forma mais fácil de conseguir os dados que necessita. Construir um web scraper do zero é muitas vezes uma tarefa dolorosa e, caso o site seja atualizado, pode ser que boa parte do trabalho seja inútil. Se os dados precisarem ser extraídos apenas uma vez, verifique com os responsáveis pela manutenção do site se eles podem fazer a extração que precisa. Se os dados precisarem ser atualizados, verifique se a entidade não possui uma API para acesso aos dados.
 
 Ao escrever um web scraper, as primeiras coisas que devemos pensar são
 
@@ -204,6 +262,16 @@ Na pesquisa da **especialização** (prospectivo), o fluxo é
 coletar -> processar -> coletar -> processar
 ```
 
+
+
+
+<!-- ----------------------------------------------------------------------- -->
+
+
+
+
+
+
 ## Listando processos
 
 Listar processos significa utilizar ferramentas de busca ou minerar documentos para obter uma lista de processos judiciais. Ou seja, essa etapa do scraper serve para procurar processos que não sabíamos que existiam previamente. 
@@ -212,6 +280,15 @@ A forma de listar processos muda se seu estudo é prospectivo ou retrospectivo. 
 
 - Se o seu estudo é retrospectivo, use `esaj::download_cjsg()`. CJSG significa Consulta de Julgados de Segundo Grau.
 - Se o seu estudo é prospectivo, use`dje::download_dje()`. DJE significa Diário de Justiça Eletrônico
+
+
+
+
+<!-- ----------------------------------------------------------------------- -->
+
+
+
+
 
 ## Usando o `esaj` para listar processos
 
@@ -315,6 +392,15 @@ glimpse(d_cjsg)
 1. Na pesquisa que você fez, qual é a comarca de origem mais frequente?
 2. Qual a diferença entre `summary` e `txt_summary`?
 
+
+
+
+<!-- ----------------------------------------------------------------------- -->
+
+
+
+
+
 ## Usando o `dje` para listar processos
 
 O pacote `dje` baixa e lê diários de justiça eletrônicos. Com ele é possível baixar os PDFs e arrumá-los para obter uma base semi-estruturada.
@@ -361,6 +447,15 @@ d_dje <- purrr::map_dfr(dje_files, dje::parse_dje_tjsp)
 glimpse(d_dje)
 ```
 
+
+
+
+<!-- ----------------------------------------------------------------------- -->
+
+
+
+
+
 ## Baixando documentos
 
 Baixar documentos, no entando, significa simplesmente acessar pesquisas de processos individuais e salvá-las em disco. Em algumas situações, os documentos baixados (depois de limpos) podem conter uma nova lista de documentos a serem baixadas, formando iterações de coletas. A tarefa de baixar documentos pré-estabelecidos será realizada pelas funções `esaj::download_cposg()`, `esaj::download_cpopg()` e `esaj::download_decision()`.
@@ -384,6 +479,15 @@ esaj::download_decision(acordaos)
 ```
 
 Por trás da função `esaj::download_decision()` estamos quebrando um CAPTCHA. Essa função ainda está instável, então pode ser necessário rodá-la várias vezes para obter os documentos finais.
+
+
+
+
+<!-- ----------------------------------------------------------------------- -->
+
+
+
+
 
 ## Processando documentos
 
@@ -427,6 +531,15 @@ glimpse(d_cposg)
 2. Qual é o outro parâmetro da função `esaj::run_parser()`, e o que ele faz?
 
 **OBS**: Os objetos `data`, `parts`, `movs` e `decisions` do `d_cposg` são chamados de *list columns*.
+
+
+
+
+<!-- ----------------------------------------------------------------------- -->
+
+
+
+
 
 ## Pacote `abjutils`
 
@@ -507,6 +620,15 @@ abjutils::rm_accent("Têxto cóm açèntõs")
 Só isso! Mas extremamente útil. Outra versão dessa função pode ser encontrada no pacote `rslp`.
 
 Para quem é desenvolvedor de pacotes, a função `abjutils::escape_unicode()` é muito útil: ela transforma todos os acentos em códigos do tipo `\uxxxx`, permitindo que o pacote funcione em diferentes plataformas, sem os famosos problemas de encoding. Essa função não é para ser utilizada diretamente, mas sim como um *addin* do RStudio.
+
+
+
+
+<!-- ----------------------------------------------------------------------- -->
+
+
+
+
 
 ## Wrap-up
 
