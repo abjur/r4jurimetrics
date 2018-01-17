@@ -128,9 +128,8 @@ knitr::include_graphics("imgs/esaj02.png")
 
 O conteúdo dessa página é a **requisição web** utilizada para acessar o e-SAJ. Basicamente, tudo o que faremos na parte de web scraping é tentar imitar o que esse site faz. 
 
-Tenha em mente que, para atingir seus objetivos, você usará duas ferramentas: seu navegador e o RStudio.
+Tenha em mente que, para construir um scraper, você usará duas ferramentas principais: seu navegador e o RStudio.
 
-Nas páginas que seguem, faremos uma introdução aos principais pacotes do `tidyverse` utilizados para web scraping.
 
 
 
@@ -148,15 +147,9 @@ Esses são os três pacotes mais modernos do R para fazer web scraping.
 
 O pacote `xml2` tem a finalidade de estruturar arquivos HTML ou XML de forma eficiente, tornando possível a obtenção de *tags* e seus atributos dentro de um arquivo. Já o pacote `httr` é responsável por realizar requisições web para obtenção das páginas de interesse, buscando reduzir ao máximo a complexidade da programação. O pacote `rvest` é escrito **sobre** os dois anteriores e por isso eleva ainda mais o nível de especialização para raspagem de dados.
 
-As características dos pacotes implicam na seguinte **regra de bolso**. Para trabalhar com páginas simples, basta carregar o `rvest` e utilizar suas funcionalidades. Caso o acesso à página exija ações mais complexas e/ou  artifícios de ferramentas web, será necessário utilizar o `httr`. O `xml2` só será usado explicitamente nos casos raros em que a página está em XML, que pode ser visto como uma generalização do HTML.
+A utilização dos pacotes tem uma **regra de bolso**. Para trabalhar com páginas simples, basta carregar o `rvest` e utilizar suas funcionalidades. Caso o acesso à página exija ações mais complexas e/ou artifícios de ferramentas web, será necessário utilizar o `httr`. O `xml2` só será usado explicitamente nos casos em que a página está em XML.
 
-Esses pacotes não são suficientes para acessar todo tipo de conteúdo da web. Um exemplo claro disso são páginas em que o conteúdo é produzido por `javascript`, o que acontece em alguns sites modernos. Para trabalhar com esses sites, é necessário realmente "simular" um navegador que acessa a página web. Uma das melhores ferramentas para isso é o `selenium`. Não discutiremos `selenium` nesse curso, mas caso queira se aprofundar, acesse [aqui](http://www.seleniumhq.org/) e o pacote `RSelenium`.
-
-### Sessões e cookies
-
-No momento que acessamos uma página web, nosso navegador baixa alguns arquivos que "identificam" nosso acesso à página. Esses arquivos são chamados cookies e são usados pelos sites para realizar diversas atividades, como carregar uma página pré-definida pelo usuário caso este acesse o site pela segunda vez.
-
-O `httr` e por consequência o `rvest` já guardam esses cookies de forma automática, de forma que o usuário não precise se preocupar com isso. Em casos raros, para construir o web scraper é necessário modificar esses cookies. Nesses casos, estude a função `cookies()` do `httr`.
+Esses pacotes **não** são suficientes para acessar todo tipo de conteúdo da web. Um exemplo claro disso são páginas em que o conteúdo é produzido por `javascript`, o que acontece em alguns sites modernos. Para trabalhar com esses sites, é necessário realmente "simular" um navegador que acessa a página web. Uma das melhores ferramentas para isso é o `selenium`. Não discutiremos `selenium` nesse curso, mas caso queira se aprofundar, acesse [aqui](http://www.seleniumhq.org/) e o pacote `RSelenium`.
 
 ### `GET` e `POST`
 
@@ -170,13 +163,13 @@ O `httr` possui os métodos `GET` e `POST` implementados e são muito similares.
 
 Exemplo de `GET`
 
-```{r}
+```{r echo=TRUE}
 httr::GET("http://google.com/search", query = list(q = "jurimetria"))
 ```
 
 Exemplo de `POST`
 
-```{r}
+```{r echo=TRUE}
 httr::POST("http://httpbin.org/post", 
            body = list(x = "Mãe to na request"), 
            encode = "json")
@@ -188,6 +181,12 @@ Use o Inspect:
 
 1. Qual o método usado na pesquisa de jurisprudência do TJSP?
 2. Qual o método usado na busca avançada de diários de justiça do TJSP?
+
+### Sessões e cookies
+
+No momento que acessamos uma página web, o navegador baixa alguns arquivos que identificam nosso acesso à página. Esses arquivos são chamados cookies e são usados pelos sites para realizar diversas atividades, como carregar uma página pré-definida pelo usuário caso este acesse o site pela segunda vez ou fazer propagandas.
+
+O `httr` e o `rvest` já guardam esses cookies de forma automática, de forma que o usuário não precise sa preocupar com isso. Em casos raros, para construir o web scraper é necessário modificar esses cookies. Nesses casos, estude a função `cookies()` do `httr`.
 
 ### Outras funções do `httr`
 
@@ -246,28 +245,18 @@ Nessa parte, trabalharemos principalmente com a [Consulta de Jurisprudência](ht
 
 Antes de iniciar um scraper, verifique se existe alguma forma mais fácil de conseguir os dados que necessita. Construir um web scraper do zero é muitas vezes uma tarefa dolorosa e, caso o site seja atualizado, pode ser que boa parte do trabalho seja inútil. Se os dados precisarem ser extraídos apenas uma vez, verifique com os responsáveis pela manutenção do site se eles podem fazer a extração que precisa. Se os dados precisarem ser atualizados, verifique se a entidade não possui uma API para acesso aos dados.
 
-Ao escrever um web scraper, as primeiras coisas que devemos pensar são
+Ao escrever um web scraper, as primeiras coisas que devemos pensar são, nessa porgem
 
+- Qual o caminho percorrido para acessar uma página específica.
 - Como o site a ser acessado foi contruído, se tem limites de requisições, utilização de cookies, states, etc.
 - Como e com que frequência o site é atualizado, tanto em relação à sua interface como em relação aos dados que queremos extrair.
-- Como conseguir a lista das páginas que queremos acessar.
-- Qual o caminho percorrido para acessar uma página específica.
 
-Sugerimos como melhores práticas dividir todas as atividades em três tarefas principais: i) *listar*; ii) *coletar* e iii) *processar*. Quando já sabemos de antemão quais são os processos que vamos acessar, a etapa de listagem é desnecessária.
 
-Na maior parte dos casos, deixar os algoritmos de *coleta* e *processamento* dos dados em funções distintas é uma boa prática pois aumenta o controle sobre o que as ferramentas estão fazendo, facilita o *debug* e a atualização. Por outro lado, em alguns casos isso pode tornar o código ineficiente e os dados brutos obtidos podem ficar pesados.
+Em sites dos tribunais, uma boa prática é dividir as atividades em três grupos principais: i) *listar*; ii) *coletar* e iii) *processar*. Quando já sabemos de antemão quais são os processos que vamos acessar, a etapa de listagem é desnecessária.
 
-Na pesquisa das **câmaras** (retrospectivo), o fluxo é
+Deixamos os algoritmos de *coleta* e *processamento* dos dados em funções distintas para aumentar o controle sobre o que as ferramentas estão fazendo. Isso facilita o *debug* e a atualização. Por outro lado, em alguns casos isso pode tornar o código ineficiente e os dados brutos obtidos podem ficar pesados.
 
-```
-listar -> coletar -> processar -> coletar -> processar
-```
 
-Na pesquisa da **especialização** (prospectivo), o fluxo é
-
-```
-coletar -> processar -> coletar -> processar
-```
 
 
 
@@ -280,8 +269,6 @@ coletar -> processar -> coletar -> processar
 
 
 ## Listando processos
-
-Listar processos significa utilizar ferramentas de busca ou minerar documentos para obter uma lista de processos judiciais. Ou seja, essa etapa do scraper serve para procurar processos que não sabíamos que existiam previamente. 
 
 A forma de listar processos muda se seu estudo é prospectivo ou retrospectivo. Se o estudo for prospectivo, precisamos baixar dados dos **Diários de Justiça Eletrônicos** (DJE), que são arquivos PDF enormes. Se o estudo for retrospectivo, precisamos baixar dados da **Consulta de Julgados de Segundo Grau** (CJSG), que é um formulário na internet, mais simples.
 
@@ -439,7 +426,7 @@ dje::dje_to_text("data-raw/dje/tjsp_dje_2018-01-12")
 
 E depois você aplica a função `dje::parse_dje_tjsp()` para ler os textos
 
-```{r, echo=TRUE}
+```{r pesado, echo=TRUE}
 # para pegar somente 1a instancia
 patterns <- glue::glue("_{c(12, 13, 15, 18)}_") %>% 
   glue::collapse("|")
