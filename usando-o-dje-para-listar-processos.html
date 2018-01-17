@@ -216,6 +216,18 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Para parsear o DJE, primeiro você precisa transformar os PDF em textos:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dje::<span class="kw">dje_to_text</span>(<span class="st">&quot;data-raw/dje/tjsp_dje_2018-01-12&quot;</span>)</code></pre></div>
 <p>E depois você aplica a função <code>dje::parse_dje_tjsp()</code> para ler os textos</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># para pegar somente 1a instancia</span>
+patterns &lt;-<span class="st"> </span>glue::<span class="kw">glue</span>(<span class="st">&quot;_{c(12, 13, 15, 18)}_&quot;</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span>glue::<span class="kw">collapse</span>(<span class="st">&quot;|&quot;</span>)
+
+<span class="co">#arquivos</span>
+dje_files &lt;-<span class="st"> </span><span class="kw">dir</span>(<span class="st">&quot;data-raw/dje/tjsp_dje_2018-01-12_txt&quot;</span>, 
+                 <span class="dt">full.names =</span> <span class="ot">TRUE</span>, <span class="dt">pattern =</span> patterns)
+
+<span class="co"># veremos purrr nas próximas aulas!</span>
+d_dje &lt;-<span class="st"> </span>purrr::<span class="kw">map_dfr</span>(dje_files, dje::parse_dje_tjsp)
+
+<span class="kw">glimpse</span>(d_dje)</code></pre></div>
 <pre><code>FALSE Observations: 11,799
 FALSE Variables: 3
 FALSE $ classe    &lt;chr&gt; &quot;\nFórum João Mendes Júnior\n&quot;, &quot;\nFórum João Mendes...

@@ -224,7 +224,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h3><span class="header-section-number">3.6.3</span> Tabelas de classes, assuntos e câmaras</h3>
 <p>Classes e assuntos definem, respectivamente, os ritos processuais e os tipos processuais. As câmaras são as casinhas dos desembargadores, que podem ser ordinárias (fixas) ou extraordinárias (eventuais, criadas por diferentes motivos).</p>
 <p>As classes e assuntos são definidas em formato de árvore. Cada nível dessa árvore tem uma lista de classes/assuntos e seus respectivos códigos. As tabelas de classes/assuntos podem ser obtidas pela função <code>esaj::cjsg_table()</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Não rode esses códigos. Eles baixam os dados diretos da web</span>
+classes &lt;-<span class="st"> </span>esaj::<span class="kw">cjsg_table</span>(<span class="st">&quot;classes&quot;</span>)
+assuntos &lt;-<span class="st"> </span>esaj::<span class="kw">cjsg_table</span>(<span class="st">&quot;subjects&quot;</span>)</code></pre></div>
 <p>Já baixamos essas tabelas e colocamos em arquivos <code>.rds</code> (você sabe o que é um arquivo <code>.rds</code>?)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">assuntos &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;data/cjsg_assuntos.rds&quot;</span>)
+classes &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;data/cjsg_classes.rds&quot;</span>)
+
+<span class="kw">glimpse</span>(assuntos)</code></pre></div>
 <pre><code>FALSE Observations: 3,088
 FALSE Variables: 12
 FALSE $ name0 &lt;chr&gt; &quot;0 - Assunto não Especificado&quot;, &quot;14 - DIREITO TRIBUTÁRIO...
@@ -241,6 +248,9 @@ FALSE $ name5 &lt;chr&gt; &quot;0 - Assunto não Especificado&quot;, &quot;10527
 FALSE $ id5   &lt;chr&gt; &quot;0&quot;, &quot;10527&quot;, &quot;10528&quot;, &quot;10529&quot;, &quot;10530&quot;, &quot;5915&quot;, &quot;10540&quot;...</code></pre>
 <p>Na prática, você vai procurar os assuntos que quer nessa tabela, obter os respectivos códigos e guardar em um vetor.</p>
 <p>A tabela de câmaras segue a mesma regra. A única diferença é que não existem níveis, logo você só precisará procurar os nomes em uma coluna</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">camaras &lt;-<span class="st"> </span>esaj::<span class="kw">cjsg_table</span>(<span class="st">&quot;courts&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">camaras &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;data/cjsg_camaras.rds&quot;</span>)
+<span class="kw">glimpse</span>(camaras)</code></pre></div>
 <pre><code>FALSE Observations: 1,208
 FALSE Variables: 3
 FALSE $ branch &lt;chr&gt; &quot;DIREITO PÚBLICO&quot;, &quot;DIREITO PÚBLICO&quot;, &quot;DIREITO PÚBLICO&quot;...
@@ -250,6 +260,7 @@ FALSE $ id     &lt;chr&gt; &quot;0-434&quot;, &quot;0-438&quot;, &quot;0-439&quo
 <div id="a-funcao-download_cjsg" class="section level3">
 <h3><span class="header-section-number">3.6.4</span> A função <code>download_cjsg</code></h3>
 <p>Com o escopo em mãos, podemos finalmente começar a baixar dados. Esses são os argumentos da função <code>esaj::download_cjsg()</code>. Veja a documentação <code>?esaj::download_cjsg</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">args</span>(esaj::download_cjsg)</code></pre></div>
 <pre><code>FALSE function (query, path = &quot;.&quot;, classes = &quot;&quot;, subjects = &quot;&quot;, courts = &quot;&quot;, 
 FALSE     trial_start = &quot;&quot;, trial_end = &quot;&quot;, registration_start = &quot;&quot;, 
 FALSE     registration_end = &quot;&quot;, min_page = 1, max_page = 1, cores = 1, 
@@ -269,6 +280,10 @@ FALSE NULL</code></pre>
 <div id="arrumando-os-dados" class="section level3">
 <h3><span class="header-section-number">3.6.6</span> Arrumando os dados</h3>
 <p>Para transformar os arquivos HTML em bases de dados prontas para análise, você precisa rodar <code>esaj::parse_cjsg()</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">files &lt;-<span class="st"> </span><span class="kw">dir</span>(<span class="st">&quot;data-raw/cjsg&quot;</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>, <span class="dt">pattern =</span> <span class="st">&quot;page&quot;</span>)
+d_cjsg &lt;-<span class="st"> </span>esaj::<span class="kw">parse_cjsg</span>(files)
+
+<span class="kw">glimpse</span>(d_cjsg)</code></pre></div>
 <pre><code>FALSE Observations: 40
 FALSE Variables: 13
 FALSE $ file            &lt;chr&gt; &quot;data-raw/cjsg/page1.html&quot;, &quot;data-raw/cjsg/pag...

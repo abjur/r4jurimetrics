@@ -205,14 +205,23 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>TR</code>: Identifica o tribunal. No nosso caso, esse número é sempre 26 (TJSP).</li>
 <li><code>OOOO</code>: Identifica a unidade de origem do processo. No nosso caso, as possíveis configurações identificam os foros de São Paulo. Na maioria dos casos, o número também identifica a comarca, pois existem poucas comarcas com mais de um foro (e.g. a comarca de São Paulo, que possui mais de dez foros regionais).</li>
 </ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">id_montado &lt;-<span class="st"> &quot;0000009-15.2015.8.26.0558&quot;</span>
+id_limpo_dig &lt;-<span class="st"> &quot;00000091520158260558&quot;</span>
+id_limpo_ndig &lt;-<span class="st"> &quot;000000920158260558&quot;</span></code></pre></div>
 <p>As funções <code>abjutils::build_id()</code> e <code>abjutils::clean_id()</code> montam ou limpam o número do processo.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">abjutils::<span class="kw">build_id</span>(id_limpo_dig)</code></pre></div>
 <pre><code>FALSE [1] &quot;0000009-15.2015.8.26.0558&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">abjutils::<span class="kw">clean_id</span>(id_montado)</code></pre></div>
 <pre><code>FALSE [1] &quot;00000091520158260558&quot;</code></pre>
 <p>A função <code>abjutils::extract_parts()</code> extrai todos os componentes do número do processo.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">abjutils::<span class="kw">extract_parts</span>(id_montado)</code></pre></div>
 <pre><code>FALSE [[1]]
 FALSE         N         D         A         J         T         O 
 FALSE &quot;0000009&quot;      &quot;15&quot;    &quot;2015&quot;       &quot;8&quot;      &quot;26&quot;    &quot;0558&quot;</code></pre>
 <p>A função <code>abjutils::separate_cnj()</code> faz o mesmo, mas em uma coluna do banco de dados</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d_cjsg %&gt;%<span class="st"> </span>
+<span class="st">  </span>abjutils::<span class="kw">separate_cnj</span>(<span class="st">&quot;id_lawsuit&quot;</span>, <span class="dt">remove =</span> <span class="ot">FALSE</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">glimpse</span>()</code></pre></div>
 <pre><code>FALSE Observations: 40
 FALSE Variables: 19
 FALSE $ file            &lt;chr&gt; &quot;data-raw/cjsg/page1.html&quot;, &quot;data-raw/cjsg/pag...
@@ -235,9 +244,16 @@ FALSE $ rapporteur      &lt;chr&gt; &quot;Ricardo Tucunduva&quot;, &quot;Ricardo
 FALSE $ summary         &lt;chr&gt; NA, NA, &quot;TRÁFICO DE DROGAS –  recurso do minis...
 FALSE $ txt_summary     &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</code></pre>
 <p>A função <code>abjutils::calc_dig()</code> calcula o dígito verificador do processo a partir do número incompleto. A função <code>abjutils::check_dig()</code> checa se o dígito do processo está correto. Essas funções são úteis para i) gerar números de processo aleatórios e ii) arrumar erros de parse, por exemplo, o resultado da leitura de um DJE ou de um PDF escaneado.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">abjutils::<span class="kw">calc_dig</span>(id_limpo_ndig)</code></pre></div>
 <pre><code>FALSE [1] &quot;15&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">abjutils::<span class="kw">check_dig</span>(id_montado)</code></pre></div>
 <pre><code>FALSE [1] TRUE</code></pre>
 <p>Finalmente, a função <code>abjutils::sample_cnj()</code> serve para criar amostras de números de processos. Esses pocessos podem ser manifestos ou não. Em algumas pesquisas mais complicadas (e.g. nossa pesquisa sobre processamento de homicídios) esse tipo de abordagem é necessária.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">1</span>)
+abjutils::<span class="kw">sample_cnj</span>(<span class="dt">n =</span> <span class="dv">10</span>, <span class="dt">foros =</span> <span class="st">&quot;0001&quot;</span>, <span class="dt">anos =</span> <span class="dv">2015</span>:<span class="dv">2017</span>, 
+                     <span class="dt">orgao =</span> <span class="st">&quot;8&quot;</span>, <span class="dt">tr =</span> <span class="st">&quot;26&quot;</span>, 
+                     <span class="dt">first_dig =</span> <span class="dv">0</span>, <span class="dt">return_df =</span> <span class="ot">FALSE</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span>abjutils::<span class="kw">build_id</span>()</code></pre></div>
 <pre><code>FALSE  [1] &quot;0205974-12.2015.8.26.0001&quot; &quot;0176556-92.2016.8.26.0001&quot;
 FALSE  [3] &quot;0687022-88.2016.8.26.0001&quot; &quot;0384103-68.2017.8.26.0001&quot;
 FALSE  [5] &quot;0769841-19.2015.8.26.0001&quot; &quot;0497699-30.2017.8.26.0001&quot;
@@ -247,6 +263,7 @@ FALSE  [9] &quot;0380035-12.2016.8.26.0001&quot; &quot;0777445-31.2015.8.26.0001
 <div id="trabalhando-com-acentos" class="section level3">
 <h3><span class="header-section-number">3.10.2</span> Trabalhando com acentos</h3>
 <p>A função <code>abjutils::rm_accent()</code> serve para tirar acentos de um texto</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">abjutils::<span class="kw">rm_accent</span>(<span class="st">&quot;Têxto cóm açèntõs&quot;</span>)</code></pre></div>
 <pre><code>FALSE [1] &quot;Texto com acentos&quot;</code></pre>
 <p>Só isso! Mas extremamente útil. Outra versão dessa função pode ser encontrada no pacote <code>rslp</code>.</p>
 <p>Para quem é desenvolvedor de pacotes, a função <code>abjutils::escape_unicode()</code> é muito útil: ela transforma todos os acentos em códigos do tipo <code>\uxxxx</code>, permitindo que o pacote funcione em diferentes plataformas, sem os famosos problemas de encoding. Essa função não é para ser utilizada diretamente, mas sim como um <em>addin</em> do RStudio.</p>
