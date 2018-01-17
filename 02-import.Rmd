@@ -254,11 +254,9 @@ classes <- readRDS("data/cjsg_classes.rds")
 glimpse(assuntos)
 ```
 
-Na prática, você vai procurar os assuntos que quer nessa tabela, obter os respectivos códigos e guardar em um vetor.
+Na prática, você vai procurar os assuntos que quer nessa tabela, obter os respectivos códigos e guardar em um vetor. 
 
-```{block2, type='rmdcaution'}
-Cuidado com a cifra oculta! Além disso, muitos casos têm assunto vazio.
-```
+**Cuidado**: Lembre-se da cifra oculta! Além disso, muitos casos têm assunto vazio.
 
 A tabela de câmaras segue a mesma regra. A única diferença é que não existem níveis, logo você só precisará procurar os nomes em uma coluna
 
@@ -360,7 +358,7 @@ Baixar documentos, no entando, significa simplesmente acessar pesquisas de proce
 
 ### Download CPOSG
 
-As funções de download de processos recebem um vetor de processos e baixam um HTML para cada um desses processos. Às vezes um número de processo corresponde a mais do que um documento. Nesse caso, ambos os documentos são baixados, adicionando-se identificação de data.
+As funções de download de processos recebem um vetor de números e baixam um HTML para cada deles. Às vezes um número de processo corresponde a mais do que um documento. Nesse caso, ambos os documentos são baixados, adicionando-se identificação de data.
 
 ```{r eval=FALSE, echo=TRUE}
 processos <- unique(d_cjsg$id_lawsuit)
@@ -386,7 +384,7 @@ Finalmente, processar documentos significa carregar dados acessíveis em disco e
 
 O parser da consulta de processos foi escrito de um jeito especial. Uma página de resultados tem vários blocos de informações, entre eles i) dados básicos, ii) partes, iii) movimentações e iv) decisões. Em algumas pesquisas, temos interesse em apenas uma parte desses blocos. O parser foi construído para modular essa captura de informações.
 
-Outra diferença importante é que, nesse caso, salvamos individualmente os resultados do parse em arquivos `.rds`. Isso é feito para evitar retrabalho, já que esse processo é computacionalmente intensivo e pode acontecer do algoritmo travar no meio da execução.
+Outra diferença importante é que, nesse caso, salvamos individualmente os resultados do parse em arquivos `.rds`. Isso é feito para evitar retrabalho, já que esse processo é computacionalmente intensivo e o algoritmo pode travar no meio da execução.
 
 ```{r eval=FALSE, echo=TRUE}
 # lista de arquivos
@@ -405,11 +403,13 @@ d_cposg <- esaj::run_parser(file = files_cposg,
                             path = "data-raw/cposg_rds")
 ```
 
-```{r}
+Para obter a base de dados, basta ler e empilhar os arquivos parciais que foram gerados.
+
+```{r, echo=TRUE}
 rds_files <- dir("data-raw/cposg_rds", full.names = TRUE)
 d_cposg <- purrr::map_dfr(rds_files, readRDS)
 
-d_cposg
+glimpse(d_cposg)
 ```
 
 ### Exercícios
