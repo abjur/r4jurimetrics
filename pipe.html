@@ -201,16 +201,16 @@ x &lt;-<span class="st"> </span><span class="dv">1</span>
 y &lt;-<span class="st"> </span><span class="dv">2</span></code></pre></div>
 <p>As duas linhas abaixo são equivalentes:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">f</span>(x, y)</code></pre></div>
-<pre><code>#&gt; [1] 3</code></pre>
+<pre><code>FALSE [1] 3</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x %&gt;%<span class="st"> </span><span class="kw">f</span>(y)</code></pre></div>
-<pre><code>#&gt; [1] 3</code></pre>
+<pre><code>FALSE [1] 3</code></pre>
 <p>Exemplo: alcular raiz quadrada da soma dos valores de 1 a 4.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)
 x %&gt;%<span class="st"> </span><span class="kw">sum</span>() %&gt;%<span class="st"> </span><span class="kw">sqrt</span>()</code></pre></div>
-<pre><code>#&gt; [1] 3.162278</code></pre>
+<pre><code>FALSE [1] 3.162278</code></pre>
 <p>Escrever esse cálculo na forma usual ficaria da seguinte forma:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sqrt</span>(<span class="kw">sum</span>(x))</code></pre></div>
-<pre><code>#&gt; [1] 3.162278</code></pre>
+<pre><code>FALSE [1] 3.162278</code></pre>
 <div id="receita-de-bolo" class="section level3">
 <h3><span class="header-section-number">3.1.1</span> Receita de bolo</h3>
 <p>Tente entender o que é preciso fazer.</p>

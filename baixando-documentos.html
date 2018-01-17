@@ -197,7 +197,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Baixar documentos, no entando, significa simplesmente acessar pesquisas de processos individuais e salvá-las em disco. Em algumas situações, os documentos baixados (depois de limpos) podem conter uma nova lista de documentos a serem baixadas, formando iterações de coletas. A tarefa de baixar documentos pré-estabelecidos será realizada pelas funções <code>esaj::download_cposg()</code>, <code>esaj::download_cpopg()</code> e <code>esaj::download_decision()</code>.</p>
 <div id="download-cposg" class="section level3">
 <h3><span class="header-section-number">3.8.1</span> Download CPOSG</h3>
-<p>As funções de download de processos recebem um vetor de números e baixam um HTML para cada deles. Às vezes um número de processo corresponde a mais do que um documento. Nesse caso, ambos os documentos são baixados, adicionando-se identificação de data.</p>
+<p>As funções de download de processos recebem um vetor de processos e baixam um HTML para cada um desses processos. Às vezes um número de processo corresponde a mais do que um documento. Nesse caso, ambos os documentos são baixados, adicionando-se identificação de data.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">processos &lt;-<span class="st"> </span><span class="kw">unique</span>(d_cjsg$id_lawsuit)
 esaj::<span class="kw">download_cposg</span>(processos, <span class="st">&quot;data-raw/cposg&quot;</span>)</code></pre></div>
 </div>
