@@ -132,9 +132,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="3.2" data-path="usando-o-inspect.html"><a href="usando-o-inspect.html"><i class="fa fa-check"></i><b>3.2</b> Usando o Inspect</a></li>
 <li class="chapter" data-level="3.3" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html"><i class="fa fa-check"></i><b>3.3</b> Pacotes <code>httr</code>, <code>xml2</code> e <code>rvest</code></a><ul>
-<li class="chapter" data-level="3.3.1" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#sessoes-e-cookies"><i class="fa fa-check"></i><b>3.3.1</b> Sessões e cookies</a></li>
-<li class="chapter" data-level="3.3.2" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#get-e-post"><i class="fa fa-check"></i><b>3.3.2</b> <code>GET</code> e <code>POST</code></a></li>
-<li class="chapter" data-level="3.3.3" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#exercicios"><i class="fa fa-check"></i><b>3.3.3</b> Exercícios</a></li>
+<li class="chapter" data-level="3.3.1" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#get-e-post"><i class="fa fa-check"></i><b>3.3.1</b> <code>GET</code> e <code>POST</code></a></li>
+<li class="chapter" data-level="3.3.2" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#exercicios"><i class="fa fa-check"></i><b>3.3.2</b> Exercícios</a></li>
+<li class="chapter" data-level="3.3.3" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#sessoes-e-cookies"><i class="fa fa-check"></i><b>3.3.3</b> Sessões e cookies</a></li>
 <li class="chapter" data-level="3.3.4" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#outras-funcoes-do-httr"><i class="fa fa-check"></i><b>3.3.4</b> Outras funções do <code>httr</code></a></li>
 <li class="chapter" data-level="3.3.5" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#principais-funcoes-do-rvest"><i class="fa fa-check"></i><b>3.3.5</b> Principais funções do <code>rvest</code></a></li>
 <li class="chapter" data-level="3.3.6" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#css-path-e-xpath"><i class="fa fa-check"></i><b>3.3.6</b> CSS path e XPath</a></li>
@@ -198,24 +198,20 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h2><span class="header-section-number">3.3</span> Pacotes <code>httr</code>, <code>xml2</code> e <code>rvest</code></h2>
 <p>Esses são os três pacotes mais modernos do R para fazer web scraping.</p>
 <p>O pacote <code>xml2</code> tem a finalidade de estruturar arquivos HTML ou XML de forma eficiente, tornando possível a obtenção de <em>tags</em> e seus atributos dentro de um arquivo. Já o pacote <code>httr</code> é responsável por realizar requisições web para obtenção das páginas de interesse, buscando reduzir ao máximo a complexidade da programação. O pacote <code>rvest</code> é escrito <strong>sobre</strong> os dois anteriores e por isso eleva ainda mais o nível de especialização para raspagem de dados.</p>
-<p>As características dos pacotes implicam na seguinte <strong>regra de bolso</strong>. Para trabalhar com páginas simples, basta carregar o <code>rvest</code> e utilizar suas funcionalidades. Caso o acesso à página exija ações mais complexas e/ou artifícios de ferramentas web, será necessário utilizar o <code>httr</code>. O <code>xml2</code> só será usado explicitamente nos casos raros em que a página está em XML, que pode ser visto como uma generalização do HTML.</p>
-<p>Esses pacotes não são suficientes para acessar todo tipo de conteúdo da web. Um exemplo claro disso são páginas em que o conteúdo é produzido por <code>javascript</code>, o que acontece em alguns sites modernos. Para trabalhar com esses sites, é necessário realmente “simular” um navegador que acessa a página web. Uma das melhores ferramentas para isso é o <code>selenium</code>. Não discutiremos <code>selenium</code> nesse curso, mas caso queira se aprofundar, acesse <a href="http://www.seleniumhq.org/">aqui</a> e o pacote <code>RSelenium</code>.</p>
-<div id="sessoes-e-cookies" class="section level3">
-<h3><span class="header-section-number">3.3.1</span> Sessões e cookies</h3>
-<p>No momento que acessamos uma página web, nosso navegador baixa alguns arquivos que “identificam” nosso acesso à página. Esses arquivos são chamados cookies e são usados pelos sites para realizar diversas atividades, como carregar uma página pré-definida pelo usuário caso este acesse o site pela segunda vez.</p>
-<p>O <code>httr</code> e por consequência o <code>rvest</code> já guardam esses cookies de forma automática, de forma que o usuário não precise se preocupar com isso. Em casos raros, para construir o web scraper é necessário modificar esses cookies. Nesses casos, estude a função <code>cookies()</code> do <code>httr</code>.</p>
-</div>
+<p>A utilização dos pacotes tem uma <strong>regra de bolso</strong>. Para trabalhar com páginas simples, basta carregar o <code>rvest</code> e utilizar suas funcionalidades. Caso o acesso à página exija ações mais complexas e/ou artifícios de ferramentas web, será necessário utilizar o <code>httr</code>. O <code>xml2</code> só será usado explicitamente nos casos em que a página está em XML.</p>
+<p>Esses pacotes <strong>não</strong> são suficientes para acessar todo tipo de conteúdo da web. Um exemplo claro disso são páginas em que o conteúdo é produzido por <code>javascript</code>, o que acontece em alguns sites modernos. Para trabalhar com esses sites, é necessário realmente “simular” um navegador que acessa a página web. Uma das melhores ferramentas para isso é o <code>selenium</code>. Não discutiremos <code>selenium</code> nesse curso, mas caso queira se aprofundar, acesse <a href="http://www.seleniumhq.org/">aqui</a> e o pacote <code>RSelenium</code>.</p>
 <div id="get-e-post" class="section level3">
-<h3><span class="header-section-number">3.3.2</span> <code>GET</code> e <code>POST</code></h3>
+<h3><span class="header-section-number">3.3.1</span> <code>GET</code> e <code>POST</code></h3>
 <p>Uma requisição GET envia uma <code>url</code> ao servidor, possivelmente com alguns parâmetros nessa <code>url</code> (que ficam no final da <code>url</code> depois do <code>?</code>). O servidor, por sua vez, recebe essa <code>url</code>, processa os parâmetros e retorna uma página HTML para o navegador<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>.</p>
 <p>A requisição <code>POST</code>, no entanto, envia uma <code>url</code> não modificada para o servidor, mas envia também uma lista de dados preenchidos pelo usuário, que podem ser números, textos ou até imagens. Na maioria dos casos, ao submeter um formulário de um site, fazemos uma requisição <code>POST</code>.</p>
 <p>O <code>httr</code> possui os métodos <code>GET</code> e <code>POST</code> implementados e são muito similares. A lista de parâmetros enviados pelo usuário pode ser armazenado numa <code>list</code> nomeada, e adicionado ao <code>GET</code> pelo parâmetro <code>query</code> ou no <code>POST</code> pelo parâmetro <code>body</code>.</p>
 <p>Exemplo de <code>GET</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">httr::<span class="kw">GET</span>(<span class="st">&quot;http://google.com/search&quot;</span>, <span class="dt">query =</span> <span class="kw">list</span>(<span class="dt">q =</span> <span class="st">&quot;jurimetria&quot;</span>))</code></pre></div>
 <pre><code>#&gt; Response [http://www.google.com/search?q=jurimetria]
-#&gt;   Date: 2018-01-17 09:53
+#&gt;   Date: 2018-01-17 10:14
 #&gt;   Status: 200
 #&gt;   Content-Type: text/html; charset=ISO-8859-1
-#&gt;   Size: 41.3 kB
+#&gt;   Size: 41.2 kB
 #&gt; &lt;!doctype html&gt;&lt;html itemscope=&quot;&quot; itemtype=&quot;http://schema.org/SearchResu...
 #&gt; statistics, to law. The subject has gained considerable currency in both...
 #&gt; States and Brazil. In the United States, the journal Jurimetrics is publ...
@@ -228,8 +224,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 #&gt; teóricas do tema. É proposta a divisão da &lt;b&gt;jurimetria&lt;/b&gt; em três pris...
 #&gt; ...</code></pre>
 <p>Exemplo de <code>POST</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">httr::<span class="kw">POST</span>(<span class="st">&quot;http://httpbin.org/post&quot;</span>, 
+           <span class="dt">body =</span> <span class="kw">list</span>(<span class="dt">x =</span> <span class="st">&quot;Mãe to na request&quot;</span>), 
+           <span class="dt">encode =</span> <span class="st">&quot;json&quot;</span>)</code></pre></div>
 <pre><code>#&gt; Response [http://httpbin.org/post]
-#&gt;   Date: 2018-01-17 09:53
+#&gt;   Date: 2018-01-17 10:14
 #&gt;   Status: 200
 #&gt;   Content-Type: application/json
 #&gt;   Size: 528 B
@@ -246,12 +245,17 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 #&gt; ...</code></pre>
 </div>
 <div id="exercicios" class="section level3">
-<h3><span class="header-section-number">3.3.3</span> Exercícios</h3>
+<h3><span class="header-section-number">3.3.2</span> Exercícios</h3>
 <p>Use o Inspect:</p>
 <ol style="list-style-type: decimal">
 <li>Qual o método usado na pesquisa de jurisprudência do TJSP?</li>
 <li>Qual o método usado na busca avançada de diários de justiça do TJSP?</li>
 </ol>
+</div>
+<div id="sessoes-e-cookies" class="section level3">
+<h3><span class="header-section-number">3.3.3</span> Sessões e cookies</h3>
+<p>No momento que acessamos uma página web, o navegador baixa alguns arquivos que identificam nosso acesso à página. Esses arquivos são chamados cookies e são usados pelos sites para realizar diversas atividades, como carregar uma página pré-definida pelo usuário caso este acesse o site pela segunda vez ou fazer propagandas.</p>
+<p>O <code>httr</code> e o <code>rvest</code> já guardam esses cookies de forma automática, de forma que o usuário não precise sa preocupar com isso. Em casos raros, para construir o web scraper é necessário modificar esses cookies. Nesses casos, estude a função <code>cookies()</code> do <code>httr</code>.</p>
 </div>
 <div id="outras-funcoes-do-httr" class="section level3">
 <h3><span class="header-section-number">3.3.4</span> Outras funções do <code>httr</code></h3>

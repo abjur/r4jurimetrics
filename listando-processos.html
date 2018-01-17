@@ -132,9 +132,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="3.2" data-path="usando-o-inspect.html"><a href="usando-o-inspect.html"><i class="fa fa-check"></i><b>3.2</b> Usando o Inspect</a></li>
 <li class="chapter" data-level="3.3" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html"><i class="fa fa-check"></i><b>3.3</b> Pacotes <code>httr</code>, <code>xml2</code> e <code>rvest</code></a><ul>
-<li class="chapter" data-level="3.3.1" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#sessoes-e-cookies"><i class="fa fa-check"></i><b>3.3.1</b> Sessões e cookies</a></li>
-<li class="chapter" data-level="3.3.2" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#get-e-post"><i class="fa fa-check"></i><b>3.3.2</b> <code>GET</code> e <code>POST</code></a></li>
-<li class="chapter" data-level="3.3.3" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#exercicios"><i class="fa fa-check"></i><b>3.3.3</b> Exercícios</a></li>
+<li class="chapter" data-level="3.3.1" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#get-e-post"><i class="fa fa-check"></i><b>3.3.1</b> <code>GET</code> e <code>POST</code></a></li>
+<li class="chapter" data-level="3.3.2" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#exercicios"><i class="fa fa-check"></i><b>3.3.2</b> Exercícios</a></li>
+<li class="chapter" data-level="3.3.3" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#sessoes-e-cookies"><i class="fa fa-check"></i><b>3.3.3</b> Sessões e cookies</a></li>
 <li class="chapter" data-level="3.3.4" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#outras-funcoes-do-httr"><i class="fa fa-check"></i><b>3.3.4</b> Outras funções do <code>httr</code></a></li>
 <li class="chapter" data-level="3.3.5" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#principais-funcoes-do-rvest"><i class="fa fa-check"></i><b>3.3.5</b> Principais funções do <code>rvest</code></a></li>
 <li class="chapter" data-level="3.3.6" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#css-path-e-xpath"><i class="fa fa-check"></i><b>3.3.6</b> CSS path e XPath</a></li>
@@ -196,7 +196,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="listando-processos" class="section level2">
 <h2><span class="header-section-number">3.5</span> Listando processos</h2>
-<p>Listar processos significa utilizar ferramentas de busca ou minerar documentos para obter uma lista de processos judiciais. Ou seja, essa etapa do scraper serve para procurar processos que não sabíamos que existiam previamente.</p>
 <p>A forma de listar processos muda se seu estudo é prospectivo ou retrospectivo. Se o estudo for prospectivo, precisamos baixar dados dos <strong>Diários de Justiça Eletrônicos</strong> (DJE), que são arquivos PDF enormes. Se o estudo for retrospectivo, precisamos baixar dados da <strong>Consulta de Julgados de Segundo Grau</strong> (CJSG), que é um formulário na internet, mais simples.</p>
 <ul>
 <li>Se o seu estudo é retrospectivo, use <code>esaj::download_cjsg()</code>. CJSG significa Consulta de Julgados de Segundo Grau.</li>

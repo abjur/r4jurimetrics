@@ -132,9 +132,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="3.2" data-path="usando-o-inspect.html"><a href="usando-o-inspect.html"><i class="fa fa-check"></i><b>3.2</b> Usando o Inspect</a></li>
 <li class="chapter" data-level="3.3" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html"><i class="fa fa-check"></i><b>3.3</b> Pacotes <code>httr</code>, <code>xml2</code> e <code>rvest</code></a><ul>
-<li class="chapter" data-level="3.3.1" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#sessoes-e-cookies"><i class="fa fa-check"></i><b>3.3.1</b> Sessões e cookies</a></li>
-<li class="chapter" data-level="3.3.2" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#get-e-post"><i class="fa fa-check"></i><b>3.3.2</b> <code>GET</code> e <code>POST</code></a></li>
-<li class="chapter" data-level="3.3.3" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#exercicios"><i class="fa fa-check"></i><b>3.3.3</b> Exercícios</a></li>
+<li class="chapter" data-level="3.3.1" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#get-e-post"><i class="fa fa-check"></i><b>3.3.1</b> <code>GET</code> e <code>POST</code></a></li>
+<li class="chapter" data-level="3.3.2" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#exercicios"><i class="fa fa-check"></i><b>3.3.2</b> Exercícios</a></li>
+<li class="chapter" data-level="3.3.3" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#sessoes-e-cookies"><i class="fa fa-check"></i><b>3.3.3</b> Sessões e cookies</a></li>
 <li class="chapter" data-level="3.3.4" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#outras-funcoes-do-httr"><i class="fa fa-check"></i><b>3.3.4</b> Outras funções do <code>httr</code></a></li>
 <li class="chapter" data-level="3.3.5" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#principais-funcoes-do-rvest"><i class="fa fa-check"></i><b>3.3.5</b> Principais funções do <code>rvest</code></a></li>
 <li class="chapter" data-level="3.3.6" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#css-path-e-xpath"><i class="fa fa-check"></i><b>3.3.6</b> CSS path e XPath</a></li>
@@ -201,19 +201,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="informacoes-iniciais" class="section level3">
 <h3><span class="header-section-number">3.4.1</span> Informações iniciais</h3>
 <p>Antes de iniciar um scraper, verifique se existe alguma forma mais fácil de conseguir os dados que necessita. Construir um web scraper do zero é muitas vezes uma tarefa dolorosa e, caso o site seja atualizado, pode ser que boa parte do trabalho seja inútil. Se os dados precisarem ser extraídos apenas uma vez, verifique com os responsáveis pela manutenção do site se eles podem fazer a extração que precisa. Se os dados precisarem ser atualizados, verifique se a entidade não possui uma API para acesso aos dados.</p>
-<p>Ao escrever um web scraper, as primeiras coisas que devemos pensar são</p>
+<p>Ao escrever um web scraper, as primeiras coisas que devemos pensar são, nessa porgem</p>
 <ul>
+<li>Qual o caminho percorrido para acessar uma página específica.</li>
 <li>Como o site a ser acessado foi contruído, se tem limites de requisições, utilização de cookies, states, etc.</li>
 <li>Como e com que frequência o site é atualizado, tanto em relação à sua interface como em relação aos dados que queremos extrair.</li>
-<li>Como conseguir a lista das páginas que queremos acessar.</li>
-<li>Qual o caminho percorrido para acessar uma página específica.</li>
 </ul>
-<p>Sugerimos como melhores práticas dividir todas as atividades em três tarefas principais: i) <em>listar</em>; ii) <em>coletar</em> e iii) <em>processar</em>. Quando já sabemos de antemão quais são os processos que vamos acessar, a etapa de listagem é desnecessária.</p>
-<p>Na maior parte dos casos, deixar os algoritmos de <em>coleta</em> e <em>processamento</em> dos dados em funções distintas é uma boa prática pois aumenta o controle sobre o que as ferramentas estão fazendo, facilita o <em>debug</em> e a atualização. Por outro lado, em alguns casos isso pode tornar o código ineficiente e os dados brutos obtidos podem ficar pesados.</p>
-<p>Na pesquisa das <strong>câmaras</strong> (retrospectivo), o fluxo é</p>
-<pre><code>listar -&gt; coletar -&gt; processar -&gt; coletar -&gt; processar</code></pre>
-<p>Na pesquisa da <strong>especialização</strong> (prospectivo), o fluxo é</p>
-<pre><code>coletar -&gt; processar -&gt; coletar -&gt; processar</code></pre>
+<p>Em sites dos tribunais, uma boa prática é dividir as atividades em três grupos principais: i) <em>listar</em>; ii) <em>coletar</em> e iii) <em>processar</em>. Quando já sabemos de antemão quais são os processos que vamos acessar, a etapa de listagem é desnecessária.</p>
+<p>Deixamos os algoritmos de <em>coleta</em> e <em>processamento</em> dos dados em funções distintas para aumentar o controle sobre o que as ferramentas estão fazendo. Isso facilita o <em>debug</em> e a atualização. Por outro lado, em alguns casos isso pode tornar o código ineficiente e os dados brutos obtidos podem ficar pesados.</p>
 <!-- ----------------------------------------------------------------------- -->
 </div>
 </div>
