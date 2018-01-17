@@ -214,7 +214,18 @@ x %&gt;%<span class="st"> </span><span class="kw">sum</span>() %&gt;%<span class
 <div id="receita-de-bolo" class="section level3">
 <h3><span class="header-section-number">3.1.1</span> Receita de bolo</h3>
 <p>Tente entender o que é preciso fazer.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">esfrie</span>(<span class="kw">asse</span>(<span class="kw">coloque</span>(<span class="kw">bata</span>(<span class="kw">acrescente</span>(<span class="kw">recipiente</span>(<span class="kw">rep</span>(<span class="st">&quot;farinha&quot;</span>, <span class="dv">2</span>), <span class="st">&quot;água&quot;</span>, <span class="st">&quot;fermento&quot;</span>, <span class="st">&quot;leite&quot;</span>, <span class="st">&quot;óleo&quot;</span>), <span class="st">&quot;farinha&quot;</span>, até =<span class="st"> &quot;macio&quot;</span>), duraçã<span class="dt">o =</span> <span class="st">&quot;3min&quot;</span>), <span class="dt">lugar =</span> <span class="st">&quot;forma&quot;</span>, <span class="dt">tipo =</span> <span class="st">&quot;grande&quot;</span>, <span class="dt">untada =</span> <span class="ot">TRUE</span>), duraçã<span class="dt">o =</span> <span class="st">&quot;50min&quot;</span>), <span class="st">&quot;geladeira&quot;</span>, <span class="st">&quot;20min&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">esfrie</span>(
+  <span class="kw">asse</span>(
+    <span class="kw">coloque</span>(
+      <span class="kw">bata</span>(
+        <span class="kw">acrescente</span>(
+          <span class="kw">recipiente</span>(<span class="kw">rep</span>(<span class="st">&quot;farinha&quot;</span>, <span class="dv">2</span>), <span class="st">&quot;água&quot;</span>, 
+                     <span class="st">&quot;fermento&quot;</span>, <span class="st">&quot;leite&quot;</span>, <span class="st">&quot;óleo&quot;</span>), 
+          <span class="st">&quot;farinha&quot;</span>, até =<span class="st"> &quot;macio&quot;</span>), 
+        duraçã<span class="dt">o =</span> <span class="st">&quot;3min&quot;</span>), 
+      <span class="dt">lugar =</span> <span class="st">&quot;forma&quot;</span>, <span class="dt">tipo =</span> <span class="st">&quot;grande&quot;</span>, 
+      <span class="dt">untada =</span> <span class="ot">TRUE</span>), duraçã<span class="dt">o =</span> <span class="st">&quot;50min&quot;</span>), 
+  <span class="st">&quot;geladeira&quot;</span>, <span class="st">&quot;20min&quot;</span>)</code></pre></div>
 <p>Desistiu? Agora veja como fica escrevendo com o <code>%&gt;%</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">recipiente</span>(<span class="kw">rep</span>(<span class="st">&quot;farinha&quot;</span>, <span class="dv">2</span>), <span class="st">&quot;água&quot;</span>, <span class="st">&quot;fermento&quot;</span>, <span class="st">&quot;leite&quot;</span>, <span class="st">&quot;óleo&quot;</span>) %&gt;%
 <span class="st">  </span><span class="kw">acrescente</span>(<span class="st">&quot;farinha&quot;</span>, até =<span class="st"> &quot;macio&quot;</span>) %&gt;%
