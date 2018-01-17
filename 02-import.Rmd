@@ -206,7 +206,7 @@ A forma de listar processos muda se seu estudo é prospectivo ou retrospectivo. 
 
 ## Usando o `esaj` para listar processos
 
-A CJSG possui uma série de parâmetros para consulta de decisões. As mais usadas são
+A CJSG possui vários parâmetros para consulta de decisões. As mais usadas são
 
 - Palavras-chave
 - Classe, assunto e câmaras
@@ -214,7 +214,7 @@ A CJSG possui uma série de parâmetros para consulta de decisões. As mais usad
 
 ### Pesquisa por palavras-chave
 
-A pesquisa por palavras-chave não tem segredo. Basta você seguir as especificações deste link: https://esaj.tjsp.jus.br/WebHelp/#id_operadores_logicos.htm.
+A pesquisa por palavras-chave não tem segredo. Basta você seguir as especificações [deste link](https://esaj.tjsp.jus.br/WebHelp/#id_operadores_logicos.htm).
 
 É importante ressaltar alguns pontos
 
