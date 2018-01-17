@@ -2,11 +2,11 @@
 
 Agora nós estamos aqui:
 
-```{r}
+```{r, out.width="80%", fig.align="center"}
 knitr::include_graphics("imgs/wrangle.png")
 ```
 
-Nessa parte, vamos aprender a baixar dados da web. No contexto da jurimetria, isso é muito importante por dois motivos: i) você nunca pode esperar que alguém ofereça esses dados organizados para você e ii) isso é muito divertido e é um aprendizado para a vida.
+Nessa parte, vamos aprender a **baixar dados da web**. No contexto da jurimetria, isso é muito importante por dois motivos: i) você nunca pode esperar que alguém ofereça esses dados organizados para você e ii) isso é muito divertido e é um aprendizado para a vida.
 
 ## Pipe `%>%`
 
@@ -14,13 +14,13 @@ Nessa parte, vamos aprender a baixar dados da web. No contexto da jurimetria, is
 library(magrittr)
 ```
 
-![](https://github.com/tidyverse/magrittr/raw/master/inst/logo.png)
-
-![](https://upload.wikimedia.org/wikipedia/en/b/b9/MagrittePipe.jpg)
+```{r, out.width="49%"}
+knitr::include_graphics(c("imgs/magrittr.png", "imgs/magritte.jpg"))
+```
 
 Considere o seguinte exemplo:
 
-```{r}
+```{r echo=TRUE}
 f <- function(x, y) x + y
 x <- 1
 y <- 2
@@ -28,21 +28,21 @@ y <- 2
 
 As duas linhas abaixo são equivalentes:
 
-```{r}
+```{r echo=TRUE}
 f(x, y)
 x %>% f(y)
 ```
 
 Exemplo: alcular raiz quadrada da soma dos valores de 1 a 4.
 
-```{r}
+```{r echo=TRUE}
 x <- c(1, 2, 3, 4)
 x %>% sum() %>% sqrt()
 ```
 
 Escrever esse cálculo na forma usual ficaria da seguinte forma:
 
-```{r}
+```{r echo=TRUE}
 sqrt(sum(x))
 ```
 
@@ -50,7 +50,7 @@ sqrt(sum(x))
 
 Tente entender o que é preciso fazer. 
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, echo=TRUE}
 
 esfrie(asse(coloque(bata(acrescente(recipiente(rep("farinha", 2), "água", "fermento", "leite", "óleo"), "farinha", até = "macio"), duração = "3min"), lugar = "forma", tipo = "grande", untada = TRUE), duração = "50min"), "geladeira", "20min")
 
@@ -58,7 +58,7 @@ esfrie(asse(coloque(bata(acrescente(recipiente(rep("farinha", 2), "água", "ferm
 
 Desistiu? Agora veja como fica escrevendo com o `%>%`:
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, echo=TRUE}
 
 recipiente(rep("farinha", 2), "água", "fermento", "leite", "óleo") %>%
   acrescente("farinha", até = "macio") %>%
@@ -78,7 +78,7 @@ Para mais informações sobre o `pipe` e exemplos de utilização, visite a pág
 
 Se você quer aprender a baixar dados da web, você precisa aprender a usar o Inspect do seu navegador. Para isso, vamos abrir a página do [e-SAJ](https://esaj.tjsp.jus.br/cjsg/consultaCompleta.do).
 
-```{r, out.width="100%"}
+```{r, out.width="100%", fig.align="center"}
 knitr::include_graphics("imgs/esaj01.png")
 ```
 
@@ -88,7 +88,7 @@ knitr::include_graphics("imgs/esaj01.png")
 - Agora você verá uma lista de documentos que seu navegador baixou para carregar a página. 
 - O primeiro item dessa lista, `consultaCompleta.do`, contém informações da sua consulta processual. Clique nesse item.
 
-```{r, out.width="100%"}
+```{r, out.width="100%", fig.align="center"}
 knitr::include_graphics("imgs/esaj02.png")
 ```
 
@@ -183,13 +183,13 @@ Sugerimos como melhores práticas dividir todas as atividades em três tarefas p
 
 Na maior parte dos casos, deixar os algoritmos de *coleta* e *processamento* dos dados em funções distintas é uma boa prática pois aumenta o controle sobre o que as ferramentas estão fazendo, facilita o *debug* e a atualização. Por outro lado, em alguns casos isso pode tornar o código ineficiente e os dados brutos obtidos podem ficar pesados.
 
-Na pesquisa das câmaras, o fluxo é
+Na pesquisa das **câmaras** (retrospectivo), o fluxo é
 
 ```
 listar -> coletar -> processar -> coletar -> processar
 ```
 
-Na pesquisa da especialização, o fluxo é
+Na pesquisa da **especialização** (prospectivo), o fluxo é
 
 ```
 coletar -> processar -> coletar -> processar
@@ -239,7 +239,7 @@ Classes e assuntos definem, respectivamente, os ritos processuais e os tipos pro
 
 As classes e assuntos são definidas em formato de árvore. Cada nível dessa árvore tem uma lista de classes/assuntos e seus respectivos códigos. As tabelas de classes/assuntos podem ser obtidas pela função `esaj::cjsg_table()`.
 
-```{r eval=FALSE}
+```{r eval=FALSE, echo=TRUE}
 # Não rode esses códigos. Eles baixam os dados diretos da web
 classes <- esaj::cjsg_table("classes")
 assuntos <- esaj::cjsg_table("subjects")
@@ -247,7 +247,7 @@ assuntos <- esaj::cjsg_table("subjects")
 
 Já baixamos essas tabelas e colocamos em arquivos `.rds` (você sabe o que é um arquivo `.rds`?) 
 
-```{r}
+```{r, echo=TRUE}
 assuntos <- readRDS("data/cjsg_assuntos.rds")
 classes <- readRDS("data/cjsg_classes.rds")
 
@@ -262,11 +262,11 @@ Cuidado com a cifra oculta! Além disso, muitos casos têm assunto vazio.
 
 A tabela de câmaras segue a mesma regra. A única diferença é que não existem níveis, logo você só precisará procurar os nomes em uma coluna
 
-```{r eval=FALSE}
+```{r eval=FALSE, echo=TRUE}
 camaras <- esaj::cjsg_table("courts")
 ```
 
-```{r}
+```{r, echo=TRUE}
 camaras <- readRDS("data/cjsg_camaras.rds")
 glimpse(camaras)
 ```
@@ -275,7 +275,7 @@ glimpse(camaras)
 
 Com o escopo em mãos, podemos finalmente começar a baixar dados. Esses são os argumentos da função `esaj::download_cjsg()`. Veja a documentação `?esaj::download_cjsg`
 
-```{r}
+```{r, echo=TRUE}
 args(esaj::download_cjsg)
 ```
 
@@ -296,7 +296,7 @@ esaj::download_cjsg("homicídio", "data-raw/cjsg", max_page = 2)
 
 Para transformar os arquivos HTML em bases de dados prontas para análise, você precisa rodar `esaj::parse_cjsg()`.
 
-```{r}
+```{r, echo=TRUE}
 files <- dir("data-raw/cjsg", full.names = TRUE, pattern = "page")
 d_cjsg <- esaj::parse_cjsg(files)
 
@@ -339,7 +339,7 @@ dje::dje_to_text("data-raw/dje/tjsp_dje_2018-01-12")
 
 E depois você aplica a função `dje::parse_dje_tjsp()` para ler os textos
 
-```{r}
+```{r, echo=TRUE}
 # para pegar somente 1a instancia
 patterns <- glue::glue("_{c(12, 13, 15, 18)}_") %>% 
   glue::collapse("|")
@@ -437,7 +437,7 @@ configurações identificam os foros de São Paulo. Na maioria dos casos, o núm
 também identifica a comarca, pois existem poucas comarcas com mais de um foro (e.g.
 a comarca de São Paulo, que possui mais de dez foros regionais). 
 
-```{r}
+```{r, echo=TRUE}
 id_montado <- "0000009-15.2015.8.26.0558"
 id_limpo_dig <- "00000091520158260558"
 id_limpo_ndig <- "000000920158260558"
@@ -445,23 +445,23 @@ id_limpo_ndig <- "000000920158260558"
 
 As funções `abjutils::build_id()` e `abjutils::clean_id()` montam ou limpam o número do processo.
 
-```{r}
+```{r, echo=TRUE}
 abjutils::build_id(id_limpo_dig)
 ```
 
-```{r}
+```{r, echo=TRUE}
 abjutils::clean_id(id_montado)
 ```
 
 A função `abjutils::extract_parts()` extrai todos os componentes do número do processo.
 
-```{r}
+```{r, echo=TRUE}
 abjutils::extract_parts(id_montado)
 ```
 
 A função `abjutils::separate_cnj()` faz o mesmo, mas em uma coluna do banco de dados
 
-```{r}
+```{r, echo=TRUE}
 d_cjsg %>% 
   abjutils::separate_cnj("id_lawsuit", remove = FALSE) %>% 
   glimpse()
@@ -469,17 +469,17 @@ d_cjsg %>%
 
 A função `abjutils::calc_dig()` calcula o dígito verificador do processo a partir do número incompleto. A função `abjutils::check_dig()` checa se o dígito do processo está correto. Essas funções são úteis para i) gerar números de processo aleatórios e ii) arrumar erros de parse, por exemplo, o resultado da leitura de um DJE ou de um PDF escaneado.
 
-```{r}
+```{r, echo=TRUE}
 abjutils::calc_dig(id_limpo_ndig)
 ```
 
-```{r}
+```{r, echo=TRUE}
 abjutils::check_dig(id_montado)
 ```
 
 Finalmente, a função `abjutils::sample_cnj()` serve para criar amostras de números de processos. Esses pocessos podem ser manifestos ou não. Em algumas pesquisas mais complicadas (e.g. nossa pesquisa sobre processamento de homicídios) esse tipo de abordagem é necessária.
 
-```{r}
+```{r, echo=TRUE}
 set.seed(1)
 abjutils::sample_cnj(n = 10, foros = "0001", anos = 2015:2017, 
                      orgao = "8", tr = "26", 
@@ -491,7 +491,7 @@ abjutils::sample_cnj(n = 10, foros = "0001", anos = 2015:2017,
 
 A função `abjutils::rm_accent()` serve para tirar acentos de um texto
 
-```{r}
+```{r, echo=TRUE}
 abjutils::rm_accent("Têxto cóm açèntõs")
 ```
 
