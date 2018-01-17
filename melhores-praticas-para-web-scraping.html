@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-
-<link rel="next" href="introducao.html">
+<link rel="prev" href="pacotes-httr-xml2-e-rvest.html">
+<link rel="next" href="listando-processos.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -194,56 +194,36 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">R para jurimetria</h1>
-<h4 class="author"><em>Associação Brasileira de Jurimetria</em></h4>
-<h4 class="date"><em>17 de January de 2018</em></h4>
-</div>
-<div id="apresentacao" class="section level1">
-<h1><span class="header-section-number">Capítulo 1</span> Apresentação</h1>
-<p>Olá! Bem vindo ao curso R para Jurimetria :)</p>
-<p>Essa é a primeira iteração do curso de R para Jurimetria da ABJ. Nesse curso abordamos aspectos práticos da Jurimetria, essenciais para um profissional da Estatística que tenha interesse em trabalhar nessa área.</p>
-<p>O curso é voltado para graduandos em estatística e está organizado em cinco aulas.</p>
+<div id="melhores-praticas-para-web-scraping" class="section level2">
+<h2><span class="header-section-number">3.4</span> Melhores práticas para web scraping</h2>
+<p>É importante ressaltar que só estamos trabalhando com dados públicos. Caso tenha interesse em raspar páginas que precisam de autenticação ou uma página <code>.com</code>, recomendamos que estude os termos de uso do site.</p>
+<p>Nessa parte, trabalharemos principalmente com a <a href="https://esaj.tjsp.jus.br/cjsg/consultaCompleta.do">Consulta de Jurisprudência</a> e a <a href="https://esaj.tjsp.jus.br/cpo/sg/open.do">Consulta de de Processos de Segundo Grau</a> do TJSP, mas também teremos um pouco de pesquisas nos <a href="https://www.dje.tjsp.jus.br/cdje/index.do">diários oficiais</a>.</p>
+<div id="informacoes-iniciais" class="section level3">
+<h3><span class="header-section-number">3.4.1</span> Informações iniciais</h3>
+<p>Antes de iniciar um scraper, verifique se existe alguma forma mais fácil de conseguir os dados que necessita. Construir um web scraper do zero é muitas vezes uma tarefa dolorosa e, caso o site seja atualizado, pode ser que boa parte do trabalho seja inútil. Se os dados precisarem ser extraídos apenas uma vez, verifique com os responsáveis pela manutenção do site se eles podem fazer a extração que precisa. Se os dados precisarem ser atualizados, verifique se a entidade não possui uma API para acesso aos dados.</p>
+<p>Ao escrever um web scraper, as primeiras coisas que devemos pensar são</p>
 <ul>
-<li>(15/01) Introdução à jurimetria e setup
-<ul>
-<li>Definição</li>
-<li>Terminologia</li>
-<li>Tipos de pesquisa e exemplos</li>
-<li>Ambientação com R e RStudio</li>
-<li>RMarkdown</li>
-</ul></li>
-<li>(17/01) Ferramentas da ABJ para importação
-<ul>
-<li>Introdução ao web scraping com <code>httr</code> e <code>rvest</code>.</li>
-<li>Pacotes <code>abjutils</code>, <code>esaj</code> e <code>dje</code>.</li>
-</ul></li>
-<li>(19/01) Tidyverse: vetores
-<ul>
-<li>Vetores: pacotes <code>stringr</code>, <code>lubridate</code>, <code>forcats</code>.</li>
-<li>Programação funcional: <code>purrr</code>.</li>
-</ul></li>
-<li>(22/01) Tidyverse: bd
-<ul>
-<li>Transformação: pacotes <code>dplyr</code>, <code>tidyr</code>.</li>
-<li>Aplicação: Câmaras criminais.</li>
-</ul></li>
-<li>(24/01) Modelagem
-<ul>
-<li>Especialização de varas: pacotes <code>bnlearn</code> e <code>survival</code>.</li>
-<li>Captchas: pacotes <code>keras</code> e <code>decryptr</code>.</li>
-</ul></li>
+<li>Como o site a ser acessado foi contruído, se tem limites de requisições, utilização de cookies, states, etc.</li>
+<li>Como e com que frequência o site é atualizado, tanto em relação à sua interface como em relação aos dados que queremos extrair.</li>
+<li>Como conseguir a lista das páginas que queremos acessar.</li>
+<li>Qual o caminho percorrido para acessar uma página específica.</li>
 </ul>
-<p>Para o curso, será necessário ter conhecimentos do software estatístico R, como a lógica de programação, sintaxe do R e ambientação com o RStudio.</p>
-
+<p>Sugerimos como melhores práticas dividir todas as atividades em três tarefas principais: i) <em>listar</em>; ii) <em>coletar</em> e iii) <em>processar</em>. Quando já sabemos de antemão quais são os processos que vamos acessar, a etapa de listagem é desnecessária.</p>
+<p>Na maior parte dos casos, deixar os algoritmos de <em>coleta</em> e <em>processamento</em> dos dados em funções distintas é uma boa prática pois aumenta o controle sobre o que as ferramentas estão fazendo, facilita o <em>debug</em> e a atualização. Por outro lado, em alguns casos isso pode tornar o código ineficiente e os dados brutos obtidos podem ficar pesados.</p>
+<p>Na pesquisa das <strong>câmaras</strong> (retrospectivo), o fluxo é</p>
+<pre><code>listar -&gt; coletar -&gt; processar -&gt; coletar -&gt; processar</code></pre>
+<p>Na pesquisa da <strong>especialização</strong> (prospectivo), o fluxo é</p>
+<pre><code>coletar -&gt; processar -&gt; coletar -&gt; processar</code></pre>
+<!-- ----------------------------------------------------------------------- -->
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="introducao.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="pacotes-httr-xml2-e-rvest.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="listando-processos.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -272,7 +252,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/yihui/bookdown-crc/edit/master/index.Rmd",
+"link": "https://github.com/yihui/bookdown-crc/edit/master/02-import.Rmd",
 "text": "Edit"
 },
 "download": ["bookdown.pdf"],
