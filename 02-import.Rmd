@@ -298,8 +298,8 @@ A pesquisa por palavras-chave não tem segredo. Basta você seguir as especifica
 
 É importante ressaltar alguns pontos
 
-- O e-SAJ **não** disponibiliza seu tesauro publicamente. Ou seja, você terá de confiar na pesquisa por sinônimos.
-- Você não pode fazer uma busca completamente vazia. Ou você coloca a palavra-chave, ou você especifica outro parâmetro
+- O e-SAJ **não** disponibiliza seu tesauro (dicionário estruturado) publicamente. Ou seja, você terá de confiar na pesquisa por sinônimos.
+- Você não pode fazer uma busca completamente vazia. Ou você coloca a palavra-chave, ou você especifica outro parâmetro.
 - Você pode pesquisar o termo `a OU (NAO a)`, se quiser ;)
 
 ### Pesquisa por datas
@@ -308,7 +308,7 @@ Você pode usar duas datas para indexar os processos de sua pesquisa. A *data de
 
 Normalmente, a indexação aconteceria pela data de julgamento, já que queremos vincular os processos à sua data final, não em relação à uma data do sistema. No entanto, as pesquisas indexadas pela data de julgamento não são completamente reprodutíveis, já que à medida que o tempo passa, mais decisões são registradas, mudando a base de julgados.
 
-Regra de bolso:
+**Regra de bolso**:
 
 - Use data de registro se quiser ter certeza de que você pegou todos os casos em um determinado intervalo de tempo. 
 - Use data de julgamento se você estiver pesquisando casos mais antigos (por exemplo, de 2016 para trás), já que a quantidade de decisões não registradas nesse escopo é negligenciável.
@@ -328,8 +328,8 @@ assuntos <- esaj::cjsg_table("subjects")
 Já baixamos essas tabelas e colocamos em arquivos `.rds` (você sabe o que é um arquivo `.rds`?) 
 
 ```{r, echo=TRUE}
-assuntos <- readRDS("data/cjsg_assuntos.rds")
 classes <- readRDS("data/cjsg_classes.rds")
+assuntos <- readRDS("data/cjsg_assuntos.rds")
 
 glimpse(assuntos)
 ```
@@ -462,6 +462,8 @@ As funções de download de processos recebem um vetor de números e baixam um H
 processos <- unique(d_cjsg$id_lawsuit)
 esaj::download_cposg(processos, "data-raw/cposg")
 ```
+
+
 
 ### Baixando decisões
 
