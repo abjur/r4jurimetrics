@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="organizacao-do-curso.html">
-<link rel="next" href="suas-tarefas-para-1701-demora-30-min.html">
+<link rel="prev" href="wrap-up.html">
+<link rel="next" href="work-in-progress.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -192,64 +192,17 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="configuracao-necessaria-para-o-curso" class="section level2">
-<h2><span class="header-section-number">2.8</span> Configuração necessária para o curso</h2>
-<div id="pacotes" class="section level3">
-<h3><span class="header-section-number">2.8.1</span> Pacotes</h3>
-<p>Para poder rodar os códigos do curso, é importante que você instale todos os pacotes relacionados a este livro. Para isso, basta rodar</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools::<span class="kw">install_github</span>(<span class="st">&quot;abjur/r4jurimetrics&quot;</span>)</code></pre></div>
-<p>Esse código teoricamente funciona pois este livro também é um pacote e adicionamos todas as dependências. Se você não conseguir instalar as dependências, abra o arquivo <code>DESCRIPTION</code> do material:</p>
-<p><a href="https://github.com/abjur/r4jurimetrics/blob/master/DESCRIPTION" class="uri">https://github.com/abjur/r4jurimetrics/blob/master/DESCRIPTION</a></p>
-<p>Nesse aquivo constam todos os pacotes que estamos utilizando. Se algo deu errado na instalação do <code>r4jurimetrics</code>, é porquê pelo menos um desses pacotes deu erro na instalação. Note que os pacotes dentro de <code>Remotes</code> devem ser instalados com <code>devtools::install_github()</code>. Note também que os pacotes que estão no <code>Remotes</code> também estão no <code>Imports</code>.</p>
-</div>
-<div id="fork-e-upstream-experimental" class="section level3">
-<h3><span class="header-section-number">2.8.2</span> Fork e upstream (experimental)</h3>
-<p>Para fazer essa parte funcionar, você precisará de uma conta ativa no GitHub. Se você não tiver uma, recomendamos fortemente que criem.</p>
-<p>Agora siga os passos abaixo:</p>
-<ol style="list-style-type: decimal">
-<li>Acesse no seu navegador: <a href="https://github.com/abjur/r4jurimetrics" class="uri">https://github.com/abjur/r4jurimetrics</a></li>
-<li>Certifique-se de que você está logado na sua conta.</li>
-<li>Dê um fork no repositório</li>
-<li>Volte ao RStudio</li>
-<li>Crie um projeto: Projetos &gt; New Project &gt; Version control &gt; git</li>
-<li>Na parte do link do repositório, coloque <a href="https://github.com/" class="uri">https://github.com/</a><seuLogin>/r4jurimetrics</li>
-<li>Dê OK e certifique-se de que o repositório foi criado.</li>
-<li>Abra um terminal: Tools &gt; Shell</li>
-<li>Arrume e rode</li>
-</ol>
-<pre><code>git config --global user.email &quot;seuEmail&quot;</code></pre>
-<p>e</p>
-<pre><code>git config --global user.name &quot;seuLogin&quot;</code></pre>
-<p>Esses comandos configuram seu usuário para registrar mudanças nos repositórios.</p>
-<ol start="11" style="list-style-type: decimal">
-<li>Rode</li>
-</ol>
-<pre><code>git remote add upstream https://github.com/abjur/r4jurimetrics.git</code></pre>
-<p>Esse comando faz com que seu repositório fique ligado ao repositório original</p>
-<ol start="12" style="list-style-type: decimal">
-<li>Rode</li>
-</ol>
-<pre><code>git fetch upstream</code></pre>
-<p>Esse comando baixa as atualizações do repositório pai, se houverem</p>
-<ol start="13" style="list-style-type: decimal">
-<li>Rode</li>
-</ol>
-<pre><code>git merge upstream/master -m &quot;merge with parent&quot;</code></pre>
-<p>Esse comando juntar o seu repositório com o código do reporitório pai. Nesse momento podem acontecer conflitos.</p>
-<p>Se tiver algum problema, veja:</p>
-<ul>
-<li><a href="https://help.github.com/articles/configuring-a-remote-for-a-fork/" class="uri">https://help.github.com/articles/configuring-a-remote-for-a-fork/</a></li>
-<li><a href="https://help.github.com/articles/syncing-a-fork/" class="uri">https://help.github.com/articles/syncing-a-fork/</a></li>
-</ul>
-</div>
+<div id="transformacao-de-dados-1" class="section level1">
+<h1><span class="header-section-number">Capítulo 4</span> Transformação de dados 1</h1>
+
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="organizacao-do-curso.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="suas-tarefas-para-1701-demora-30-min.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="wrap-up.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="work-in-progress.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -278,7 +231,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/yihui/bookdown-crc/edit/master/01-intro.Rmd",
+"link": "https://github.com/yihui/bookdown-crc/edit/master/03-vectors.Rmd",
 "text": "Edit"
 },
 "download": ["bookdown.pdf"],

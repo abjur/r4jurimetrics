@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="organizacao-do-curso.html">
-<link rel="next" href="suas-tarefas-para-1701-demora-30-min.html">
+<link rel="prev" href="listando-processos.html">
+<link rel="next" href="usando-o-dje-para-listar-processos.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -192,55 +192,105 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="configuracao-necessaria-para-o-curso" class="section level2">
-<h2><span class="header-section-number">2.8</span> Configuração necessária para o curso</h2>
-<div id="pacotes" class="section level3">
-<h3><span class="header-section-number">2.8.1</span> Pacotes</h3>
-<p>Para poder rodar os códigos do curso, é importante que você instale todos os pacotes relacionados a este livro. Para isso, basta rodar</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools::<span class="kw">install_github</span>(<span class="st">&quot;abjur/r4jurimetrics&quot;</span>)</code></pre></div>
-<p>Esse código teoricamente funciona pois este livro também é um pacote e adicionamos todas as dependências. Se você não conseguir instalar as dependências, abra o arquivo <code>DESCRIPTION</code> do material:</p>
-<p><a href="https://github.com/abjur/r4jurimetrics/blob/master/DESCRIPTION" class="uri">https://github.com/abjur/r4jurimetrics/blob/master/DESCRIPTION</a></p>
-<p>Nesse aquivo constam todos os pacotes que estamos utilizando. Se algo deu errado na instalação do <code>r4jurimetrics</code>, é porquê pelo menos um desses pacotes deu erro na instalação. Note que os pacotes dentro de <code>Remotes</code> devem ser instalados com <code>devtools::install_github()</code>. Note também que os pacotes que estão no <code>Remotes</code> também estão no <code>Imports</code>.</p>
-</div>
-<div id="fork-e-upstream-experimental" class="section level3">
-<h3><span class="header-section-number">2.8.2</span> Fork e upstream (experimental)</h3>
-<p>Para fazer essa parte funcionar, você precisará de uma conta ativa no GitHub. Se você não tiver uma, recomendamos fortemente que criem.</p>
-<p>Agora siga os passos abaixo:</p>
-<ol style="list-style-type: decimal">
-<li>Acesse no seu navegador: <a href="https://github.com/abjur/r4jurimetrics" class="uri">https://github.com/abjur/r4jurimetrics</a></li>
-<li>Certifique-se de que você está logado na sua conta.</li>
-<li>Dê um fork no repositório</li>
-<li>Volte ao RStudio</li>
-<li>Crie um projeto: Projetos &gt; New Project &gt; Version control &gt; git</li>
-<li>Na parte do link do repositório, coloque <a href="https://github.com/" class="uri">https://github.com/</a><seuLogin>/r4jurimetrics</li>
-<li>Dê OK e certifique-se de que o repositório foi criado.</li>
-<li>Abra um terminal: Tools &gt; Shell</li>
-<li>Arrume e rode</li>
-</ol>
-<pre><code>git config --global user.email &quot;seuEmail&quot;</code></pre>
-<p>e</p>
-<pre><code>git config --global user.name &quot;seuLogin&quot;</code></pre>
-<p>Esses comandos configuram seu usuário para registrar mudanças nos repositórios.</p>
-<ol start="11" style="list-style-type: decimal">
-<li>Rode</li>
-</ol>
-<pre><code>git remote add upstream https://github.com/abjur/r4jurimetrics.git</code></pre>
-<p>Esse comando faz com que seu repositório fique ligado ao repositório original</p>
-<ol start="12" style="list-style-type: decimal">
-<li>Rode</li>
-</ol>
-<pre><code>git fetch upstream</code></pre>
-<p>Esse comando baixa as atualizações do repositório pai, se houverem</p>
-<ol start="13" style="list-style-type: decimal">
-<li>Rode</li>
-</ol>
-<pre><code>git merge upstream/master -m &quot;merge with parent&quot;</code></pre>
-<p>Esse comando juntar o seu repositório com o código do reporitório pai. Nesse momento podem acontecer conflitos.</p>
-<p>Se tiver algum problema, veja:</p>
+<div id="usando-o-esaj-para-listar-processos" class="section level2">
+<h2><span class="header-section-number">3.6</span> Usando o <code>esaj</code> para listar processos</h2>
+<p>A CJSG possui uma série de parâmetros para consulta de decisões. As mais usadas são</p>
 <ul>
-<li><a href="https://help.github.com/articles/configuring-a-remote-for-a-fork/" class="uri">https://help.github.com/articles/configuring-a-remote-for-a-fork/</a></li>
-<li><a href="https://help.github.com/articles/syncing-a-fork/" class="uri">https://help.github.com/articles/syncing-a-fork/</a></li>
+<li>Palavras-chave</li>
+<li>Classe, assunto e câmaras</li>
+<li>Intervalos de datas</li>
 </ul>
+<div id="pesquisa-por-palavras-chave" class="section level3">
+<h3><span class="header-section-number">3.6.1</span> Pesquisa por palavras-chave</h3>
+<p>A pesquisa por palavras-chave não tem segredo. Basta você seguir as especificações deste link: <a href="https://esaj.tjsp.jus.br/WebHelp/#id_operadores_logicos.htm" class="uri">https://esaj.tjsp.jus.br/WebHelp/#id_operadores_logicos.htm</a>.</p>
+<p>É importante ressaltar alguns pontos</p>
+<ul>
+<li>O e-SAJ <strong>não</strong> disponibiliza seu tesauro publicamente. Ou seja, você terá de confiar na pesquisa por sinônimos.</li>
+<li>Você não pode fazer uma busca completamente vazia. Ou você coloca a palavra-chave, ou você especifica outro parâmetro</li>
+<li>Você pode pesquisar o termo <code>a OU (NAO a)</code>, se quiser ;)</li>
+</ul>
+</div>
+<div id="pesquisa-por-datas" class="section level3">
+<h3><span class="header-section-number">3.6.2</span> Pesquisa por datas</h3>
+<p>Você pode usar duas datas para indexar os processos de sua pesquisa. A <em>data de registro</em> é a data em que o serventuário inclui a decisão no sistema. A <em>data de julgamento</em> é a data em que o conjunto de desembargadores proferiram a decisão.</p>
+<p>Normalmente, a indexação aconteceria pela data de julgamento, já que queremos vincular os processos à sua data final, não em relação à uma data do sistema. No entanto, as pesquisas indexadas pela data de julgamento não são completamente reprodutíveis, já que à medida que o tempo passa, mais decisões são registradas, mudando a base de julgados.</p>
+<p>Regra de bolso:</p>
+<ul>
+<li>Use data de registro se quiser ter certeza de que você pegou todos os casos em um determinado intervalo de tempo.</li>
+<li>Use data de julgamento se você estiver pesquisando casos mais antigos (por exemplo, de 2016 para trás), já que a quantidade de decisões não registradas nesse escopo é negligenciável.</li>
+</ul>
+</div>
+<div id="tabelas-de-classes-assuntos-e-camaras" class="section level3">
+<h3><span class="header-section-number">3.6.3</span> Tabelas de classes, assuntos e câmaras</h3>
+<p>Classes e assuntos definem, respectivamente, os ritos processuais e os tipos processuais. As câmaras são as casinhas dos desembargadores, que podem ser ordinárias (fixas) ou extraordinárias (eventuais, criadas por diferentes motivos).</p>
+<p>As classes e assuntos são definidas em formato de árvore. Cada nível dessa árvore tem uma lista de classes/assuntos e seus respectivos códigos. As tabelas de classes/assuntos podem ser obtidas pela função <code>esaj::cjsg_table()</code>.</p>
+<p>Já baixamos essas tabelas e colocamos em arquivos <code>.rds</code> (você sabe o que é um arquivo <code>.rds</code>?)</p>
+<pre><code>FALSE Observations: 3,088
+FALSE Variables: 12
+FALSE $ name0 &lt;chr&gt; &quot;0 - Assunto não Especificado&quot;, &quot;14 - DIREITO TRIBUTÁRIO...
+FALSE $ id0   &lt;chr&gt; &quot;0&quot;, &quot;14&quot;, &quot;14&quot;, &quot;14&quot;, &quot;14&quot;, &quot;14&quot;, &quot;14&quot;, &quot;14&quot;, &quot;14&quot;, &quot;14...
+FALSE $ name1 &lt;chr&gt; NA, &quot;5913 - Limitações ao Poder de Tributar&quot;, &quot;5913 - Li...
+FALSE $ id1   &lt;chr&gt; NA, &quot;5913&quot;, &quot;5913&quot;, &quot;5913&quot;, &quot;5913&quot;, &quot;5913&quot;, &quot;5913&quot;, &quot;591...
+FALSE $ name2 &lt;chr&gt; NA, &quot;5914 - Imunidade&quot;, &quot;5914 - Imunidade&quot;, &quot;5914 - Imun...
+FALSE $ id2   &lt;chr&gt; NA, &quot;5914&quot;, &quot;5914&quot;, &quot;5914&quot;, &quot;5914&quot;, NA, NA, NA, NA, NA, ...
+FALSE $ name3 &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, ...
+FALSE $ id3   &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, ...
+FALSE $ name4 &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, ...
+FALSE $ id4   &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, ...
+FALSE $ name5 &lt;chr&gt; &quot;0 - Assunto não Especificado&quot;, &quot;10527 - Livros / Jornai...
+FALSE $ id5   &lt;chr&gt; &quot;0&quot;, &quot;10527&quot;, &quot;10528&quot;, &quot;10529&quot;, &quot;10530&quot;, &quot;5915&quot;, &quot;10540&quot;...</code></pre>
+<p>Na prática, você vai procurar os assuntos que quer nessa tabela, obter os respectivos códigos e guardar em um vetor.</p>
+<p>A tabela de câmaras segue a mesma regra. A única diferença é que não existem níveis, logo você só precisará procurar os nomes em uma coluna</p>
+<pre><code>FALSE Observations: 1,208
+FALSE Variables: 3
+FALSE $ branch &lt;chr&gt; &quot;DIREITO PÚBLICO&quot;, &quot;DIREITO PÚBLICO&quot;, &quot;DIREITO PÚBLICO&quot;...
+FALSE $ court  &lt;chr&gt; &quot;1.ª Câmara Direito Público B&quot;, &quot;1.º Grupo Direito Públ...
+FALSE $ id     &lt;chr&gt; &quot;0-434&quot;, &quot;0-438&quot;, &quot;0-439&quot;, &quot;0-57&quot;, &quot;0-209&quot;, &quot;0-1202&quot;, &quot;...</code></pre>
+</div>
+<div id="a-funcao-download_cjsg" class="section level3">
+<h3><span class="header-section-number">3.6.4</span> A função <code>download_cjsg</code></h3>
+<p>Com o escopo em mãos, podemos finalmente começar a baixar dados. Esses são os argumentos da função <code>esaj::download_cjsg()</code>. Veja a documentação <code>?esaj::download_cjsg</code></p>
+<pre><code>FALSE function (query, path = &quot;.&quot;, classes = &quot;&quot;, subjects = &quot;&quot;, courts = &quot;&quot;, 
+FALSE     trial_start = &quot;&quot;, trial_end = &quot;&quot;, registration_start = &quot;&quot;, 
+FALSE     registration_end = &quot;&quot;, min_page = 1, max_page = 1, cores = 1, 
+FALSE     wait = 0.5, tj = &quot;tjsp&quot;) 
+FALSE NULL</code></pre>
+<p>Esse código baixa duas páginas da pesquisa de jurisprudência usando a palavra-chave <code>homicídio</code>, salvando os arquivos HTML na pasta <code>data-raw/cjsg</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">esaj::<span class="kw">download_cjsg</span>(<span class="st">&quot;homicídio&quot;</span>, <span class="st">&quot;data-raw/cjsg&quot;</span>, <span class="dt">max_page =</span> <span class="dv">2</span>)</code></pre></div>
+<p><strong>Onde guardar os dados?</strong> Ao construir um scraper, é importante guardar os dados brutos na máquina ou num servidor, para reprodutibilidade e manutenção do scraper. Se estiver construindo um pacote do R, o melhor lugar para guardar esses dados é na pasta <code>data-raw</code>, como sugerido no livro <a href="http://r-pkgs.had.co.nz">r-pkgs</a>. Se os dados forem muito volumosos, pode ser necessário colocar esses documentos numa pasta externa ao pacote.</p>
+</div>
+<div id="exercicios" class="section level3">
+<h3><span class="header-section-number">3.6.5</span> Exercícios</h3>
+<ol style="list-style-type: decimal">
+<li>Faça o download das páginas 2 à 5 de uma pesquisa com palavra-chave igual ao seu nome.</li>
+<li>Descubra quantos resultados tem a sua pesquisa usando a função <code>esaj::peek_cjsg()</code>.</li>
+</ol>
+</div>
+<div id="arrumando-os-dados" class="section level3">
+<h3><span class="header-section-number">3.6.6</span> Arrumando os dados</h3>
+<p>Para transformar os arquivos HTML em bases de dados prontas para análise, você precisa rodar <code>esaj::parse_cjsg()</code>.</p>
+<pre><code>FALSE Observations: 40
+FALSE Variables: 13
+FALSE $ file            &lt;chr&gt; &quot;data-raw/cjsg/page1.html&quot;, &quot;data-raw/cjsg/pag...
+FALSE $ id_page         &lt;chr&gt; &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;, &quot;7&quot;, &quot;8&quot;, &quot;9&quot;, &quot;...
+FALSE $ id_decision     &lt;chr&gt; &quot;11103571&quot;, &quot;11103186&quot;, &quot;11103116&quot;, &quot;11102507&quot;...
+FALSE $ id_lawsuit      &lt;chr&gt; &quot;2234431-52.2017.8.26.0000&quot;, &quot;2243740-97.2017....
+FALSE $ class_subject   &lt;chr&gt; &quot;Classe/Assunto:\n\t\t\t\t\t\t\t\t\t\t\t Habea...
+FALSE $ district        &lt;chr&gt; &quot;São Paulo&quot;, &quot;Olímpia&quot;, &quot;Mongaguá&quot;, &quot;Pirajuí&quot;,...
+FALSE $ court           &lt;chr&gt; &quot;6ª Câmara de Direito Criminal&quot;, &quot;6ª Câmara de...
+FALSE $ dt_decision     &lt;chr&gt; &quot;11/01/2018&quot;, &quot;11/01/2018&quot;, &quot;14/12/2017&quot;, &quot;11/...
+FALSE $ dt_publication  &lt;chr&gt; &quot;12/01/2018&quot;, &quot;12/01/2018&quot;, &quot;12/01/2018&quot;, &quot;11/...
+FALSE $ dt_registration &lt;chr&gt; &quot;12/01/2018&quot;, &quot;12/01/2018&quot;, &quot;12/01/2018&quot;, &quot;11/...
+FALSE $ rapporteur      &lt;chr&gt; &quot;Ricardo Tucunduva&quot;, &quot;Ricardo Tucunduva&quot;, &quot;Ama...
+FALSE $ summary         &lt;chr&gt; NA, NA, &quot;TRÁFICO DE DROGAS –  recurso do minis...
+FALSE $ txt_summary     &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</code></pre>
+</div>
+<div id="exercicios-1" class="section level3">
+<h3><span class="header-section-number">3.6.7</span> Exercícios</h3>
+<ol style="list-style-type: decimal">
+<li>Na pesquisa que você fez, qual é a comarca de origem mais frequente?</li>
+<li>Qual a diferença entre <code>summary</code> e <code>txt_summary</code>?</li>
+</ol>
 </div>
 </div>
             </section>
@@ -248,8 +298,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           </div>
         </div>
       </div>
-<a href="organizacao-do-curso.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="suas-tarefas-para-1701-demora-30-min.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="listando-processos.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="usando-o-dje-para-listar-processos.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -278,7 +328,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/yihui/bookdown-crc/edit/master/01-intro.Rmd",
+"link": "https://github.com/yihui/bookdown-crc/edit/master/02-import.Rmd",
 "text": "Edit"
 },
 "download": ["bookdown.pdf"],
