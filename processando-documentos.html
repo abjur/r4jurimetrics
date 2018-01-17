@@ -198,7 +198,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="parse-cposg" class="section level3">
 <h3><span class="header-section-number">3.9.1</span> Parse CPOSG</h3>
 <p>O parser da consulta de processos foi escrito de um jeito especial. Uma página de resultados tem vários blocos de informações, entre eles i) dados básicos, ii) partes, iii) movimentações e iv) decisões. Em algumas pesquisas, temos interesse em apenas uma parte desses blocos. O parser foi construído para modular essa captura de informações.</p>
-<p>Outra diferença importante é que, nesse caso, salvamos individualmente os resultados do parse em arquivos <code>.rds</code>. Isso é feito para evitar retrabalho, já que esse processo é computacionalmente intensivo e pode acontecer do algoritmo travar no meio da execução.</p>
+<p>Outra diferença importante é que, nesse caso, salvamos individualmente os resultados do parse em arquivos <code>.rds</code>. Isso é feito para evitar retrabalho, já que esse processo é computacionalmente intensivo e o algoritmo pode travar no meio da execução.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># lista de arquivos</span>
 files_cposg &lt;-<span class="st"> </span><span class="kw">dir</span>(<span class="st">&quot;data-raw/cposg&quot;</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>)
 
@@ -213,6 +213,20 @@ parser &lt;-<span class="st"> </span>esaj::<span class="kw">make_parser</span>()
 d_cposg &lt;-<span class="st"> </span>esaj::<span class="kw">run_parser</span>(<span class="dt">file =</span> files_cposg, 
                             <span class="dt">parser =</span> parser, 
                             <span class="dt">path =</span> <span class="st">&quot;data-raw/cposg_rds&quot;</span>)</code></pre></div>
+<p>Para obter a base de dados, basta ler e empilhar os arquivos parciais que foram gerados.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rds_files &lt;-<span class="st"> </span><span class="kw">dir</span>(<span class="st">&quot;data-raw/cposg_rds&quot;</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>)
+d_cposg &lt;-<span class="st"> </span>purrr::<span class="kw">map_dfr</span>(rds_files, readRDS)
+
+<span class="kw">glimpse</span>(d_cposg)</code></pre></div>
+<pre><code>#&gt; Observations: 41
+#&gt; Variables: 7
+#&gt; $ id        &lt;chr&gt; &quot;00000091520158260558&quot;, &quot;00003442220148260347&quot;, &quot;000...
+#&gt; $ file      &lt;chr&gt; &quot;data-raw/cposg/00000091520158260558.html&quot;, &quot;data-ra...
+#&gt; $ hidden    &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FAL...
+#&gt; $ data      &lt;list&gt; [&lt;# A tibble: 13 x 2,    data              value   ...
+#&gt; $ parts     &lt;list&gt; [&lt;# A tibble: 3 x 4,      id name                  ...
+#&gt; $ movs      &lt;list&gt; [&lt;# A tibble: 23 x 2,    movement   description    ...
+#&gt; $ decisions &lt;list&gt; [&lt;# A tibble: 1 x 2,   date       decision         ...</code></pre>
 </div>
 <div id="exercicios-2" class="section level3">
 <h3><span class="header-section-number">3.9.2</span> Exercícios</h3>
