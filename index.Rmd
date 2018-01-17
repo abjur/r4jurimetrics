@@ -19,9 +19,10 @@ description: "Template de relatório da ABJ."
 #options(xtable.comment = FALSE)
 knitr::opts_chunk$set(echo = FALSE, 
                       message = FALSE, 
-                      comment = FALSE, 
+                      collapse = FALSE,
                       warning = FALSE, 
                       fig.height = 5, 
+                      comment = "#>",
                       fig.width = 9)
 # options(OutDec = ',')
 # options(knitr.table.format = 'markdown')
