@@ -8,7 +8,7 @@ knitr::include_graphics("imgs/wrangle.png")
 
 Nessa parte, vamos aprender a **baixar dados da web**. No contexto da jurimetria, isso é muito importante por dois motivos: i) você nunca pode esperar que alguém ofereça esses dados organizados para você e ii) isso é muito divertido e é um aprendizado para a vida.
 
-__Setup__:
+### Setup
 
 1. Logar no servidor http://r.abj.org.br
 2. Novo projeto > Version Control > GIT
