@@ -1,0 +1,1 @@
+"Têxto cóm açèntõs"
