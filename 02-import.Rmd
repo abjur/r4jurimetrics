@@ -248,8 +248,8 @@ assuntos <- esaj::cjsg_table("subjects")
 Já baixamos essas tabelas e colocamos em arquivos `.rds` (você sabe o que é um arquivo `.rds`?) 
 
 ```{r}
-assuntos <- readRDS("data/assuntos.rds")
-classes <- readRDS("data/classes.rds")
+assuntos <- readRDS("data/cjsg_assuntos.rds")
+classes <- readRDS("data/cjsg_classes.rds")
 
 glimpse(assuntos)
 ```
@@ -267,7 +267,7 @@ camaras <- esaj::cjsg_table("courts")
 ```
 
 ```{r}
-camaras <- readRDS("data/camaras.rds")
+camaras <- readRDS("data/cjsg_camaras.rds")
 glimpse(camaras)
 ```
 
