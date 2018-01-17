@@ -51,7 +51,6 @@ sqrt(sum(x))
 Tente entender o que é preciso fazer. 
 
 ```{r, eval=FALSE, echo=TRUE}
-
 esfrie(
   asse(
     coloque(
@@ -64,7 +63,6 @@ esfrie(
       lugar = "forma", tipo = "grande", 
       untada = TRUE), duração = "50min"), 
   "geladeira", "20min")
-
 ```
 
 Desistiu? Agora veja como fica escrevendo com o `%>%`:
