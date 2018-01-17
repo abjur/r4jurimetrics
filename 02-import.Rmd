@@ -52,7 +52,18 @@ Tente entender o que é preciso fazer.
 
 ```{r, eval=FALSE, echo=TRUE}
 
-esfrie(asse(coloque(bata(acrescente(recipiente(rep("farinha", 2), "água", "fermento", "leite", "óleo"), "farinha", até = "macio"), duração = "3min"), lugar = "forma", tipo = "grande", untada = TRUE), duração = "50min"), "geladeira", "20min")
+esfrie(
+  asse(
+    coloque(
+      bata(
+        acrescente(
+          recipiente(rep("farinha", 2), "água", 
+                     "fermento", "leite", "óleo"), 
+          "farinha", até = "macio"), 
+        duração = "3min"), 
+      lugar = "forma", tipo = "grande", 
+      untada = TRUE), duração = "50min"), 
+  "geladeira", "20min")
 
 ```
 
