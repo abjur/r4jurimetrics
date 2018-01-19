@@ -1,5 +1,220 @@
 # Work in progress
 
+### `gather`
+
+- "Empilha" o banco de dados
+
+```{r, echo=TRUE, warning=FALSE, message=FALSE}
+d_cjsg %>% 
+  filter(!is.na(id_decision)) %>% 
+  select(id_decision:dt_registration) %>% 
+  gather(key, value, -id_decision) %>% 
+  arrange(id_decision)
+```
+
+### `spread`
+
+- "Joga" uma variável nas colunas
+- É essencialmente a função inversa de `gather`
+
+```{r, echo=TRUE}
+d_cjsg %>% 
+  filter(!is.na(id_decision)) %>% 
+  select(id_decision:dt_registration) %>% 
+  gather(key, value, -id_decision) %>% 
+  spread(key, value)
+```
+
+### Funções auxiliares
+
+- `unite` junta duas ou mais colunas usando algum separador (`_`, por exemplo).
+- `separate` faz o inverso de `unite`, e uma coluna em várias usando um separador.
+
+```{r, echo=TRUE, echo=TRUE}
+d_cjsg %>% 
+  select(id_lawsuit, class_subject) %>% 
+  separate(class_subject, c('classe', 'assunto'), sep = ' / ', 
+           extra = 'merge', fill = 'right') %>% 
+  count(assunto, sort = TRUE)
+```
+
+### `nest` e `unnest`
+
+`nest` e `unnest` são operações inversas e servem para tratar dados complecos, como o que temos em `d_cposg`
+
+```{r, echo=TRUE, echo=TRUE}
+d_cposg <- read_rds(glue("{path}/d_cposg.rds"))
+
+d_partes <- d_cposg %>% 
+  select(id_lawsuit, parts) %>% 
+  unnest(parts)
+
+d_data <- d_cposg %>% 
+  select(id_lawsuit, data) %>% 
+  unnest(data)
+```
+
+### Um pouco mais de transformação de dados
+
+- Para juntar tabelas, usar `inner_join`, `left_join`, `anti_join`, etc.
+- Para realizar operações mais gerais, usar `do`.
+- Para retirar duplicatas, utilizar `distinct`.
+- Para fazer algumas mágicas, trabalhar com 
+
+
+
+
+
+<!-- ----------------------------------------------------------------------- -->
+
+
+
+
+
+
+
+## Finalizando análise das câmaras
+
+No exemplo das câmaras, vamos fazer três gráficos. O primeiro mostra a proporção de processos por assunto em cada câmara.
+
+```{r, echo=TRUE, warning=FALSE, fig.width=9, fig.height=5}
+d_cjsg %>%
+  # transformacao
+  filter(!is.na(court)) %>% 
+  separate(class_subject, c('classe', 'assunto'), sep = ' / ', 
+           extra = 'merge', fill = 'right') %>% 
+  mutate(assunto = assunto %>% 
+           str_wrap(19) %>% 
+           fct_infreq() %>% 
+           fct_rev() %>% 
+           fct_lump(n = 11, other_level = "Outros")) %>% 
+  add_count(assunto) %>% 
+  group_by(court, assunto) %>% 
+  summarise(nn = n()) %>% 
+  mutate(ntot = sum(nn), prop = nn / ntot) %>%
+  ungroup() %>%
+  mutate(num = parse_number(court),
+         num = str_pad(num, 2, pad = "0")) %>% 
+  # grafico
+  ggplot(aes(x = num, fill = assunto, y = prop)) +
+  geom_col(colour = 'black', position = "stack") +
+  theme_minimal(14) +
+  scale_y_continuous(labels = scales::percent) +
+  labs(x = 'Órgão julgador', 
+       y = 'Proporção de \nprocessos por assunto',
+       fill = "") +
+  guides(fill = guide_legend(reverse = TRUE)) +
+  theme(legend.position = "bottom")
+```
+
+O segundo mostra a proporção de decisões antes e depois da virada.
+
+```{r, echo=TRUE, fig.width=9, fig.height=5}
+# essa é a classificação final
+negaram <- regex('negara?m|nega-se|negam-se', ignore_case = TRUE)
+parcial <- regex('parcial', ignore_case = TRUE)
+deram <- regex('deram|mantiv|dá-se', ignore_case = TRUE)
+extinto <- regex('extin', ignore_case = TRUE)
+nulo <- regex('nul', ignore_case = TRUE)
+nconhec <- regex('conhec', ignore_case = TRUE)
+tipos_decisao <- function(decisoes) {
+  case_when(
+    str_detect(decisoes, negaram) ~ 'negado',
+    str_detect(decisoes, parcial) ~ 'parcial',
+    str_detect(decisoes, deram) ~ 'provido',
+    str_detect(decisoes, extinto) ~ 'extinto',
+    str_detect(decisoes, nulo) ~ 'nulo',
+    str_detect(decisoes, nconhec) ~ 'não conhecido',
+    TRUE ~ "outros")
+}
+
+partes_apelacoes <- d_cposg %>% 
+  select(id, id_lawsuit, parts) %>% 
+  unnest(parts) %>% 
+  filter(part == 'Apelado', str_detect(name, '[Mm]inist')) %>% 
+  distinct(id_lawsuit)
+
+d_decisoes <- d_cposg %>% 
+  select(id, id_lawsuit, decisions) %>% 
+  unnest(decisions) %>% 
+  semi_join(partes_apelacoes, "id_lawsuit") %>% 
+  arrange(desc(date)) %>%  
+  group_by(id_lawsuit) %>% 
+  slice(1) %>% 
+  ungroup()
+
+# write_rds(d_decisoes, glue("{path}/d_decisoes.rds"), compress = "bz2")
+
+decisoes <- d_decisoes %>% 
+  mutate(tipo_decisao = tipos_decisao(decision)) %>% 
+  select(id_lawsuit, tipo_decisao)
+  
+decisoes_mes <- d_cjsg %>%
+  inner_join(decisoes, 'id_lawsuit') %>% 
+  mutate(data = dmy(dt_decision)) %>%
+  arrange(desc(data)) %>% 
+  distinct(id_lawsuit, .keep_all = TRUE) %>% 
+  mutate(mes = floor_date(data, 'month')) %>% 
+  filter(mes >= "2017-12-01")
+
+
+decisoes_mes %>%
+  mutate(tipo_decisao = case_when(
+    tipo_decisao == "negado" ~ "Negado",
+    tipo_decisao == "provido" ~ "Provido",
+    tipo_decisao == "parcial" ~ "Parcialmente",
+    TRUE ~ "Outros"
+  )) %>% 
+  group_by(mes, tipo_decisao) %>% 
+  summarise(n = n()) %>% 
+  mutate(prop = n / sum(n)) %>%
+  ungroup() %>% 
+  complete(mes, tipo_decisao, fill = list(n = 0, prop = 0)) %>% 
+  # grafico
+  ggplot(aes(x = as.character(mes), y = prop, 
+             colour = tipo_decisao, group = tipo_decisao)) +
+  geom_line() +
+  geom_point(size = 3) +
+  geom_text(aes(y = 0.65, label = n, colour = NULL, group = NULL),
+            data = count(decisoes_mes, mes), size = 5) +
+  scale_y_continuous(labels = scales::percent) +
+  scale_x_discrete(labels = c("Dezembro/2017", "Janeiro/2018")) +
+  xlab('Mês') +
+  ylab('Proporção de cada tipo de decisão') +
+  theme_minimal(16)
+```
+
+O terceiro mostra a proporção de cada tipo de decisão em cada câmara.
+
+```{r, echo=TRUE, eval=TRUE, fig.width=9, fig.height=6}
+d_cjsg %>%
+  filter(!is.na(court)) %>% 
+  distinct(id_lawsuit, .keep_all = TRUE) %>% 
+  inner_join(decisoes, 'id_lawsuit') %>% 
+  group_by(court, tipo_decisao) %>% 
+  summarise(n = n()) %>% 
+  mutate(ntot = sum(n), prop = n / ntot) %>%
+  ungroup() %>%
+  filter(ntot > 10) %>% 
+  mutate(num = parse_number(court),
+         num = str_pad(num, 2, pad = "0")) %>% 
+  complete(num, tipo_decisao, fill = list(n = 0, prop = 0)) %>% 
+  arrange(tipo_decisao) %>% 
+  mutate(num = fct_reorder(num, prop, fun = nth, n = 3, .desc = TRUE),
+         tipo_decisao = fct_reorder(tipo_decisao, prop)) %>% 
+  ggplot(aes(x = num, fill = tipo_decisao, y = prop)) +
+  geom_bar(stat = 'identity', colour = 'black', position = 'stack') +
+  scale_y_continuous(labels = scales::percent) +
+  coord_flip() +
+  theme_minimal(16) +
+  theme(legend.position = "bottom") +
+  labs(x = "Câmara", y = 'Proporção de processos por tipo de decisão', 
+       fill = "Decisão")
+```
+
+
+
+
 ## purrr
 
 Programação funcional (PF) é um paradigma de programação com o qual a maior parte
