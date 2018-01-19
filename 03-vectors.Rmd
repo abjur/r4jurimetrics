@@ -45,8 +45,9 @@ dir.create(path, showWarnings = FALSE)
 
 Quais câmaras vamos baixar? OBS: Usa um pouco de `stringr` e `dplyr`, que veremos adiante.
 
-```{r eval=FALSE, echo=TRUE}
-camaras <- cjsg_table("courts")
+```{r, echo=TRUE}
+# camaras <- cjsg_table("courts")
+camaras <- read_rds("data/cjsg_camaras.rds")
 id_camaras <- camaras %>% 
   filter(str_detect(court, "Câmara.*Direito Criminal$")) %>% 
   pull(id)
