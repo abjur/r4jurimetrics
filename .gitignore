@@ -4,3 +4,6 @@
 .Ruserdata
 _book
 _bookdown_files
+data-raw/camaras/cjsg
+data-raw/camaras/cposg
+data-raw/camaras/cposg_rds
