@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-
-<link rel="next" href="introducao.html">
+<link rel="prev" href="transformacao-de-dados-1.html">
+<link rel="next" href="pacote-lubridate-para-datas.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -249,56 +249,105 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">R para jurimetria</h1>
-<h4 class="author"><em>Associação Brasileira de Jurimetria</em></h4>
-<h4 class="date"><em>19 de January de 2018</em></h4>
-</div>
-<div id="apresentacao" class="section level1">
-<h1><span class="header-section-number">Capítulo 1</span> Apresentação</h1>
-<p>Olá! Bem vindo ao curso R para Jurimetria :)</p>
-<p>Essa é a primeira iteração do curso de R para Jurimetria da ABJ. Nesse curso abordamos aspectos práticos da Jurimetria, essenciais para um profissional da Estatística que tenha interesse em trabalhar nessa área.</p>
-<p>O curso é voltado para graduandos em estatística e está organizado em cinco aulas.</p>
-<ul>
-<li>(15/01) Introdução à jurimetria e setup
-<ul>
-<li>Definição</li>
-<li>Terminologia</li>
-<li>Tipos de pesquisa e exemplos</li>
-<li>Ambientação com R e RStudio</li>
-<li>RMarkdown</li>
-</ul></li>
-<li>(17/01) Ferramentas da ABJ para importação
-<ul>
-<li>Introdução ao web scraping com <code>httr</code> e <code>rvest</code>.</li>
-<li>Pacotes <code>abjutils</code>, <code>esaj</code> e <code>dje</code>.</li>
-</ul></li>
-<li>(19/01) Tidyverse: vetores
-<ul>
-<li>Vetores: pacotes <code>stringr</code>, <code>lubridate</code>, <code>forcats</code>.</li>
-<li>Programação funcional: <code>purrr</code>.</li>
-</ul></li>
-<li>(22/01) Tidyverse: bd
-<ul>
-<li>Transformação: pacotes <code>dplyr</code>, <code>tidyr</code>.</li>
-<li>Aplicação: Câmaras criminais.</li>
-</ul></li>
-<li>(24/01) Modelagem
-<ul>
-<li>Especialização de varas: pacotes <code>bnlearn</code> e <code>survival</code>.</li>
-<li>Captchas: pacotes <code>keras</code> e <code>decryptr</code>.</li>
-</ul></li>
-</ul>
-<p>Para o curso, será necessário ter conhecimentos do software estatístico R, como a lógica de programação, sintaxe do R e ambientação com o RStudio.</p>
+<div id="revisao" class="section level2">
+<h2><span class="header-section-number">4.1</span> Revisão</h2>
+<p>Obtenção dos nossos dados</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
+<span class="kw">library</span>(esaj)
+<span class="kw">library</span>(glue)
+<span class="kw">library</span>(abjutils)
+path &lt;-<span class="st"> &quot;data-raw/camaras&quot;</span> <span class="co"># onde salvar?</span>
+<span class="kw">dir.create</span>(path, <span class="dt">showWarnings =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<p>Quais câmaras vamos baixar? OBS: Usa um pouco de <code>stringr</code> e <code>dplyr</code>, que veremos adiante.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># camaras &lt;- cjsg_table(&quot;courts&quot;)</span>
+camaras &lt;-<span class="st"> </span><span class="kw">read_rds</span>(<span class="st">&quot;data/cjsg_camaras.rds&quot;</span>)
+id_camaras &lt;-<span class="st"> </span>camaras %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(<span class="kw">str_detect</span>(court, <span class="st">&quot;Câmara.*Direito Criminal$&quot;</span>)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">pull</span>(id)</code></pre></div>
+<p>Quantas decisões no total?</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">peek_cjsg</span>(<span class="dt">query =</span> <span class="st">&quot;&quot;</span>, <span class="dt">courts =</span> id_camaras,
+          <span class="dt">registration_start =</span> <span class="st">&quot;2017-12-01&quot;</span>, <span class="dt">registration_end =</span> <span class="st">&quot;2018-01-18&quot;</span>)</code></pre></div>
+<p>Baixando decisões: CJSG</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cjsg_path &lt;-<span class="st"> </span><span class="kw">glue</span>(<span class="st">&quot;{path}/cjsg&quot;</span>)
+<span class="kw">download_cjsg</span>(<span class="dt">query =</span> <span class="st">&quot;&quot;</span>, <span class="dt">path =</span> cjsg_path, 
+              <span class="dt">courts =</span> id_camaras,
+              <span class="dt">registration_start =</span> <span class="st">&quot;2017-12-01&quot;</span>, 
+              <span class="dt">registration_end =</span> <span class="st">&quot;2018-01-18&quot;</span>,
+              <span class="dt">max_page =</span> <span class="ot">Inf</span>, <span class="dt">wait =</span> <span class="fl">0.8</span>)
 
+cjsg_files &lt;-<span class="st"> </span><span class="kw">dir</span>(cjsg_path, <span class="dt">full.names =</span> <span class="ot">TRUE</span>, <span class="dt">pattern =</span> <span class="st">&quot;page&quot;</span>)
+
+<span class="co"># parse</span>
+d_cjsg &lt;-<span class="st"> </span><span class="kw">parse_cjsg</span>(cjsg_files)
+
+<span class="co"># salvando tibble parseada</span>
+<span class="kw">write_rds</span>(d_cjsg, <span class="kw">glue</span>(<span class="st">&quot;{path}/d_cjsg.rds&quot;</span>), <span class="dt">compress =</span> <span class="st">&quot;bz2&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d_cjsg &lt;-<span class="st"> </span><span class="kw">read_rds</span>(<span class="kw">glue</span>(<span class="st">&quot;{path}/d_cjsg.rds&quot;</span>))
+<span class="kw">glimpse</span>(d_cjsg)</code></pre></div>
+<pre><code>#&gt; Observations: 11,731
+#&gt; Variables: 14
+#&gt; $ file            &lt;chr&gt; &quot;data-raw/camaras/cjsg/page100.html&quot;, &quot;data-ra...
+#&gt; $ id_page         &lt;chr&gt; &quot;1981&quot;, &quot;1982&quot;, &quot;1983&quot;, &quot;1984&quot;, &quot;1985&quot;, &quot;1986&quot;...
+#&gt; $ id_decision     &lt;chr&gt; &quot;11094999&quot;, &quot;11093733&quot;, &quot;11093677&quot;, &quot;11093270&quot;...
+#&gt; $ id_lawsuit      &lt;chr&gt; &quot;0057003-20.2017.8.26.0000&quot;, &quot;0052762-03.2017....
+#&gt; $ class_subject   &lt;chr&gt; &quot;Classe/Assunto:\n\t\t\t\t\t\t\t\t\t\t\t Habea...
+#&gt; $ district        &lt;chr&gt; &quot;Cosmópolis&quot;, &quot;São Paulo&quot;, &quot;Ribeirão Preto&quot;, &quot;...
+#&gt; $ court           &lt;chr&gt; &quot;3ª Câmara de Direito Criminal&quot;, &quot;3ª Câmara de...
+#&gt; $ dt_decision     &lt;chr&gt; &quot;19/12/2017&quot;, &quot;19/12/2017&quot;, &quot;19/12/2017&quot;, &quot;14/...
+#&gt; $ dt_publication  &lt;chr&gt; &quot;19/12/2017&quot;, &quot;19/12/2017&quot;, &quot;19/12/2017&quot;, &quot;19/...
+#&gt; $ dt_registration &lt;chr&gt; &quot;19/12/2017&quot;, &quot;19/12/2017&quot;, &quot;19/12/2017&quot;, &quot;19/...
+#&gt; $ rapporteur      &lt;chr&gt; &quot;Luiz Antonio Cardoso&quot;, &quot;Luiz Antonio Cardoso&quot;...
+#&gt; $ summary         &lt;chr&gt; NA, NA, NA, &quot;Execução Penal –  Comutação de Pe...
+#&gt; $ txt_summary     &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
+#&gt; $ result          &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...</code></pre>
+<p>Baixando processos: CPOSG</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cposg_path &lt;-<span class="st"> </span><span class="kw">glue</span>(<span class="st">&quot;{path}/cposg&quot;</span>)
+
+<span class="co"># baixando processos individuais</span>
+d_cjsg %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(!<span class="kw">is.na</span>(id_lawsuit)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">pull</span>(id_lawsuit) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">unique</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">clean_id</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">download_cposg</span>(cposg_path)
+
+cposg_files &lt;-<span class="st"> </span><span class="kw">dir</span>(cposg_path, <span class="dt">full.names =</span> <span class="ot">TRUE</span>)
+
+<span class="co"># parse</span>
+parser &lt;-<span class="st"> </span><span class="kw">make_parser</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">parse_data</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">parse_parts</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">parse_decisions</span>()
+
+<span class="co"># esse parser salva intermediários em rds</span>
+rds_path &lt;-<span class="st"> </span><span class="kw">glue</span>(<span class="st">&quot;{path}/cposg_rds&quot;</span>)
+<span class="kw">run_parser</span>(cposg_files, parser, <span class="dt">path =</span> rds_path)
+rds_files &lt;-<span class="st"> </span><span class="kw">dir</span>(rds_path, <span class="dt">full.names =</span> <span class="ot">TRUE</span>)
+d_cposg &lt;-<span class="st"> </span><span class="kw">map_dfr</span>(rds_files, read_rds) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">id_lawsuit =</span> <span class="kw">build_id</span>(<span class="kw">str_extract</span>(id, <span class="st">&quot;^[0-9]+&quot;</span>))) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(id, id_lawsuit, <span class="kw">everything</span>())
+
+<span class="co"># salvando tibble parseada</span>
+<span class="kw">write_rds</span>(d_cposg, <span class="kw">glue</span>(<span class="st">&quot;{path}/d_cposg.rds&quot;</span>), <span class="dt">compress =</span> <span class="st">&quot;bz2&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d_cposg &lt;-<span class="st"> </span><span class="kw">read_rds</span>(<span class="kw">glue</span>(<span class="st">&quot;{path}/d_cposg.rds&quot;</span>))
+<span class="kw">glimpse</span>(d_cposg)</code></pre></div>
+<pre><code>#&gt; Observations: 11,762
+#&gt; Variables: 7
+#&gt; $ id         &lt;chr&gt; &quot;00000037120168260073&quot;, &quot;00000040920178260142&quot;, &quot;00...
+#&gt; $ id_lawsuit &lt;chr&gt; &quot;0000003-71.2016.8.26.0073&quot;, &quot;0000004-09.2017.8.26....
+#&gt; $ file       &lt;chr&gt; &quot;data-raw/camaras/cposg/00000037120168260073.html&quot;,...
+#&gt; $ hidden     &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FA...
+#&gt; $ data       &lt;list&gt; [&lt;# A tibble: 11 x 2,    data              value  ...
+#&gt; $ parts      &lt;list&gt; [&lt;# A tibble: 3 x 4,      id name                 ...
+#&gt; $ decisions  &lt;list&gt; [&lt;# A tibble: 1 x 2,   date       decision        ...</code></pre>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="introducao.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="transformacao-de-dados-1.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="pacote-lubridate-para-datas.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -327,7 +376,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/yihui/bookdown-crc/edit/master/index.Rmd",
+"link": "https://github.com/yihui/bookdown-crc/edit/master/03-vectors.Rmd",
 "text": "Edit"
 },
 "download": ["bookdown.pdf"],

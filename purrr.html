@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-
-<link rel="next" href="introducao.html">
+<link rel="prev" href="work-in-progress.html">
+<link rel="next" href="iteracoes-basicas.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -249,56 +249,20 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">R para jurimetria</h1>
-<h4 class="author"><em>Associação Brasileira de Jurimetria</em></h4>
-<h4 class="date"><em>19 de January de 2018</em></h4>
-</div>
-<div id="apresentacao" class="section level1">
-<h1><span class="header-section-number">Capítulo 1</span> Apresentação</h1>
-<p>Olá! Bem vindo ao curso R para Jurimetria :)</p>
-<p>Essa é a primeira iteração do curso de R para Jurimetria da ABJ. Nesse curso abordamos aspectos práticos da Jurimetria, essenciais para um profissional da Estatística que tenha interesse em trabalhar nessa área.</p>
-<p>O curso é voltado para graduandos em estatística e está organizado em cinco aulas.</p>
-<ul>
-<li>(15/01) Introdução à jurimetria e setup
-<ul>
-<li>Definição</li>
-<li>Terminologia</li>
-<li>Tipos de pesquisa e exemplos</li>
-<li>Ambientação com R e RStudio</li>
-<li>RMarkdown</li>
-</ul></li>
-<li>(17/01) Ferramentas da ABJ para importação
-<ul>
-<li>Introdução ao web scraping com <code>httr</code> e <code>rvest</code>.</li>
-<li>Pacotes <code>abjutils</code>, <code>esaj</code> e <code>dje</code>.</li>
-</ul></li>
-<li>(19/01) Tidyverse: vetores
-<ul>
-<li>Vetores: pacotes <code>stringr</code>, <code>lubridate</code>, <code>forcats</code>.</li>
-<li>Programação funcional: <code>purrr</code>.</li>
-</ul></li>
-<li>(22/01) Tidyverse: bd
-<ul>
-<li>Transformação: pacotes <code>dplyr</code>, <code>tidyr</code>.</li>
-<li>Aplicação: Câmaras criminais.</li>
-</ul></li>
-<li>(24/01) Modelagem
-<ul>
-<li>Especialização de varas: pacotes <code>bnlearn</code> e <code>survival</code>.</li>
-<li>Captchas: pacotes <code>keras</code> e <code>decryptr</code>.</li>
-</ul></li>
-</ul>
-<p>Para o curso, será necessário ter conhecimentos do software estatístico R, como a lógica de programação, sintaxe do R e ambientação com o RStudio.</p>
-
+<div id="purrr" class="section level2">
+<h2><span class="header-section-number">5.1</span> purrr</h2>
+<p>Programação funcional (PF) é um paradigma de programação com o qual a maior parte dos estatísticos não está familiarizada. Essa técnica costuma ser ignorada na maioria dos tutoriais de R por não estar diretamente envolvida com manipulação e visualização de dados, mas isso não quer dizer que ela não tenha suas vantagens.</p>
+<p>Usando PF podemos criar códigos mais concisos e “pipeáveis”, características que por tabela também tornam o processo de debug mais simples. Além disso, códigos funcionais geralmente são paralelizáveis, permitindo que tratemos problemas muito grandes com poucas modificações.</p>
+<p>Apesar de o R <code>base</code> já ter funções que podem ser consideradas elementos de PF, a implementação destas não é tão elegante e, portanto, este tutorial abordará somente a implementação de PF realizada pelo pacote <code>purrr</code>.</p>
+<p>Para instalar e carregar o <code>purrr</code>, rode o código a seguir. Nas próximas seções deste tutorial, assumiremos que você têm esse pacote instalado e carregado.</p>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="introducao.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="work-in-progress.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="iteracoes-basicas.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -327,7 +291,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/yihui/bookdown-crc/edit/master/index.Rmd",
+"link": "https://github.com/yihui/bookdown-crc/edit/master/04-transform.Rmd",
 "text": "Edit"
 },
 "download": ["bookdown.pdf"],

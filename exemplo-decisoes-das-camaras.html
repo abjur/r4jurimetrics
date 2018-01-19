@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-
-<link rel="next" href="introducao.html">
+<link rel="prev" href="expressoes-regulares.html">
+<link rel="next" href="pacotes-dplyr-e-tidyr.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -249,56 +249,53 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">R para jurimetria</h1>
-<h4 class="author"><em>Associação Brasileira de Jurimetria</em></h4>
-<h4 class="date"><em>19 de January de 2018</em></h4>
-</div>
-<div id="apresentacao" class="section level1">
-<h1><span class="header-section-number">Capítulo 1</span> Apresentação</h1>
-<p>Olá! Bem vindo ao curso R para Jurimetria :)</p>
-<p>Essa é a primeira iteração do curso de R para Jurimetria da ABJ. Nesse curso abordamos aspectos práticos da Jurimetria, essenciais para um profissional da Estatística que tenha interesse em trabalhar nessa área.</p>
-<p>O curso é voltado para graduandos em estatística e está organizado em cinco aulas.</p>
-<ul>
-<li>(15/01) Introdução à jurimetria e setup
-<ul>
-<li>Definição</li>
-<li>Terminologia</li>
-<li>Tipos de pesquisa e exemplos</li>
-<li>Ambientação com R e RStudio</li>
-<li>RMarkdown</li>
-</ul></li>
-<li>(17/01) Ferramentas da ABJ para importação
-<ul>
-<li>Introdução ao web scraping com <code>httr</code> e <code>rvest</code>.</li>
-<li>Pacotes <code>abjutils</code>, <code>esaj</code> e <code>dje</code>.</li>
-</ul></li>
-<li>(19/01) Tidyverse: vetores
-<ul>
-<li>Vetores: pacotes <code>stringr</code>, <code>lubridate</code>, <code>forcats</code>.</li>
-<li>Programação funcional: <code>purrr</code>.</li>
-</ul></li>
-<li>(22/01) Tidyverse: bd
-<ul>
-<li>Transformação: pacotes <code>dplyr</code>, <code>tidyr</code>.</li>
-<li>Aplicação: Câmaras criminais.</li>
-</ul></li>
-<li>(24/01) Modelagem
-<ul>
-<li>Especialização de varas: pacotes <code>bnlearn</code> e <code>survival</code>.</li>
-<li>Captchas: pacotes <code>keras</code> e <code>decryptr</code>.</li>
-</ul></li>
-</ul>
-<p>Para o curso, será necessário ter conhecimentos do software estatístico R, como a lógica de programação, sintaxe do R e ambientação com o RStudio.</p>
+<div id="exemplo-decisoes-das-camaras" class="section level2">
+<h2><span class="header-section-number">4.5</span> Exemplo: decisões das câmaras</h2>
+<p>Suponha que temos o seguinte vetor de textos de decisões:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d_decisoes &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="kw">glue</span>(<span class="st">&#39;{path}/d_decisoes.rds&#39;</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">negaram &lt;-<span class="st"> </span><span class="kw">regex</span>(<span class="st">&#39;negaram&#39;</span>, <span class="dt">ignore_case =</span> <span class="ot">TRUE</span>)
+parcial &lt;-<span class="st"> </span><span class="kw">regex</span>(<span class="st">&#39;parcial&#39;</span>, <span class="dt">ignore_case =</span> <span class="ot">TRUE</span>)
+deram &lt;-<span class="st"> </span><span class="kw">regex</span>(<span class="st">&#39;deram&#39;</span>, <span class="dt">ignore_case =</span> <span class="ot">TRUE</span>)
 
+tipos_decisao &lt;-<span class="st"> </span>function(decisoes) {
+  <span class="kw">case_when</span>(
+    <span class="kw">str_detect</span>(decisoes, negaram) ~<span class="st"> &#39;negado&#39;</span>,
+    <span class="kw">str_detect</span>(decisoes, parcial) ~<span class="st"> &#39;parcial&#39;</span>,
+    <span class="kw">str_detect</span>(decisoes, deram) ~<span class="st"> &#39;provido&#39;</span>,
+    <span class="ot">TRUE</span> ~<span class="st"> &quot;outros&quot;</span>)
+}
+
+tipo_decisao &lt;-<span class="st"> </span><span class="kw">tipos_decisao</span>(d_decisoes$decision)
+<span class="kw">table</span>(tipo_decisao)</code></pre></div>
+<pre><code>#&gt; tipo_decisao
+#&gt;  negado  outros parcial provido 
+#&gt;    2638     191    1726     321</code></pre>
+<p>Exercício</p>
+<ol style="list-style-type: decimal">
+<li>melhore essa classificação. Dica: é importante avaliar os casos que as expressões regulares não capturaram, para verficar se deixamos algo de fora.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_trunc</span>(d_decisoes$decision[tipo_decisao ==<span class="st"> &quot;outros&quot;</span>], <span class="dv">60</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">head</span>(<span class="dv">10</span>)</code></pre></div>
+<pre><code>#&gt;  [1] &quot;Em sede de juízo de retratação (artigo 1030, inciso II, d...&quot;
+#&gt;  [2] &quot;Reconheceram, de ofício, a nulidade da sentença por ausên...&quot;
+#&gt;  [3] &quot;de ofício julgaram extinta a punibilidade de Rui Devanir ...&quot;
+#&gt;  [4] &quot;Nos termos do artigo 107, inciso I, do Código Penal, decl...&quot;
+#&gt;  [5] &quot;MANTIVERAM o regime inicial semiaberto fixado no v. acórd...&quot;
+#&gt;  [6] &quot;Julgaram extinta a punibilidade da acusada, pela ocorrênc...&quot;
+#&gt;  [7] &quot;De ofício, JULGARAM EXTINTA a pretensão punitiva estatal ...&quot;
+#&gt;  [8] &quot;Julgaram extinta a punibilidade, pela prescrição da prete...&quot;
+#&gt;  [9] &quot;Declararam EXTINTA A PUNIBILIDADE pela prescrição da pret...&quot;
+#&gt; [10] &quot;DECLARARAM EXTINTA A PUNIBILIDADE de GUILHERME MARQUINE D...&quot;</code></pre>
+<p>Mas como é que <code>d_decisoes</code> foi obtido de <code>d_cposg</code>? Para saber isso, precisaremos aprimorar nossos conhecimentos obtidos de <code>lubridate</code> e <code>stringr</code>, completando com o melhor toolkit de transformação de dados de todos os tempos: <code>dplyr</code> e seus amigos.</p>
+<!-- ----------------------------------------------------------------------- -->
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="introducao.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="expressoes-regulares.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="pacotes-dplyr-e-tidyr.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -327,7 +324,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/yihui/bookdown-crc/edit/master/index.Rmd",
+"link": "https://github.com/yihui/bookdown-crc/edit/master/03-vectors.Rmd",
 "text": "Edit"
 },
 "download": ["bookdown.pdf"],

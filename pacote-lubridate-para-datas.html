@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-
-<link rel="next" href="introducao.html">
+<link rel="prev" href="revisao.html">
+<link rel="next" href="pacote-stringr-para-trabalhar-com-textos.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -249,56 +249,56 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">R para jurimetria</h1>
-<h4 class="author"><em>Associação Brasileira de Jurimetria</em></h4>
-<h4 class="date"><em>19 de January de 2018</em></h4>
-</div>
-<div id="apresentacao" class="section level1">
-<h1><span class="header-section-number">Capítulo 1</span> Apresentação</h1>
-<p>Olá! Bem vindo ao curso R para Jurimetria :)</p>
-<p>Essa é a primeira iteração do curso de R para Jurimetria da ABJ. Nesse curso abordamos aspectos práticos da Jurimetria, essenciais para um profissional da Estatística que tenha interesse em trabalhar nessa área.</p>
-<p>O curso é voltado para graduandos em estatística e está organizado em cinco aulas.</p>
+<div id="pacote-lubridate-para-datas" class="section level2">
+<h2><span class="header-section-number">4.2</span> Pacote <code>lubridate</code> para datas</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(lubridate)</code></pre></div>
+<p>Originalmente, o <code>R</code> é ruim para trabalhar com datas, o que causa frustração e perda de tempo nas análises. O pacote <code>lubridate</code> foi criado para simplificar ao máximo a leitura de datas e extração de informações dessas datas.</p>
+<p>A função mais importante para leitura de dados no <code>lubridate</code> é a <code>ymd</code>. Essa função serve para ler qualquer data de uma <code>string</code> no formato <code>YYYY-MM-DD</code>. Essa função é útil pois funciona com qualquer separador entre os elementos da data e também porque temos uma função para cada formato (<code>mdy</code>, <code>dmy</code>, <code>dym</code>, <code>myd</code>, <code>ydm</code>).</p>
+<div id="exercicios-4" class="section level3">
+<h3><span class="header-section-number">4.2.1</span> Exercícios</h3>
+<ol style="list-style-type: decimal">
+<li>Leia <code>January 20, 2018</code> com o <code>lubridate</code>.</li>
+<li>O que acontece se você rodar <code>ymd(&quot;2017-02-29&quot;)</code>? e <code>ymd(&quot;2016-02-29&quot;)</code>?</li>
+<li>Encontre um caso em que o <code>lubridate</code> não funciona como você gostaria.</li>
+</ol>
+<p>Outras funções importantes</p>
 <ul>
-<li>(15/01) Introdução à jurimetria e setup
-<ul>
-<li>Definição</li>
-<li>Terminologia</li>
-<li>Tipos de pesquisa e exemplos</li>
-<li>Ambientação com R e RStudio</li>
-<li>RMarkdown</li>
-</ul></li>
-<li>(17/01) Ferramentas da ABJ para importação
-<ul>
-<li>Introdução ao web scraping com <code>httr</code> e <code>rvest</code>.</li>
-<li>Pacotes <code>abjutils</code>, <code>esaj</code> e <code>dje</code>.</li>
-</ul></li>
-<li>(19/01) Tidyverse: vetores
-<ul>
-<li>Vetores: pacotes <code>stringr</code>, <code>lubridate</code>, <code>forcats</code>.</li>
-<li>Programação funcional: <code>purrr</code>.</li>
-</ul></li>
-<li>(22/01) Tidyverse: bd
-<ul>
-<li>Transformação: pacotes <code>dplyr</code>, <code>tidyr</code>.</li>
-<li>Aplicação: Câmaras criminais.</li>
-</ul></li>
-<li>(24/01) Modelagem
-<ul>
-<li>Especialização de varas: pacotes <code>bnlearn</code> e <code>survival</code>.</li>
-<li>Captchas: pacotes <code>keras</code> e <code>decryptr</code>.</li>
-</ul></li>
+<li><code>ymd_hms</code>: lê datas e horários, generalizando <code>ymd</code>.</li>
+<li><code>year</code>, <code>month</code>, <code>day</code>, <code>quarter</code>, <code>weekday</code>, <code>week</code>: extraem componentes da data.</li>
+<li><code>years</code>, <code>months</code>, <code>days</code>: adicionam tempos a uma data, ajudando a criar vetores de datas. Por exemplo</li>
 </ul>
-<p>Para o curso, será necessário ter conhecimentos do software estatístico R, como a lógica de programação, sintaxe do R e ambientação com o RStudio.</p>
-
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ymd</span>(<span class="st">&#39;2015-01-01&#39;</span>) +<span class="st"> </span><span class="kw">months</span>(<span class="dv">0</span>:<span class="dv">11</span>)</code></pre></div>
+<pre><code>#&gt;  [1] &quot;2015-01-01&quot; &quot;2015-02-01&quot; &quot;2015-03-01&quot; &quot;2015-04-01&quot; &quot;2015-05-01&quot;
+#&gt;  [6] &quot;2015-06-01&quot; &quot;2015-07-01&quot; &quot;2015-08-01&quot; &quot;2015-09-01&quot; &quot;2015-10-01&quot;
+#&gt; [11] &quot;2015-11-01&quot; &quot;2015-12-01&quot;</code></pre>
+<ul>
+<li><code>floor_date</code> e <code>ceiling_date</code>: arredonda datas para uma unidade de interesse. Útil para agregar dados diários por semana, mês, trimestre etc.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(<span class="st">&quot;2017-04-10&quot;</span>, <span class="st">&quot;2017-08-08&quot;</span>, <span class="st">&quot;2017-02-28&quot;</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">ymd</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">floor_date</span>(<span class="st">&quot;months&quot;</span>)</code></pre></div>
+<pre><code>#&gt; [1] &quot;2017-04-01&quot; &quot;2017-08-01&quot; &quot;2017-02-01&quot;</code></pre>
+<p>Outro exemplo:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(<span class="st">&quot;2017-04-10&quot;</span>, <span class="st">&quot;2017-08-08&quot;</span>, <span class="st">&quot;2017-02-28&quot;</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">ymd</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">ceiling_date</span>(<span class="st">&quot;half year&quot;</span>)</code></pre></div>
+<pre><code>#&gt; [1] &quot;2017-07-01&quot; &quot;2018-01-01&quot; &quot;2017-07-01&quot;</code></pre>
+<p>Mais informações:</p>
+<ul>
+<li>ver <a href="https://cran.r-project.org/web/packages/lubridate/vignettes/lubridate.html">a vignette do lubridate</a></li>
+<li>ver <a href="https://github.com/rstudio/cheatsheets/raw/master/lubridate.pdf">o cheatsheet</a>.</li>
+<li>Blog: <a href="http://curso-r.com/blog/2017/09/02/2017-07-29-comportamentos-estranhos-lubridate/">Comportamentos imprevisíveis do lubridate</a></li>
+</ul>
+<!-- ----------------------------------------------------------------------- -->
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="introducao.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="revisao.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="pacote-stringr-para-trabalhar-com-textos.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -327,7 +327,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/yihui/bookdown-crc/edit/master/index.Rmd",
+"link": "https://github.com/yihui/bookdown-crc/edit/master/03-vectors.Rmd",
 "text": "Edit"
 },
 "download": ["bookdown.pdf"],

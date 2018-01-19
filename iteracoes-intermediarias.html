@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-
-<link rel="next" href="introducao.html">
+<link rel="prev" href="iteracoes-basicas.html">
+<link rel="next" href="iteracoes-avancadas.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -249,56 +249,37 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">R para jurimetria</h1>
-<h4 class="author"><em>Associação Brasileira de Jurimetria</em></h4>
-<h4 class="date"><em>19 de January de 2018</em></h4>
+<div id="iteracoes-intermediarias" class="section level2">
+<h2><span class="header-section-number">5.3</span> Iterações intermediárias</h2>
+<p><strong>Obs.:</strong> Note que quando usarmos o termo “paralelo” daqui para frente, estaremos nos referindo a laços em mais de uma estrutura e não a paralelização de computações em mais de uma unidade de processamento.</p>
+<p>Agora que já exploramos os básicos da família <code>map()</code> podemos partir para iterações um pouco mais complexas. Observe o laço a seguir:</p>
+<pre><code>#&gt; [1] 30 32 34 36 38 40</code></pre>
+<p>Com a função <code>map2()</code> podemos reproduzir o laço acima em apenas uma linha. Ela abstrai a iteração em paralelo, aplica a função em cada par de elementos das entradas e, assim como sua prima <code>map()</code>, pode achatar o objeto retornado com os sufixos <code>_chr</code>, <code>_dbl</code>, <code>_int</code> e <code>_lgl</code>.</p>
+<pre><code>#&gt; [1] 30 32 34 36 38 40</code></pre>
+<p>Como o pacote <code>purrr</code> é extremamente consistente, a <code>map2()</code> também funciona com reticências e fórmulas. Poderíamos, por exemplo, transformar <code>soma_ambos()</code> em uma função anônima:</p>
+<pre><code>#&gt; [1] 30 32 34 36 38 40</code></pre>
+<p>Desta vez também temos acesso ao placeholder <code>.y</code> para indicar onde os elementos de do segundo vetor devem ir.</p>
+<div id="generalizacao-do-paralelismo" class="section level3">
+<h3><span class="header-section-number">5.3.1</span> Generalização do paralelismo</h3>
+<p>Para não precisar oferecer uma função para cada número de argumentos, o pacote <code>purrr</code> fornece a <code>pmap()</code>. Para essa função devemos passar uma lista em que cada elemento é um dos objetos a ser iterado:</p>
+<pre><code>#&gt; [1] 60 63 66 69 72 75</code></pre>
+<p>Com a <code>pmap()</code> não podemos usar fórmulas. Se quisermos usar uma função anônima com ela, precisamos declará-la a função no seu corpo:</p>
+<pre><code>#&gt; [1] 60 63 66 69 72 75</code></pre>
 </div>
-<div id="apresentacao" class="section level1">
-<h1><span class="header-section-number">Capítulo 1</span> Apresentação</h1>
-<p>Olá! Bem vindo ao curso R para Jurimetria :)</p>
-<p>Essa é a primeira iteração do curso de R para Jurimetria da ABJ. Nesse curso abordamos aspectos práticos da Jurimetria, essenciais para um profissional da Estatística que tenha interesse em trabalhar nessa área.</p>
-<p>O curso é voltado para graduandos em estatística e está organizado em cinco aulas.</p>
-<ul>
-<li>(15/01) Introdução à jurimetria e setup
-<ul>
-<li>Definição</li>
-<li>Terminologia</li>
-<li>Tipos de pesquisa e exemplos</li>
-<li>Ambientação com R e RStudio</li>
-<li>RMarkdown</li>
-</ul></li>
-<li>(17/01) Ferramentas da ABJ para importação
-<ul>
-<li>Introdução ao web scraping com <code>httr</code> e <code>rvest</code>.</li>
-<li>Pacotes <code>abjutils</code>, <code>esaj</code> e <code>dje</code>.</li>
-</ul></li>
-<li>(19/01) Tidyverse: vetores
-<ul>
-<li>Vetores: pacotes <code>stringr</code>, <code>lubridate</code>, <code>forcats</code>.</li>
-<li>Programação funcional: <code>purrr</code>.</li>
-</ul></li>
-<li>(22/01) Tidyverse: bd
-<ul>
-<li>Transformação: pacotes <code>dplyr</code>, <code>tidyr</code>.</li>
-<li>Aplicação: Câmaras criminais.</li>
-</ul></li>
-<li>(24/01) Modelagem
-<ul>
-<li>Especialização de varas: pacotes <code>bnlearn</code> e <code>survival</code>.</li>
-<li>Captchas: pacotes <code>keras</code> e <code>decryptr</code>.</li>
-</ul></li>
-</ul>
-<p>Para o curso, será necessário ter conhecimentos do software estatístico R, como a lógica de programação, sintaxe do R e ambientação com o RStudio.</p>
-
+<div id="iterando-em-indices" class="section level3">
+<h3><span class="header-section-number">5.3.2</span> Iterando em índices</h3>
+<p>A última função que veremos nessa seção é a <code>imap()</code>. No fundo ela é um atalho para <code>map2(x, names(x), ...)</code> quando <code>x</code> tem nomes e para <code>map2(x, seq_along(x), ...)</code> caso contrário:</p>
+<pre><code>#&gt; [1] 11 13 15 17 19 21</code></pre>
+<p>Como podemos observar, agora <code>.y</code> é o placeholder para o índice atual (equivalente ao <code>i</code> no laço com <code>for</code>). Naturalmente, assim como toda a família <code>map()</code>, a <code>imap()</code> também funciona com os sufixos de achatamento.</p>
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="introducao.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="iteracoes-basicas.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="iteracoes-avancadas.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -327,7 +308,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/yihui/bookdown-crc/edit/master/index.Rmd",
+"link": "https://github.com/yihui/bookdown-crc/edit/master/04-transform.Rmd",
 "text": "Edit"
 },
 "download": ["bookdown.pdf"],

@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-
-<link rel="next" href="introducao.html">
+<link rel="prev" href="pacote-stringr-para-trabalhar-com-textos.html">
+<link rel="next" href="exemplo-decisoes-das-camaras.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -249,56 +249,134 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">R para jurimetria</h1>
-<h4 class="author"><em>Associação Brasileira de Jurimetria</em></h4>
-<h4 class="date"><em>19 de January de 2018</em></h4>
-</div>
-<div id="apresentacao" class="section level1">
-<h1><span class="header-section-number">Capítulo 1</span> Apresentação</h1>
-<p>Olá! Bem vindo ao curso R para Jurimetria :)</p>
-<p>Essa é a primeira iteração do curso de R para Jurimetria da ABJ. Nesse curso abordamos aspectos práticos da Jurimetria, essenciais para um profissional da Estatística que tenha interesse em trabalhar nessa área.</p>
-<p>O curso é voltado para graduandos em estatística e está organizado em cinco aulas.</p>
+<div id="expressoes-regulares" class="section level2">
+<h2><span class="header-section-number">4.4</span> Expressões regulares</h2>
+<p>Expressão regular ou <em>regex</em> é uma sequência concisa de caracteres que representa várias strings. Entender o básico de expressões regulares é indispensável para trabalhar com jurimetria.</p>
+<p>Vamos estudar expressões regulares através de exemplos e com a função <code>str_view()</code>.</p>
+<p>A tabela abaixo mostra a aplicação de seis <code>regex</code> a seis strings distintas.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">txt &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;ban&#39;</span>, <span class="st">&#39;banana&#39;</span>, <span class="st">&#39;abandonado&#39;</span>, <span class="st">&#39;paraíba né&#39;</span>, <span class="st">&#39;BANANA&#39;</span>, <span class="st">&#39;ele levou ban&#39;</span>)
+expressoes &lt;-<span class="st"> </span><span class="kw">list</span>(
+  <span class="st">&#39;ban&#39;</span>, <span class="co"># reconhece tudo que tenha &quot;ban&quot;, mas não ignora case</span>
+  <span class="st">&#39;BAN&#39;</span>, <span class="co"># reconhece tudo que tenha &quot;BAN&quot;, mas não ignora case</span>
+  <span class="st">&#39;ban$&#39;</span>, <span class="co"># reconhece apenas o que termina exatamente em &quot;ban&quot;</span>
+  <span class="st">&#39;^ban&#39;</span>, <span class="co"># reconhece apenas o que começa exatamente com &quot;ban&quot;</span>
+  <span class="st">&#39;ba ?n&#39;</span> <span class="co"># reconhece tudo que tenha &quot;ban&quot;, com ou sem espaço entre o &quot;b&quot; e o &quot;a&quot;</span>
+)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Desafio: entender o código que gera essa tabela ;)</span>
+<span class="kw">list</span>(<span class="dt">txt =</span> txt, <span class="dt">regex =</span> expressoes) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">cross_df</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">result =</span> <span class="kw">map2_lgl</span>(txt, regex, str_detect),
+         <span class="dt">result =</span> <span class="kw">if_else</span>(result, <span class="st">&quot;X&quot;</span>, <span class="st">&quot;&quot;</span>)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">distinct</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">spread</span>(txt, result) %&gt;%<span class="st"> </span>
+<span class="st">  </span>knitr::<span class="kw">kable</span>()</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">regex</th>
+<th align="left">abandonado</th>
+<th align="left">ban</th>
+<th align="left">banana</th>
+<th align="left">BANANA</th>
+<th align="left">ele levou ban</th>
+<th align="left">paraíba né</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">^ban</td>
+<td align="left"></td>
+<td align="left">X</td>
+<td align="left">X</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">ba ?n</td>
+<td align="left">X</td>
+<td align="left">X</td>
+<td align="left">X</td>
+<td align="left"></td>
+<td align="left">X</td>
+<td align="left">X</td>
+</tr>
+<tr class="odd">
+<td align="left">ban</td>
+<td align="left">X</td>
+<td align="left">X</td>
+<td align="left">X</td>
+<td align="left"></td>
+<td align="left">X</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">BAN</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">X</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">ban$</td>
+<td align="left"></td>
+<td align="left">X</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">X</td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<div id="quantificadores" class="section level3">
+<h3><span class="header-section-number">4.4.1</span> Quantificadores</h3>
+<p>Os caracteres <code>+</code>, <code>*</code> e <code>{x,y}</code> indicam quantas vezes um padrão se repete:</p>
 <ul>
-<li>(15/01) Introdução à jurimetria e setup
-<ul>
-<li>Definição</li>
-<li>Terminologia</li>
-<li>Tipos de pesquisa e exemplos</li>
-<li>Ambientação com R e RStudio</li>
-<li>RMarkdown</li>
-</ul></li>
-<li>(17/01) Ferramentas da ABJ para importação
-<ul>
-<li>Introdução ao web scraping com <code>httr</code> e <code>rvest</code>.</li>
-<li>Pacotes <code>abjutils</code>, <code>esaj</code> e <code>dje</code>.</li>
-</ul></li>
-<li>(19/01) Tidyverse: vetores
-<ul>
-<li>Vetores: pacotes <code>stringr</code>, <code>lubridate</code>, <code>forcats</code>.</li>
-<li>Programação funcional: <code>purrr</code>.</li>
-</ul></li>
-<li>(22/01) Tidyverse: bd
-<ul>
-<li>Transformação: pacotes <code>dplyr</code>, <code>tidyr</code>.</li>
-<li>Aplicação: Câmaras criminais.</li>
-</ul></li>
-<li>(24/01) Modelagem
-<ul>
-<li>Especialização de varas: pacotes <code>bnlearn</code> e <code>survival</code>.</li>
-<li>Captchas: pacotes <code>keras</code> e <code>decryptr</code>.</li>
-</ul></li>
+<li><code>ey+</code> significa <code>e</code> e depois <code>y</code> “<strong>uma vez</strong> ou mais”. Por exemplo, reconhece <code>hey</code>, <code>heyy</code>, <code>a eyyy</code>, mas não reconhece <code>e</code>, <code>y</code> nem <code>yy</code>.</li>
+<li><code>ey*</code> significa “<strong>zero vezes</strong> ou mais”. Por exemplo, reconhece <code>hey</code>, <code>heyy</code>, <code>a eyyy</code> e <code>e</code>, mas não reconhece <code>y</code> nem <code>yy</code>.</li>
+<li><code>ey{3}</code> significa “exatamente três vezes”. Por exemplo, reconhece <code>eyyy</code> e <code>eyyyy</code>, mas não reconhece <code>eyy</code>.</li>
+<li><code>ey{1,3}</code> significa “entre uma e três vezes”.</li>
 </ul>
-<p>Para o curso, será necessário ter conhecimentos do software estatístico R, como a lógica de programação, sintaxe do R e ambientação com o RStudio.</p>
-
+<p>Para aplicar um quantificador a um conjunto de caracteres, use parênteses. Por exemplo, <code>(ey )+</code> reconhece <code>ey ey</code>.</p>
+</div>
+<div id="conjuntos" class="section level3">
+<h3><span class="header-section-number">4.4.2</span> Conjuntos</h3>
+<p>Colocando caracteres dentro de <code>[]</code>, reconhecemos quaisquer caracteres desse conjunto. Alguns exemplos práticos:</p>
+<ul>
+<li><code>[Cc]asa</code> para reconhecer “casa” em maiúsculo ou minúsculo.</li>
+<li><code>[0-9]</code> para reconhecer somente números. O mesmo vale para letras <code>[a-z]</code>, <code>[A-Z]</code>, <code>[a-zA-Z]</code> etc.</li>
+<li>O símbolo <code>^</code> dentro do colchete significa negação. Por exemplo, <code>[^0-9]</code> significa pegar tudo o que não é número.</li>
+<li>O símbolo <code>.</code> fora do colchete indica “qualquer caractere”, mas dentro do colchete é apenas ponto.</li>
+<li>Use <code>[[:space:]]+</code> para reconhecer espaços e <code>[[:punct:]]+</code> para reconhecer pontuações.</li>
+</ul>
+</div>
+<div id="miscelanea" class="section level3">
+<h3><span class="header-section-number">4.4.3</span> Miscelânea</h3>
+<ul>
+<li>Use <code>|</code> para opções, por exemplo <code>desfavor|desprov</code> reconhece tanto “desfavorável” quanto “desprovido”</li>
+<li><code>\n</code> pula linha, <code>\f</code> é final da página, <code>\t</code> é tab. Use <code>\</code> para transformar caracteres especiais em literais.</li>
+<li><code>str_to_lower()</code> e <code>str_to_upper()</code> para mudar o case de uma string.</li>
+</ul>
+<p>A lista de possibilidades com expressões regulares é extensa. Um bom lugar para testar o funcionamento de expressões regulares é o <a href="https://regex101.com/">regex101</a>.</p>
+</div>
+<div id="outros-links" class="section level3">
+<h3><span class="header-section-number">4.4.4</span> Outros links</h3>
+<ul>
+<li><a href="https://github.com/rstudio/cheatsheets/blob/master/strings.pdf">Cheatsheet do stringr</a></li>
+<li><a href="https://ctlente.github.io/aula4/">Apresentação do Caio Lente</a></li>
+</ul>
+<!-- ----------------------------------------------------------------------- -->
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="introducao.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="pacote-stringr-para-trabalhar-com-textos.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="exemplo-decisoes-das-camaras.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -327,7 +405,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/yihui/bookdown-crc/edit/master/index.Rmd",
+"link": "https://github.com/yihui/bookdown-crc/edit/master/03-vectors.Rmd",
 "text": "Edit"
 },
 "download": ["bookdown.pdf"],

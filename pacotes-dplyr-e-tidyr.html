@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-
-<link rel="next" href="introducao.html">
+<link rel="prev" href="exemplo-decisoes-das-camaras.html">
+<link rel="next" href="finalizando-analise-das-camaras.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -249,56 +249,213 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">R para jurimetria</h1>
-<h4 class="author"><em>Associação Brasileira de Jurimetria</em></h4>
-<h4 class="date"><em>19 de January de 2018</em></h4>
-</div>
-<div id="apresentacao" class="section level1">
-<h1><span class="header-section-number">Capítulo 1</span> Apresentação</h1>
-<p>Olá! Bem vindo ao curso R para Jurimetria :)</p>
-<p>Essa é a primeira iteração do curso de R para Jurimetria da ABJ. Nesse curso abordamos aspectos práticos da Jurimetria, essenciais para um profissional da Estatística que tenha interesse em trabalhar nessa área.</p>
-<p>O curso é voltado para graduandos em estatística e está organizado em cinco aulas.</p>
+<div id="pacotes-dplyr-e-tidyr" class="section level2">
+<h2><span class="header-section-number">4.6</span> Pacotes <code>dplyr</code> e <code>tidyr</code></h2>
+<p>Vamos trabalhar com <code>d_cjsg</code>!</p>
+<div id="caracteristicas-do-dplyr" class="section level3">
+<h3><span class="header-section-number">4.6.1</span> Características do <code>dplyr</code></h3>
 <ul>
-<li>(15/01) Introdução à jurimetria e setup
-<ul>
-<li>Definição</li>
-<li>Terminologia</li>
-<li>Tipos de pesquisa e exemplos</li>
-<li>Ambientação com R e RStudio</li>
-<li>RMarkdown</li>
-</ul></li>
-<li>(17/01) Ferramentas da ABJ para importação
-<ul>
-<li>Introdução ao web scraping com <code>httr</code> e <code>rvest</code>.</li>
-<li>Pacotes <code>abjutils</code>, <code>esaj</code> e <code>dje</code>.</li>
-</ul></li>
-<li>(19/01) Tidyverse: vetores
-<ul>
-<li>Vetores: pacotes <code>stringr</code>, <code>lubridate</code>, <code>forcats</code>.</li>
-<li>Programação funcional: <code>purrr</code>.</li>
-</ul></li>
-<li>(22/01) Tidyverse: bd
-<ul>
-<li>Transformação: pacotes <code>dplyr</code>, <code>tidyr</code>.</li>
-<li>Aplicação: Câmaras criminais.</li>
-</ul></li>
-<li>(24/01) Modelagem
-<ul>
-<li>Especialização de varas: pacotes <code>bnlearn</code> e <code>survival</code>.</li>
-<li>Captchas: pacotes <code>keras</code> e <code>decryptr</code>.</li>
-</ul></li>
+<li>O <em>input</em> é sempre uma <code>tibble</code>, e o <em>output</em> é sempre um <code>tibble</code>.</li>
+<li>No primeiro argumento colocamos o <code>tibble</code>, e nos outros argumentos colocamo o que queremos fazer.</li>
+<li>A utilização é facilitada com o emprego do operador <code>%&gt;%</code></li>
 </ul>
-<p>Para o curso, será necessário ter conhecimentos do software estatístico R, como a lógica de programação, sintaxe do R e ambientação com o RStudio.</p>
+</div>
+<div id="as-cinco-funcoes-principais" class="section level3">
+<h3><span class="header-section-number">4.6.2</span> As cinco funções principais</h3>
+<ul>
+<li><code>filter</code></li>
+<li><code>mutate</code></li>
+<li><code>select</code></li>
+<li><code>arrange</code></li>
+<li><code>summarise</code></li>
+</ul>
+</div>
+<div id="select" class="section level3">
+<h3><span class="header-section-number">4.6.3</span> <code>select</code></h3>
+<ul>
+<li>Utilizar <code>starts_with(x)</code>, <code>contains(x)</code>, <code>matches(x)</code>, <code>one_of(x)</code>, etc.</li>
+<li>Possível colocar nomes, índices, e intervalos de variáveis com <code>:</code>.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d_cjsg %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(id_lawsuit, id_decision, district, rapporteur)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d_cjsg %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(id_decision:district, class_subject)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d_cjsg %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(id_lawsuit, <span class="kw">starts_with</span>(<span class="st">&#39;dt_&#39;</span>))</code></pre></div>
+<p>Exercícios:</p>
+<ol style="list-style-type: decimal">
+<li>selecione as colunas que acabam com “ion” ou que contêm “sum”.</li>
+<li>tire as colunas de texto.</li>
+</ol>
+</div>
+<div id="filter" class="section level3">
+<h3><span class="header-section-number">4.6.4</span> <code>filter</code></h3>
+<ul>
+<li>Use <code>|</code> para “ou”.</li>
+<li>Condições separadas por vírgulas é o mesmo que separar por <code>&amp;</code>.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d_cjsg %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(id_lawsuit, id_decision, district, rapporteur) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(district ==<span class="st"> &#39;São Paulo&#39;</span>)</code></pre></div>
+<p>Dica: usar <code>%in%</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d_cjsg %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(id_lawsuit, id_decision, district, dt_decision, rapporteur) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(district %in%<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;Campinas&#39;</span>, <span class="st">&#39;Sorocaba&#39;</span>) &amp;
+<span class="st">         </span>(<span class="kw">day</span>(<span class="kw">dmy</span>(dt_decision)) &gt;=<span class="st"> </span><span class="dv">29</span> |<span class="st"> </span><span class="kw">day</span>(<span class="kw">dmy</span>(dt_decision)) &lt;<span class="st"> </span><span class="dv">25</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d_cjsg %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(rapporteur) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(<span class="kw">str_detect</span>(rapporteur, <span class="st">&#39;[zZ]&#39;</span>)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">count</span>(rapporteur, <span class="dt">sort =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>Exercícios:</p>
+<ol style="list-style-type: decimal">
+<li>filtre todas as decisões de 2018.</li>
+<li>filtre apenas casos em que <code>id_decision</code> não é <code>NA</code></li>
+<li>A aplicação de <code>filter</code> modifica o objeto <code>d_cjsg</code>?</li>
+</ol>
+</div>
+<div id="mutate" class="section level3">
+<h3><span class="header-section-number">4.6.5</span> <code>mutate</code></h3>
+<ul>
+<li>Aceita várias novas colunas iterativamente.</li>
+<li>Novas variáveis devem ter o mesmo <code>length</code> que o <code>nrow</code> do bd original ou <code>1</code>.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d_cjsg %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(id_lawsuit, dt_decision) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">ano_julgamento =</span> <span class="kw">year</span>(<span class="kw">dmy</span>(dt_decision)),
+         <span class="dt">ano_proc =</span> <span class="kw">str_sub</span>(id_lawsuit, <span class="dv">12</span>, <span class="dv">15</span>),
+         <span class="dt">ano_proc =</span> <span class="kw">as.numeric</span>(ano_proc),
+         <span class="dt">tempo_anos =</span> ano_julgamento -<span class="st"> </span>ano_proc)</code></pre></div>
+<p>Exercícios</p>
+<ol style="list-style-type: decimal">
+<li>Crie uma coluna <code>comarca_limpa</code> com a comarca sem acentos e maiúscula</li>
+<li>Crie uma coluna binária <code>drogas</code> que vale <code>TRUE</code> se no texto da decisão algo é falado de drogas e <code>FALSE</code> caso contrário. Considere tanto a palavra <code>droga</code> como seus sinônimos, algum exemplo de droga e a Lei de Drogas.</li>
+</ol>
+</div>
+<div id="arrange" class="section level3">
+<h3><span class="header-section-number">4.6.6</span> <code>arrange</code></h3>
+<ul>
+<li>Simplesmente ordena de acordo com as opções.</li>
+<li>Utilizar <code>desc</code> para ordem decrescente.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d_cjsg %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(id_lawsuit, dt_decision) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">ano_julgamento =</span> <span class="kw">year</span>(<span class="kw">dmy</span>(dt_decision)),
+         <span class="dt">ano_proc =</span> <span class="kw">str_sub</span>(id_lawsuit, <span class="dv">12</span>, <span class="dv">15</span>),
+         <span class="dt">ano_proc =</span> <span class="kw">as.numeric</span>(ano_proc)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">tempo_anos =</span> ano_julgamento -<span class="st"> </span>ano_proc) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(tempo_anos))</code></pre></div>
+</div>
+<div id="summarise" class="section level3">
+<h3><span class="header-section-number">4.6.7</span> <code>summarise</code></h3>
+<ul>
+<li>Retorna um vetor de tamanho <code>1</code> a partir de uma conta com as variáveis.</li>
+<li>Geralmente é utilizado em conjunto com <code>group_by</code>.</li>
+<li>Algumas funções importantes: <code>n()</code>, <code>n_distinct()</code>.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d_cjsg %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(id_lawsuit, district, dt_decision, court) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">ano_julgamento =</span> <span class="kw">year</span>(<span class="kw">dmy</span>(dt_decision)),
+         <span class="dt">ano_proc =</span> <span class="kw">str_sub</span>(id_lawsuit, <span class="dv">12</span>, <span class="dv">15</span>),
+         <span class="dt">ano_proc =</span> <span class="kw">as.numeric</span>(ano_proc)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">tempo_anos =</span> ano_julgamento -<span class="st"> </span>ano_proc) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(tempo_anos)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">group_by</span>(district, court) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">n =</span> <span class="kw">n</span>(),
+            <span class="dt">media_anos =</span> <span class="kw">mean</span>(tempo_anos),
+            <span class="dt">min_anos =</span> <span class="kw">min</span>(tempo_anos),
+            <span class="dt">max_anos =</span> <span class="kw">max</span>(tempo_anos)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(n &gt;<span class="st"> </span><span class="dv">5</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(media_anos))</code></pre></div>
+<pre><code>#&gt; # A tibble: 406 x 6
+#&gt; # Groups:   district [60]
+#&gt;    district              court                   n media_a… min_an… max_a…
+#&gt;    &lt;chr&gt;                 &lt;chr&gt;               &lt;int&gt;    &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+#&gt;  1 Osasco                16ª Câmara de Dire…     6     5.67    0     20.0 
+#&gt;  2 Tatuí                 15ª Câmara de Dire…     8     4.62    0     12.0 
+#&gt;  3 São Bernardo do Campo 3ª Câmara de Direi…     8     4.38    0     28.0 
+#&gt;  4 Botucatu              16ª Câmara de Dire…    10     4.10    0     15.0 
+#&gt;  5 Mogi das Cruzes       9ª Câmara de Direi…     7     3.71    0      7.00
+#&gt;  6 Tatuí                 2ª Câmara de Direi…     6     3.67    0     10.0 
+#&gt;  7 Avaré                 13ª Câmara de Dire…     8     3.62    0     11.0 
+#&gt;  8 Guarujá               5ª Câmara de Direi…     6     3.50    0     10.0 
+#&gt;  9 Praia Grande          2ª Câmara de Direi…     6     3.33    1.00   7.00
+#&gt; 10 Mogi das Cruzes       4ª Câmara de Direi…     6     3.00    0      7.00
+#&gt; # ... with 396 more rows</code></pre>
+<p>A função <code>count()</code> simplifica um <code>group_by %&gt;% summarise %&gt;% ungroup</code> e é bem útil:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d_cjsg %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">count</span>(rapporteur, <span class="dt">sort =</span> <span class="ot">TRUE</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">prop =</span> n /<span class="st"> </span><span class="kw">sum</span>(n), <span class="dt">prop =</span> scales::<span class="kw">percent</span>(prop))</code></pre></div>
+<p>Exercício</p>
+<ol style="list-style-type: decimal">
+<li>Quem é o relator mais prolixo?</li>
+</ol>
+</div>
+<div id="gather" class="section level3">
+<h3><span class="header-section-number">4.6.8</span> <code>gather</code></h3>
+<ul>
+<li>“Empilha” o banco de dados</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d_cjsg %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(!<span class="kw">is.na</span>(id_decision)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(id_decision:dt_registration) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">gather</span>(key, value, -id_decision) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">arrange</span>(id_decision)</code></pre></div>
+</div>
+<div id="spread" class="section level3">
+<h3><span class="header-section-number">4.6.9</span> <code>spread</code></h3>
+<ul>
+<li>“Joga” uma variável nas colunas</li>
+<li>É essencialmente a função inversa de <code>gather</code></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d_cjsg %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(!<span class="kw">is.na</span>(id_decision)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(id_decision:dt_registration) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">gather</span>(key, value, -id_decision) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">spread</span>(key, value)</code></pre></div>
+</div>
+<div id="funcoes-auxiliares" class="section level3">
+<h3><span class="header-section-number">4.6.10</span> Funções auxiliares</h3>
+<ul>
+<li><code>unite</code> junta duas ou mais colunas usando algum separador (<code>_</code>, por exemplo).</li>
+<li><code>separate</code> faz o inverso de <code>unite</code>, e uma coluna em várias usando um separador.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d_cjsg %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(id_lawsuit, class_subject) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">separate</span>(class_subject, <span class="kw">c</span>(<span class="st">&#39;classe&#39;</span>, <span class="st">&#39;assunto&#39;</span>), <span class="dt">sep =</span> <span class="st">&#39; / &#39;</span>, 
+           <span class="dt">extra =</span> <span class="st">&#39;merge&#39;</span>, <span class="dt">fill =</span> <span class="st">&#39;right&#39;</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">count</span>(assunto, <span class="dt">sort =</span> <span class="ot">TRUE</span>)</code></pre></div>
+</div>
+<div id="nest-e-unnest" class="section level3">
+<h3><span class="header-section-number">4.6.11</span> <code>nest</code> e <code>unnest</code></h3>
+<p><code>nest</code> e <code>unnest</code> são operações inversas e servem para tratar dados complecos, como o que temos em <code>d_cposg</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d_cposg &lt;-<span class="st"> </span><span class="kw">read_rds</span>(<span class="kw">glue</span>(<span class="st">&quot;{path}/d_cposg.rds&quot;</span>))
 
+d_partes &lt;-<span class="st"> </span>d_cposg %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(id_lawsuit, parts) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">unnest</span>(parts)
+
+d_data &lt;-<span class="st"> </span>d_cposg %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(id_lawsuit, data) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">unnest</span>(data)</code></pre></div>
+</div>
+<div id="um-pouco-mais-de-transformacao-de-dados" class="section level3">
+<h3><span class="header-section-number">4.6.12</span> Um pouco mais de transformação de dados</h3>
+<ul>
+<li>Para juntar tabelas, usar <code>inner_join</code>, <code>left_join</code>, <code>anti_join</code>, etc.</li>
+<li>Para realizar operações mais gerais, usar <code>do</code>.</li>
+<li>Para retirar duplicatas, utilizar <code>distinct</code>.</li>
+<li>Para fazer algumas mágicas, trabalhar com</li>
+</ul>
+<!-- ----------------------------------------------------------------------- -->
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="introducao.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="exemplo-decisoes-das-camaras.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="finalizando-analise-das-camaras.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -327,7 +484,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/yihui/bookdown-crc/edit/master/index.Rmd",
+"link": "https://github.com/yihui/bookdown-crc/edit/master/03-vectors.Rmd",
 "text": "Edit"
 },
 "download": ["bookdown.pdf"],

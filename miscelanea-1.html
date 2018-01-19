@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-
-<link rel="next" href="introducao.html">
+<link rel="prev" href="iteracoes-avancadas.html">
+<link rel="next" href="work-in-progress-1.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -249,56 +249,82 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">R para jurimetria</h1>
-<h4 class="author"><em>Associação Brasileira de Jurimetria</em></h4>
-<h4 class="date"><em>19 de January de 2018</em></h4>
+<div id="miscelanea-1" class="section level2">
+<h2><span class="header-section-number">5.5</span> Miscelânea</h2>
+<p>Por fim, veremos algumas funções do <code>purrr</code> que nêo têm exatamente a ver com laços, mas que acabam sendo bastante úteis quando usando as funções que vimos até agora. Elas não serão apresentadas em nenhuma ordem específica, este é apenas um apanhado de funções sortidas que achamos úteis enquanto programando com o <code>purrr</code>.</p>
+<div id="manter-e-descartar" class="section level3">
+<h3><span class="header-section-number">5.5.1</span> Manter e descartar</h3>
+<p>Se quisermos filtrar elementos de um vetor ou lista, podemos usar as funções <code>keep()</code> e <code>discard()</code>. Elas funcionam com fórmulas e podem ser extremamente úteis em situações que <code>dplyr::select()</code> e <code>magrittr::extract()</code> não conseguem cobrir:</p>
+<pre><code>#&gt; [[1]]
+#&gt; [1] 30 31 32 33 34 NA
+#&gt; [[1]]
+#&gt; [1] 30 31 32 33 34 NA</code></pre>
+<p>No exemplo acima descartamos todos os vetores da lista que não têm pelo menos um elemento omisso (<code>NA</code>).</p>
 </div>
-<div id="apresentacao" class="section level1">
-<h1><span class="header-section-number">Capítulo 1</span> Apresentação</h1>
-<p>Olá! Bem vindo ao curso R para Jurimetria :)</p>
-<p>Essa é a primeira iteração do curso de R para Jurimetria da ABJ. Nesse curso abordamos aspectos práticos da Jurimetria, essenciais para um profissional da Estatística que tenha interesse em trabalhar nessa área.</p>
-<p>O curso é voltado para graduandos em estatística e está organizado em cinco aulas.</p>
-<ul>
-<li>(15/01) Introdução à jurimetria e setup
-<ul>
-<li>Definição</li>
-<li>Terminologia</li>
-<li>Tipos de pesquisa e exemplos</li>
-<li>Ambientação com R e RStudio</li>
-<li>RMarkdown</li>
-</ul></li>
-<li>(17/01) Ferramentas da ABJ para importação
-<ul>
-<li>Introdução ao web scraping com <code>httr</code> e <code>rvest</code>.</li>
-<li>Pacotes <code>abjutils</code>, <code>esaj</code> e <code>dje</code>.</li>
-</ul></li>
-<li>(19/01) Tidyverse: vetores
-<ul>
-<li>Vetores: pacotes <code>stringr</code>, <code>lubridate</code>, <code>forcats</code>.</li>
-<li>Programação funcional: <code>purrr</code>.</li>
-</ul></li>
-<li>(22/01) Tidyverse: bd
-<ul>
-<li>Transformação: pacotes <code>dplyr</code>, <code>tidyr</code>.</li>
-<li>Aplicação: Câmaras criminais.</li>
-</ul></li>
-<li>(24/01) Modelagem
-<ul>
-<li>Especialização de varas: pacotes <code>bnlearn</code> e <code>survival</code>.</li>
-<li>Captchas: pacotes <code>keras</code> e <code>decryptr</code>.</li>
-</ul></li>
-</ul>
-<p>Para o curso, será necessário ter conhecimentos do software estatístico R, como a lógica de programação, sintaxe do R e ambientação com o RStudio.</p>
+<div id="a-familia-is" class="section level3">
+<h3><span class="header-section-number">5.5.2</span> A família <code>is</code></h3>
+<p>Uma outra família do pacote <code>purrr</code> é a <code>is()</code>. Com essa série de funções podemos fazer verificações extremamente estritas em objetos dos mais variados tipos. Seguem alguns poucos exemplos:</p>
+<pre><code>#&gt; [1] FALSE
+#&gt; [1] TRUE
+#&gt; [1] TRUE
+#&gt; [1] TRUE</code></pre>
+</div>
+<div id="andar-e-modificar" class="section level3">
+<h3><span class="header-section-number">5.5.3</span> Andar e modificar</h3>
+<p><code>walk()</code> e <code>modify()</code> são pequenas alterações da família <code>map()</code> que vêm a calhar em diversas situações. A primeira destas funciona exatamente igual à <code>map()</code> mas não devolve resultado, apenas efeitos colaterais; a segunda, não muda a estrutura do objeto sendo iterado, ela substitui os próprios elementos da entrada.</p>
+<p>A maior utilidade de <code>walk</code> é quando precisamos salvar múltiplas tabelas. Para fazer isso, podemos usar algo como <code>walk(tabelas, readr::write_csv)</code></p>
+<p>Um caso de uso interessante da <code>modify()</code> é quando junta do sufixo <code>_if()</code>, combinação que nos permite iterar nas colunas de uma tabela e aplicar transformações de tipo apenas quando um predicado for verdade (geralmente de queremos transformar as colunas de fator para caractere).</p>
+</div>
+<div id="transposicao-e-indexacao-profunda" class="section level3">
+<h3><span class="header-section-number">5.5.4</span> Transposição e indexação profunda</h3>
+<p>Quando precisarmos lidar com listas complexas e profundas, o <code>purrr</code> nos fornece duas funções extremamente úteis: <code>transpose()</code> e <code>pluck()</code>. A primeira transpõe uma lista, enquanto a segunda é capaz de acessar elementos profundos de uma lista sem a necessidade de colchetes.</p>
+<pre><code>#&gt; List of 2
+#&gt;  $ :List of 3
+#&gt;   ..$ a: num 1
+#&gt;   ..$ b: num 2
+#&gt;   ..$ c: num 3
+#&gt;  $ :List of 3
+#&gt;   ..$ a: num 4
+#&gt;   ..$ b: num 5
+#&gt;   ..$ c: num 6
+#&gt; [1] 5
+#&gt; List of 3
+#&gt;  $ a:List of 2
+#&gt;   ..$ : num 1
+#&gt;   ..$ : num 4
+#&gt;  $ b:List of 2
+#&gt;   ..$ : num 2
+#&gt;   ..$ : num 5
+#&gt;  $ c:List of 2
+#&gt;   ..$ : num 3
+#&gt;   ..$ : num 6</code></pre>
+<p><strong>Obs.:</strong> Se você estiver com muitos problemas com listas profundas, dê uma olhada nas funções relacionadas a <code>depth()</code> pois elas podem ser muito úteis.</p>
+</div>
+<div id="aplicacao-parcial" class="section level3">
+<h3><span class="header-section-number">5.5.5</span> Aplicação parcial</h3>
+<p>Se quisermos pré-preencher os argumentos de uma função (seja para usá-la em uma pipeline ou com alguma função do próprio <code>purrr</code>), temos <code>partial()</code>. Ela funciona nos moldes da família <code>invoke()</code> e pode ser bastante útil para tornar suas pipelines mais enxutas:</p>
+<pre><code>#&gt; [1] 6</code></pre>
+</div>
+<div id="execucao-segura" class="section level3">
+<h3><span class="header-section-number">5.5.6</span> Execução segura</h3>
+<p>Não é incomum executarmos uma função e recebermos um erro de volta. Isso pode ser lidado com facilidade em um laço com um condicional, mas essa tarefa já é mais complexa quando se trata de programação funcional. Para isso, no <code>purrr</code> temos algumas funções que embrulham uma função e, quando esta retornar um erro, o silenciam e retornam um valor padrão em seu lugar.</p>
+<p><code>quietly()</code> retorna uma lista com resultado, saída, mensagem e alertas, <code>safely()</code> retorna uma lista com resultado e erro (um destes sempre é <code>NULL</code>), e <code>possibly()</code> silencia o erro e retorna um valor dado pelo usuário.</p>
+<pre><code>#&gt; $result
+#&gt; [1] 0
+#&gt; 
+#&gt; $error
+#&gt; &lt;simpleError in x + 1: non-numeric argument to binary operator&gt;</code></pre>
 
 </div>
+</div>
+<!-- </div> -->
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="introducao.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="iteracoes-avancadas.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="work-in-progress-1.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -327,7 +353,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/yihui/bookdown-crc/edit/master/index.Rmd",
+"link": "https://github.com/yihui/bookdown-crc/edit/master/04-transform.Rmd",
 "text": "Edit"
 },
 "download": ["bookdown.pdf"],

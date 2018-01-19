@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-
-<link rel="next" href="introducao.html">
+<link rel="prev" href="purrr.html">
+<link rel="next" href="iteracoes-intermediarias.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -249,56 +249,52 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">R para jurimetria</h1>
-<h4 class="author"><em>Associação Brasileira de Jurimetria</em></h4>
-<h4 class="date"><em>19 de January de 2018</em></h4>
+<div id="iteracoes-basicas" class="section level2">
+<h2><span class="header-section-number">5.2</span> Iterações básicas</h2>
+<p>A primeira família de funções do <code>purrr</code> que veremos também é a mais útil e extensível. As funções <code>map()</code> são quase como substitutas para laços <code>for</code>, elas abstraem a iteração em apenas uma linha. Veja esse exemplo de laço usando <code>for</code>:</p>
+<pre><code>#&gt; [1] 11 12 13 14 15 16</code></pre>
+<p>O que de fato estamos tentando fazer com o laço acima? Temos um vetor (<code>obj</code>) e queremos aplicar uma função (<code>soma_um()</code>) em cada elemento dele. A função <code>map()</code> remove a necessidade de declaramos um objeto iterador auxiliar (<code>i</code>) e simplesmente aplica a função desejada em cada elemento do objeto dado.</p>
+<pre><code>#&gt; [[1]]
+#&gt; [1] 11
+#&gt; 
+#&gt; [[2]]
+#&gt; [1] 12
+#&gt; 
+#&gt; [[3]]
+#&gt; [1] 13
+#&gt; 
+#&gt; [[4]]
+#&gt; [1] 14
+#&gt; 
+#&gt; [[5]]
+#&gt; [1] 15
+#&gt; 
+#&gt; [[6]]
+#&gt; [1] 16</code></pre>
+<div id="achatando-resultados" class="section level3">
+<h3><span class="header-section-number">5.2.1</span> Achatando resultados</h3>
+<p>Como você deve ter percebido, o resultado da execução acima não é exatamente igual ao que tivemos com o laço. Isso acontece porque a <code>map()</code> tenta ser extremamente genérica, retornando por padrão uma lista com um elemento para cada saída.</p>
+<p>Se quisermos “achatar” o resultado, devemos informar qual será o seu tipo. Isso é super simples e pode ser feito com as irmãs da <code>map()</code>: <code>map_chr()</code> (para strings), <code>map_dbl()</code> (para números reais), <code>map_int()</code> (para números inteiros) e <code>map_lgl()</code> (para booleanos).</p>
+<pre><code>#&gt; [1] 11 12 13 14 15 16</code></pre>
+<p>O <code>purrr</code> também nos fornece outra ferramenta interessante para achatar listas: a família <code>flatten()</code>. No fundo, <code>map_chr()</code> é quase um atalho para <code>map() %&gt;% flatten_chr()</code>!</p>
 </div>
-<div id="apresentacao" class="section level1">
-<h1><span class="header-section-number">Capítulo 1</span> Apresentação</h1>
-<p>Olá! Bem vindo ao curso R para Jurimetria :)</p>
-<p>Essa é a primeira iteração do curso de R para Jurimetria da ABJ. Nesse curso abordamos aspectos práticos da Jurimetria, essenciais para um profissional da Estatística que tenha interesse em trabalhar nessa área.</p>
-<p>O curso é voltado para graduandos em estatística e está organizado em cinco aulas.</p>
-<ul>
-<li>(15/01) Introdução à jurimetria e setup
-<ul>
-<li>Definição</li>
-<li>Terminologia</li>
-<li>Tipos de pesquisa e exemplos</li>
-<li>Ambientação com R e RStudio</li>
-<li>RMarkdown</li>
-</ul></li>
-<li>(17/01) Ferramentas da ABJ para importação
-<ul>
-<li>Introdução ao web scraping com <code>httr</code> e <code>rvest</code>.</li>
-<li>Pacotes <code>abjutils</code>, <code>esaj</code> e <code>dje</code>.</li>
-</ul></li>
-<li>(19/01) Tidyverse: vetores
-<ul>
-<li>Vetores: pacotes <code>stringr</code>, <code>lubridate</code>, <code>forcats</code>.</li>
-<li>Programação funcional: <code>purrr</code>.</li>
-</ul></li>
-<li>(22/01) Tidyverse: bd
-<ul>
-<li>Transformação: pacotes <code>dplyr</code>, <code>tidyr</code>.</li>
-<li>Aplicação: Câmaras criminais.</li>
-</ul></li>
-<li>(24/01) Modelagem
-<ul>
-<li>Especialização de varas: pacotes <code>bnlearn</code> e <code>survival</code>.</li>
-<li>Captchas: pacotes <code>keras</code> e <code>decryptr</code>.</li>
-</ul></li>
-</ul>
-<p>Para o curso, será necessário ter conhecimentos do software estatístico R, como a lógica de programação, sintaxe do R e ambientação com o RStudio.</p>
-
+<div id="formulas-e-reticencias" class="section level3">
+<h3><span class="header-section-number">5.2.2</span> Fórmulas e reticências</h3>
+<p>Algo bastante útil da família <code>map()</code> é a possibilidade de passar argumentos fixos para a função que será aplicada. A primeira forma de fazer isso envolve fórmulas:</p>
+<pre><code>#&gt; [1] 12 13 14 15 16 17</code></pre>
+<p>Como vemos no exemplo acima, para utilizar fórmulas precisamos colocar um til (<code>~</code>) antes da função que será chamada. Feito isso, podemos utilizar o placeholder <code>.x</code> para indicar onde deve ser colocado cada elemento de <code>obj</code>.</p>
+<p>A outra forma de passar argumentos para a função é através das reticências da <code>map()</code>. Desta maneira precisamos apenas dar o nome do argumento e seu valor logo após a função <code>soma_n()</code>.</p>
+<pre><code>#&gt; [1] 12 13 14 15 16 17</code></pre>
+<p>Usando fórmulas temos uma maior flexibilidade (podemos, por exemplo, declarar funções anônimas como <code>~.x+2</code>), enquanto com as reticências temos maior legibilidade.</p>
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="introducao.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="purrr.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="iteracoes-intermediarias.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -327,7 +323,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/yihui/bookdown-crc/edit/master/index.Rmd",
+"link": "https://github.com/yihui/bookdown-crc/edit/master/04-transform.Rmd",
 "text": "Edit"
 },
 "download": ["bookdown.pdf"],
