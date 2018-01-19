@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="iteracoes-avancadas.html">
-<link rel="next" href="work-in-progress-1.html">
+<link rel="prev" href="work-in-progress.html">
+<link rel="next" href="purrr.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -255,82 +255,144 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="miscelanea-1" class="section level2">
-<h2><span class="header-section-number">5.6</span> Miscelânea</h2>
-<p>Por fim, veremos algumas funções do <code>purrr</code> que nêo têm exatamente a ver com laços, mas que acabam sendo bastante úteis quando usando as funções que vimos até agora. Elas não serão apresentadas em nenhuma ordem específica, este é apenas um apanhado de funções sortidas que achamos úteis enquanto programando com o <code>purrr</code>.</p>
-<div id="manter-e-descartar" class="section level3">
-<h3><span class="header-section-number">5.6.1</span> Manter e descartar</h3>
-<p>Se quisermos filtrar elementos de um vetor ou lista, podemos usar as funções <code>keep()</code> e <code>discard()</code>. Elas funcionam com fórmulas e podem ser extremamente úteis em situações que <code>dplyr::select()</code> e <code>magrittr::extract()</code> não conseguem cobrir:</p>
-<pre><code>#&gt; [[1]]
-#&gt; [1] 30 31 32 33 34 NA
-#&gt; [[1]]
-#&gt; [1] 30 31 32 33 34 NA</code></pre>
-<p>No exemplo acima descartamos todos os vetores da lista que não têm pelo menos um elemento omisso (<code>NA</code>).</p>
-</div>
-<div id="a-familia-is" class="section level3">
-<h3><span class="header-section-number">5.6.2</span> A família <code>is</code></h3>
-<p>Uma outra família do pacote <code>purrr</code> é a <code>is()</code>. Com essa série de funções podemos fazer verificações extremamente estritas em objetos dos mais variados tipos. Seguem alguns poucos exemplos:</p>
-<pre><code>#&gt; [1] FALSE
-#&gt; [1] TRUE
-#&gt; [1] TRUE
-#&gt; [1] TRUE</code></pre>
-</div>
-<div id="andar-e-modificar" class="section level3">
-<h3><span class="header-section-number">5.6.3</span> Andar e modificar</h3>
-<p><code>walk()</code> e <code>modify()</code> são pequenas alterações da família <code>map()</code> que vêm a calhar em diversas situações. A primeira destas funciona exatamente igual à <code>map()</code> mas não devolve resultado, apenas efeitos colaterais; a segunda, não muda a estrutura do objeto sendo iterado, ela substitui os próprios elementos da entrada.</p>
-<p>A maior utilidade de <code>walk</code> é quando precisamos salvar múltiplas tabelas. Para fazer isso, podemos usar algo como <code>walk(tabelas, readr::write_csv)</code></p>
-<p>Um caso de uso interessante da <code>modify()</code> é quando junta do sufixo <code>_if()</code>, combinação que nos permite iterar nas colunas de uma tabela e aplicar transformações de tipo apenas quando um predicado for verdade (geralmente de queremos transformar as colunas de fator para caractere).</p>
-</div>
-<div id="transposicao-e-indexacao-profunda" class="section level3">
-<h3><span class="header-section-number">5.6.4</span> Transposição e indexação profunda</h3>
-<p>Quando precisarmos lidar com listas complexas e profundas, o <code>purrr</code> nos fornece duas funções extremamente úteis: <code>transpose()</code> e <code>pluck()</code>. A primeira transpõe uma lista, enquanto a segunda é capaz de acessar elementos profundos de uma lista sem a necessidade de colchetes.</p>
-<pre><code>#&gt; List of 2
-#&gt;  $ :List of 3
-#&gt;   ..$ a: num 1
-#&gt;   ..$ b: num 2
-#&gt;   ..$ c: num 3
-#&gt;  $ :List of 3
-#&gt;   ..$ a: num 4
-#&gt;   ..$ b: num 5
-#&gt;   ..$ c: num 6
-#&gt; [1] 5
-#&gt; List of 3
-#&gt;  $ a:List of 2
-#&gt;   ..$ : num 1
-#&gt;   ..$ : num 4
-#&gt;  $ b:List of 2
-#&gt;   ..$ : num 2
-#&gt;   ..$ : num 5
-#&gt;  $ c:List of 2
-#&gt;   ..$ : num 3
-#&gt;   ..$ : num 6</code></pre>
-<p><strong>Obs.:</strong> Se você estiver com muitos problemas com listas profundas, dê uma olhada nas funções relacionadas a <code>depth()</code> pois elas podem ser muito úteis.</p>
-</div>
-<div id="aplicacao-parcial" class="section level3">
-<h3><span class="header-section-number">5.6.5</span> Aplicação parcial</h3>
-<p>Se quisermos pré-preencher os argumentos de uma função (seja para usá-la em uma pipeline ou com alguma função do próprio <code>purrr</code>), temos <code>partial()</code>. Ela funciona nos moldes da família <code>invoke()</code> e pode ser bastante útil para tornar suas pipelines mais enxutas:</p>
-<pre><code>#&gt; [1] 6</code></pre>
-</div>
-<div id="execucao-segura" class="section level3">
-<h3><span class="header-section-number">5.6.6</span> Execução segura</h3>
-<p>Não é incomum executarmos uma função e recebermos um erro de volta. Isso pode ser lidado com facilidade em um laço com um condicional, mas essa tarefa já é mais complexa quando se trata de programação funcional. Para isso, no <code>purrr</code> temos algumas funções que embrulham uma função e, quando esta retornar um erro, o silenciam e retornam um valor padrão em seu lugar.</p>
-<p><code>quietly()</code> retorna uma lista com resultado, saída, mensagem e alertas, <code>safely()</code> retorna uma lista com resultado e erro (um destes sempre é <code>NULL</code>), e <code>possibly()</code> silencia o erro e retorna um valor dado pelo usuário.</p>
-<pre><code>#&gt; $result
-#&gt; [1] 0
-#&gt; 
-#&gt; $error
-#&gt; &lt;simpleError in x + 1: non-numeric argument to binary operator&gt;</code></pre>
+<div id="finalizando-analise-das-camaras-1" class="section level2">
+<h2><span class="header-section-number">5.1</span> Finalizando análise das câmaras</h2>
+<p>No exemplo das câmaras, vamos fazer três gráficos. O primeiro mostra a proporção de processos por assunto em cada câmara.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d_cjsg %&gt;%
+<span class="st">  </span><span class="co"># transformacao</span>
+<span class="st">  </span><span class="kw">filter</span>(!<span class="kw">is.na</span>(court)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">separate</span>(class_subject, <span class="kw">c</span>(<span class="st">&#39;classe&#39;</span>, <span class="st">&#39;assunto&#39;</span>), <span class="dt">sep =</span> <span class="st">&#39; / &#39;</span>, 
+           <span class="dt">extra =</span> <span class="st">&#39;merge&#39;</span>, <span class="dt">fill =</span> <span class="st">&#39;right&#39;</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">assunto =</span> assunto %&gt;%<span class="st"> </span>
+<span class="st">           </span><span class="kw">str_wrap</span>(<span class="dv">19</span>) %&gt;%<span class="st"> </span>
+<span class="st">           </span><span class="kw">fct_infreq</span>() %&gt;%<span class="st"> </span>
+<span class="st">           </span><span class="kw">fct_rev</span>() %&gt;%<span class="st"> </span>
+<span class="st">           </span><span class="kw">fct_lump</span>(<span class="dt">n =</span> <span class="dv">11</span>, <span class="dt">other_level =</span> <span class="st">&quot;Outros&quot;</span>)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">add_count</span>(assunto) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">group_by</span>(court, assunto) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">nn =</span> <span class="kw">n</span>()) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">ntot =</span> <span class="kw">sum</span>(nn), <span class="dt">prop =</span> nn /<span class="st"> </span>ntot) %&gt;%
+<span class="st">  </span><span class="kw">ungroup</span>() %&gt;%
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">num =</span> <span class="kw">parse_number</span>(court),
+         <span class="dt">num =</span> <span class="kw">str_pad</span>(num, <span class="dv">2</span>, <span class="dt">pad =</span> <span class="st">&quot;0&quot;</span>)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="co"># grafico</span>
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> num, <span class="dt">fill =</span> assunto, <span class="dt">y =</span> prop)) +
+<span class="st">  </span><span class="kw">geom_col</span>(<span class="dt">colour =</span> <span class="st">&#39;black&#39;</span>, <span class="dt">position =</span> <span class="st">&quot;stack&quot;</span>) +
+<span class="st">  </span><span class="kw">theme_minimal</span>(<span class="dv">14</span>) +
+<span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">labels =</span> scales::percent) +
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&#39;Órgão julgador&#39;</span>, 
+       <span class="dt">y =</span> <span class="st">&#39;Proporção de </span><span class="ch">\n</span><span class="st">processos por assunto&#39;</span>,
+       <span class="dt">fill =</span> <span class="st">&quot;&quot;</span>) +
+<span class="st">  </span><span class="kw">guides</span>(<span class="dt">fill =</span> <span class="kw">guide_legend</span>(<span class="dt">reverse =</span> <span class="ot">TRUE</span>)) +
+<span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;bottom&quot;</span>)</code></pre></div>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-102-1.svg" width="864" /></p>
+<p>O segundo mostra a proporção de decisões antes e depois da virada.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># essa é a classificação final</span>
+negaram &lt;-<span class="st"> </span><span class="kw">regex</span>(<span class="st">&#39;negara?m|nega-se|negam-se&#39;</span>, <span class="dt">ignore_case =</span> <span class="ot">TRUE</span>)
+parcial &lt;-<span class="st"> </span><span class="kw">regex</span>(<span class="st">&#39;parcial&#39;</span>, <span class="dt">ignore_case =</span> <span class="ot">TRUE</span>)
+deram &lt;-<span class="st"> </span><span class="kw">regex</span>(<span class="st">&#39;deram|mantiv|dá-se&#39;</span>, <span class="dt">ignore_case =</span> <span class="ot">TRUE</span>)
+extinto &lt;-<span class="st"> </span><span class="kw">regex</span>(<span class="st">&#39;extin&#39;</span>, <span class="dt">ignore_case =</span> <span class="ot">TRUE</span>)
+nulo &lt;-<span class="st"> </span><span class="kw">regex</span>(<span class="st">&#39;nul&#39;</span>, <span class="dt">ignore_case =</span> <span class="ot">TRUE</span>)
+nconhec &lt;-<span class="st"> </span><span class="kw">regex</span>(<span class="st">&#39;conhec&#39;</span>, <span class="dt">ignore_case =</span> <span class="ot">TRUE</span>)
+tipos_decisao &lt;-<span class="st"> </span>function(decisoes) {
+  <span class="kw">case_when</span>(
+    <span class="kw">str_detect</span>(decisoes, negaram) ~<span class="st"> &#39;negado&#39;</span>,
+    <span class="kw">str_detect</span>(decisoes, parcial) ~<span class="st"> &#39;parcial&#39;</span>,
+    <span class="kw">str_detect</span>(decisoes, deram) ~<span class="st"> &#39;provido&#39;</span>,
+    <span class="kw">str_detect</span>(decisoes, extinto) ~<span class="st"> &#39;extinto&#39;</span>,
+    <span class="kw">str_detect</span>(decisoes, nulo) ~<span class="st"> &#39;nulo&#39;</span>,
+    <span class="kw">str_detect</span>(decisoes, nconhec) ~<span class="st"> &#39;não conhecido&#39;</span>,
+    <span class="ot">TRUE</span> ~<span class="st"> &quot;outros&quot;</span>)
+}
 
+partes_apelacoes &lt;-<span class="st"> </span>d_cposg %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(id, id_lawsuit, parts) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">unnest</span>(parts) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(part ==<span class="st"> &#39;Apelado&#39;</span>, <span class="kw">str_detect</span>(name, <span class="st">&#39;[Mm]inist&#39;</span>)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">distinct</span>(id_lawsuit)
+
+d_decisoes &lt;-<span class="st"> </span>d_cposg %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(id, id_lawsuit, decisions) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">unnest</span>(decisions) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">semi_join</span>(partes_apelacoes, <span class="st">&quot;id_lawsuit&quot;</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(date)) %&gt;%<span class="st">  </span>
+<span class="st">  </span><span class="kw">group_by</span>(id_lawsuit) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">slice</span>(<span class="dv">1</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">ungroup</span>()
+
+<span class="co"># write_rds(d_decisoes, glue(&quot;{path}/d_decisoes.rds&quot;), compress = &quot;bz2&quot;)</span>
+
+decisoes &lt;-<span class="st"> </span>d_decisoes %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">tipo_decisao =</span> <span class="kw">tipos_decisao</span>(decision)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(id_lawsuit, tipo_decisao)
+  
+decisoes_mes &lt;-<span class="st"> </span>d_cjsg %&gt;%
+<span class="st">  </span><span class="kw">inner_join</span>(decisoes, <span class="st">&#39;id_lawsuit&#39;</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">data =</span> <span class="kw">dmy</span>(dt_decision)) %&gt;%
+<span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(data)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">distinct</span>(id_lawsuit, <span class="dt">.keep_all =</span> <span class="ot">TRUE</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">mes =</span> <span class="kw">floor_date</span>(data, <span class="st">&#39;month&#39;</span>)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(mes &gt;=<span class="st"> &quot;2017-12-01&quot;</span>)
+
+
+decisoes_mes %&gt;%
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">tipo_decisao =</span> <span class="kw">case_when</span>(
+    tipo_decisao ==<span class="st"> &quot;negado&quot;</span> ~<span class="st"> &quot;Negado&quot;</span>,
+    tipo_decisao ==<span class="st"> &quot;provido&quot;</span> ~<span class="st"> &quot;Provido&quot;</span>,
+    tipo_decisao ==<span class="st"> &quot;parcial&quot;</span> ~<span class="st"> &quot;Parcialmente&quot;</span>,
+    <span class="ot">TRUE</span> ~<span class="st"> &quot;Outros&quot;</span>
+  )) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">group_by</span>(mes, tipo_decisao) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">n =</span> <span class="kw">n</span>()) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">prop =</span> n /<span class="st"> </span><span class="kw">sum</span>(n)) %&gt;%
+<span class="st">  </span><span class="kw">ungroup</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">complete</span>(mes, tipo_decisao, <span class="dt">fill =</span> <span class="kw">list</span>(<span class="dt">n =</span> <span class="dv">0</span>, <span class="dt">prop =</span> <span class="dv">0</span>)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="co"># grafico</span>
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">as.character</span>(mes), <span class="dt">y =</span> prop, 
+             <span class="dt">colour =</span> tipo_decisao, <span class="dt">group =</span> tipo_decisao)) +
+<span class="st">  </span><span class="kw">geom_line</span>() +
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="dv">3</span>) +
+<span class="st">  </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">y =</span> <span class="fl">0.65</span>, <span class="dt">label =</span> n, <span class="dt">colour =</span> <span class="ot">NULL</span>, <span class="dt">group =</span> <span class="ot">NULL</span>),
+            <span class="dt">data =</span> <span class="kw">count</span>(decisoes_mes, mes), <span class="dt">size =</span> <span class="dv">5</span>) +
+<span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">labels =</span> scales::percent) +
+<span class="st">  </span><span class="kw">scale_x_discrete</span>(<span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;Dezembro/2017&quot;</span>, <span class="st">&quot;Janeiro/2018&quot;</span>)) +
+<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&#39;Mês&#39;</span>) +
+<span class="st">  </span><span class="kw">ylab</span>(<span class="st">&#39;Proporção de cada tipo de decisão&#39;</span>) +
+<span class="st">  </span><span class="kw">theme_minimal</span>(<span class="dv">16</span>)</code></pre></div>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-103-1.svg" width="864" /></p>
+<p>O terceiro mostra a proporção de cada tipo de decisão em cada câmara.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d_cjsg %&gt;%
+<span class="st">  </span><span class="kw">filter</span>(!<span class="kw">is.na</span>(court)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">distinct</span>(id_lawsuit, <span class="dt">.keep_all =</span> <span class="ot">TRUE</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">inner_join</span>(decisoes, <span class="st">&#39;id_lawsuit&#39;</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">group_by</span>(court, tipo_decisao) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">n =</span> <span class="kw">n</span>()) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">ntot =</span> <span class="kw">sum</span>(n), <span class="dt">prop =</span> n /<span class="st"> </span>ntot) %&gt;%
+<span class="st">  </span><span class="kw">ungroup</span>() %&gt;%
+<span class="st">  </span><span class="kw">filter</span>(ntot &gt;<span class="st"> </span><span class="dv">10</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">num =</span> <span class="kw">parse_number</span>(court),
+         <span class="dt">num =</span> <span class="kw">str_pad</span>(num, <span class="dv">2</span>, <span class="dt">pad =</span> <span class="st">&quot;0&quot;</span>)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">complete</span>(num, tipo_decisao, <span class="dt">fill =</span> <span class="kw">list</span>(<span class="dt">n =</span> <span class="dv">0</span>, <span class="dt">prop =</span> <span class="dv">0</span>)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">arrange</span>(tipo_decisao) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">num =</span> <span class="kw">fct_reorder</span>(num, prop, <span class="dt">fun =</span> nth, <span class="dt">n =</span> <span class="dv">3</span>, <span class="dt">.desc =</span> <span class="ot">TRUE</span>),
+         <span class="dt">tipo_decisao =</span> <span class="kw">fct_reorder</span>(tipo_decisao, prop)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> num, <span class="dt">fill =</span> tipo_decisao, <span class="dt">y =</span> prop)) +
+<span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">stat =</span> <span class="st">&#39;identity&#39;</span>, <span class="dt">colour =</span> <span class="st">&#39;black&#39;</span>, <span class="dt">position =</span> <span class="st">&#39;stack&#39;</span>) +
+<span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">labels =</span> scales::percent) +
+<span class="st">  </span><span class="kw">coord_flip</span>() +
+<span class="st">  </span><span class="kw">theme_minimal</span>(<span class="dv">16</span>) +
+<span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;bottom&quot;</span>) +
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Câmara&quot;</span>, <span class="dt">y =</span> <span class="st">&#39;Proporção de processos por tipo de decisão&#39;</span>, 
+       <span class="dt">fill =</span> <span class="st">&quot;Decisão&quot;</span>)</code></pre></div>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-104-1.svg" width="864" /></p>
 </div>
-</div>
-<!-- </div> -->
             </section>
 
           </div>
         </div>
       </div>
-<a href="iteracoes-avancadas.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="work-in-progress-1.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="work-in-progress.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="purrr.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
