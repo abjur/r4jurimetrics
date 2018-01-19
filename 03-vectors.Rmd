@@ -1,2 +1,783 @@
 # Transformação de dados 1
 
+```{r, out.width="90%"}
+knitr::include_graphics("imgs/wrangle.png")
+```
+
+
+> "(...) The fact that data science exists as a field is a colossal failure of statistics. To me, [what I do] is what statistics is all about. It is gaining insight from data using modelling and visualization. Data munging and manipulation is hard and statistics has just said that’s not our domain."
+> 
+> Hadley Wickham
+
+Nessa parte, vamos aprender a **arrumar dados baixados da web**. No contexto da jurimetria, isso é muito importante por dois motivos: i) é difícil, pois as bases não foram concebidas para isso e ii) nessa parte conseguimos para explorar todas as maravilhas do `tidyverse`.
+
+### Setup
+
+1. Logar no servidor http://r.abj.org.br
+2. Novo projeto > Version Control > GIT
+3. Colocar a URL https://github.com/abjur/r4jurimetrics
+4. Iniciar projeto
+5. Abrir o arquivo 03-vectors.Rmd
+6. Rodar `library(tidyverse)`
+
+
+
+<!-- ----------------------------------------------------------------------- -->
+
+
+
+
+
+
+
+## Revisão
+
+Obtenção dos nossos dados
+
+```{r, echo=TRUE}
+library(tidyverse)
+library(esaj)
+library(glue)
+library(abjutils)
+path <- "data-raw/camaras" # onde salvar?
+dir.create(path, showWarnings = FALSE)
+```
+
+Quais câmaras vamos baixar? OBS: Usa um pouco de `stringr` e `dplyr`, que veremos adiante.
+
+```{r eval=FALSE, echo=TRUE}
+camaras <- cjsg_table("courts")
+id_camaras <- camaras %>% 
+  filter(str_detect(court, "Câmara.*Direito Criminal$")) %>% 
+  pull(id)
+```
+
+Quantas decisões no total?
+
+```{r eval=TRUE, echo=TRUE}
+peek_cjsg(query = "", courts = id_camaras,
+          registration_start = "2017-12-01", registration_end = "2018-01-18")
+```
+
+Baixando decisões: CJSG
+
+```{r eval=FALSE, echo=TRUE}
+cjsg_path <- glue("{path}/cjsg")
+download_cjsg(query = "", path = cjsg_path, 
+              courts = id_camaras,
+              registration_start = "2017-12-01", 
+              registration_end = "2018-01-18",
+              max_page = Inf, wait = 0.8)
+
+cjsg_files <- dir(cjsg_path, full.names = TRUE, pattern = "page")
+
+# parse
+d_cjsg <- parse_cjsg(cjsg_files)
+
+# salvando tibble parseada
+write_rds(d_cjsg, glue("{path}/d_cjsg.rds"), compress = "bz2")
+```
+
+```{r echo=TRUE}
+d_cjsg <- read_rds(glue("{path}/d_cjsg.rds"))
+glimpse(d_cjsg)
+```
+
+Baixando processos: CPOSG
+
+```{r eval=FALSE, echo=TRUE}
+cposg_path <- glue("{path}/cposg")
+
+# baixando processos individuais
+d_cjsg %>% 
+  filter(!is.na(id_lawsuit)) %>% 
+  pull(id_lawsuit) %>% 
+  unique() %>% 
+  clean_id() %>% 
+  download_cposg(cposg_path)
+
+cposg_files <- dir(cposg_path, full.names = TRUE)
+
+# parse
+parser <- make_parser() %>% 
+  parse_data() %>% 
+  parse_parts() %>% 
+  parse_decisions()
+
+# esse parser salva intermediários em rds
+rds_path <- glue("{path}/cposg_rds")
+run_parser(cposg_files, parser, path = rds_path)
+rds_files <- dir(rds_path, full.names = TRUE)
+d_cposg <- map_dfr(rds_files, read_rds) %>% 
+  mutate(id_lawsuit = build_id(str_extract(id, "^[0-9]+"))) %>% 
+  select(id, id_lawsuit, everything())
+
+# salvando tibble parseada
+write_rds(d_cposg, glue("{path}/d_cposg.rds"), compress = "bz2")
+```
+
+```{r echo=TRUE}
+d_cposg <- read_rds(glue("{path}/d_cposg.rds"))
+glimpse(d_cposg)
+```
+
+## Pacote `lubridate` para datas
+
+```{r echo=TRUE}
+library(lubridate)
+```
+
+Originalmente, o `R` é ruim para trabalhar com datas, o que causa frustração e perda de tempo nas análises. O pacote `lubridate` foi criado para simplificar ao máximo a leitura de datas e extração de informações dessas datas.
+
+A função mais importante para leitura de dados no `lubridate` é a `ymd`. Essa função serve para ler qualquer data de uma `string` no formato `YYYY-MM-DD`. Essa função é útil pois funciona com qualquer separador entre os elementos da data e também porque temos uma função para cada formato (`mdy`, `dmy`, `dym`, `myd`, `ydm`). 
+
+### Exercícios
+
+1. Leia `January 20, 2018` com o `lubridate`.
+2. O que acontece se você rodar `ymd("2017-02-29")`? e `ymd("2016-02-29")`?
+3. Encontre um caso em que o `lubridate` não funciona como você gostaria.
+
+Outras funções importantes
+
+- `ymd_hms`: lê datas e horários, generalizando `ymd`.
+- `year`, `month`, `day`, `quarter`, `weekday`, `week`: extraem componentes da data.
+- `years`, `months`, `days`: adicionam tempos a uma data, ajudando a criar vetores de datas. Por exemplo
+
+```{r, echo=TRUE, warning=FALSE, message=FALSE}
+ymd('2015-01-01') + months(0:11)
+```
+
+- `floor_date` e `ceiling_date`: arredonda datas para uma unidade de interesse. Útil para agregar dados diários por semana, mês, trimestre etc.
+
+```{r echo=TRUE}
+c("2017-04-10", "2017-08-08", "2017-02-28") %>% 
+  ymd() %>% 
+  floor_date("months")
+```
+
+Outro exemplo:
+
+```{r echo=TRUE}
+c("2017-04-10", "2017-08-08", "2017-02-28") %>% 
+  ymd() %>% 
+  ceiling_date("half year")
+```
+
+Mais informações: 
+
+- ver [a vignette do lubridate](https://cran.r-project.org/web/packages/lubridate/vignettes/lubridate.html) 
+- ver [o cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/lubridate.pdf).
+- Blog: [Comportamentos imprevisíveis do lubridate](http://curso-r.com/blog/2017/09/02/2017-07-29-comportamentos-estranhos-lubridate/)
+
+
+
+
+
+
+<!-- ----------------------------------------------------------------------- -->
+
+
+
+
+
+
+## Pacote `stringr` para trabalhar com textos
+
+
+O R básico não tem uma sintaxe consistente para trabalhar com textos. O pacote `stringr` ajuda a realizar todas as tarefas básicas de manipulação de texto, exigindo que o usuário estude apenas uma sintaxe. 
+
+O `stringr` também é construído sobre a [biblioteca ICU](http://site.icu-project.org/), implementada em `C` e `C++`, apresentando resultados rápidos e confiáveis.
+
+### Regras básicas
+
+- As funções começam com `str_`. Caso esqueça o nome de uma função, basta digitar `stringr::str_` e apertar `TAB` para ver quais são as opções.
+- O primeiro argumento da função é sempre uma `string`.
+
+### Funções do `stringr`
+
+- `str_detect()` retorna `TRUE` se a regex é compatível com a string e `FALSE` caso contrário.
+
+```{r echo=TRUE}
+txt <- c("acho que sim", "acho que não")
+str_detect(txt, "que")
+str_detect(txt, "sim")
+```
+
+- `str_lengh()` retorna o comprimento de uma string.
+
+```{r echo=TRUE}
+str_length('decisão favorável')
+```
+
+- `str_trim()` retira espaços e quebras de linha/tabs no início ou final de string.
+
+```{r echo=TRUE}
+string <- '\n  essa         string é muito suja                           \n'
+c(string, str_trim(string))
+```
+
+- `str_replace()` e `str_replace_all()` substituem um padrão (ou todos) encontrado para um outro padrão
+
+```{r echo=TRUE}
+string <- 'Recurso parcialmente parcialmente procedente'
+str_replace(string, 'parcialmente ', '')
+str_replace_all(string, 'parcialmente ', 'x ')
+str_replace(string, '(parcialmente )+', 'x ')
+
+str_replace_all('string     com    muitos espaços', ' +', ' ') # tirar espaços extras
+```
+
+- `str_match()` e `str_match_all()` extrai pedaços da string identificados pela regex. Caso queira extrair somente a parte identificada, use parênteses.
+
+```{r echo=TRUE}
+frases <- c('a roupa do rei', 
+            'de roma', 
+            'o rato roeu')
+
+str_match(frases, 'roe')
+str_match_all(frases, 'ro')
+str_match(frases, 'o (ro)')
+```
+
+- `str_split()` separa uma string em várias de acordo com um separador.
+
+```{r echo=TRUE}
+string <- 'eu sei, usar virgulas, de forma, perfeita'
+
+str_split(string, ', ')
+str_split(string, ', ', simplify = TRUE)
+
+# avançado: quebrar por um padrão, mas mantendo ele na string
+# look arounds
+str_split(string, '(?<=, )')
+```
+
+- `str_sub()` extrai uma parte da string de acordo com os índices.
+
+```{r echo=TRUE}
+string <- 'quero pegar só uma parte disso'
+str_sub(string, 13, 14)
+str_sub(string, -5, -1) # usar números negativos para voltar do final da string
+
+indices <- str_locate(string, 'parte')
+indices
+str_sub(string, indices) # pode ser útil usar com str_locate.
+```
+
+- `str_subset()` retorna somente as strings compatíveis com a regex.
+
+```{r echo=TRUE}
+frases <- c('a roupa do rei', 'de roma', 'o rato roeu')
+str_subset(frases, 'd[eo]')
+```
+
+
+
+
+
+
+<!-- ----------------------------------------------------------------------- -->
+
+
+
+
+
+
+## Expressões regulares
+
+Expressão regular ou *regex* é uma sequência concisa de caracteres que representa várias strings. Entender o básico de expressões regulares é indispensável para trabalhar com jurimetria.
+
+Vamos estudar expressões regulares através de exemplos e com a função `str_view()`.
+
+A tabela abaixo mostra a aplicação de seis `regex` a seis strings distintas.
+
+```{r echo=TRUE}
+txt <- c('ban', 'banana', 'abandonado', 'paraíba né', 'BANANA', 'ele levou ban')
+expressoes <- list(
+  'ban', # reconhece tudo que tenha "ban", mas não ignora case
+  'BAN', # reconhece tudo que tenha "BAN", mas não ignora case
+  'ban$', # reconhece apenas o que termina exatamente em "ban"
+  '^ban', # reconhece apenas o que começa exatamente com "ban"
+  'ba ?n' # reconhece tudo que tenha "ban", com ou sem espaço entre o "b" e o "a"
+)
+```
+
+```{r, echo=TRUE}
+# Desafio: entender o código que gera essa tabela ;)
+list(txt = txt, regex = expressoes) %>% 
+  cross_df() %>% 
+  mutate(result = map2_lgl(txt, regex, str_detect),
+         result = if_else(result, "X", "")) %>% 
+  distinct() %>% 
+  spread(txt, result) %>% 
+  knitr::kable()
+```
+
+### Quantificadores
+
+Os caracteres `+`, `*` e `{x,y}` indicam quantas vezes um padrão se repete:
+
+- `ey+` significa `e` e depois `y` "**uma vez** ou mais". Por exemplo, reconhece `hey`, `heyy`, `a eyyy`, mas não reconhece `e`, `y` nem `yy`.
+- `ey*` significa "**zero vezes** ou mais". Por exemplo, reconhece `hey`, `heyy`, `a eyyy` e `e`, mas não reconhece `y` nem `yy`.
+- `ey{3}` significa "exatamente três vezes". Por exemplo, reconhece `eyyy` e `eyyyy`, mas não reconhece `eyy`.
+- `ey{1,3}` significa "entre uma e três vezes".
+
+Para aplicar um quantificador a um conjunto de caracteres, use parênteses. Por exemplo, `(ey )+` reconhece `ey ey `.
+
+### Conjuntos
+
+Colocando caracteres dentro de `[]`, reconhecemos quaisquer caracteres desse conjunto. 
+Alguns exemplos práticos:
+
+- `[Cc]asa` para reconhecer "casa" em maiúsculo ou minúsculo.
+- `[0-9]` para reconhecer somente números. O mesmo vale para letras `[a-z]`, `[A-Z]`, `[a-zA-Z]` etc.
+- O símbolo `^` dentro do colchete significa negação. Por exemplo, `[^0-9]` significa pegar tudo o que não é número.
+- O símbolo `.` fora do colchete indica "qualquer caractere", mas dentro do colchete é apenas ponto.
+- Use `[[:space:]]+` para reconhecer espaços e `[[:punct:]]+` para reconhecer pontuações.
+
+### Miscelânea
+
+- Use `|` para opções, por exemplo `desfavor|desprov` reconhece tanto "desfavorável" quanto "desprovido"
+- `\n` pula linha, `\f` é final da página, `\t` é tab. Use `\` para transformar caracteres especiais em literais.
+- `str_to_lower()` e `str_to_upper()` para mudar o case de uma string. 
+
+A lista de possibilidades com expressões regulares é extensa. Um bom lugar para testar o funcionamento de expressões regulares é o [regex101](https://regex101.com/).
+
+### Outros links
+
+- [Cheatsheet do stringr](https://github.com/rstudio/cheatsheets/blob/master/strings.pdf)
+- [Apresentação do Caio Lente](https://ctlente.github.io/aula4/)
+
+
+
+
+
+<!-- ----------------------------------------------------------------------- -->
+
+
+
+
+
+## Exemplo: decisões das câmaras
+
+Suponha que temos o seguinte vetor de textos de decisões:
+
+```{r, echo=TRUE}
+d_decisoes <- readRDS(glue('{path}/d_decisoes.rds'))
+```
+
+```{r echo=TRUE}
+negaram <- regex('negaram', ignore_case = TRUE)
+parcial <- regex('parcial', ignore_case = TRUE)
+deram <- regex('deram', ignore_case = TRUE)
+
+tipos_decisao <- function(decisoes) {
+  case_when(
+    str_detect(decisoes, negaram) ~ 'negado',
+    str_detect(decisoes, parcial) ~ 'parcial',
+    str_detect(decisoes, deram) ~ 'provido',
+    TRUE ~ "outros")
+}
+
+tipo_decisao <- tipos_decisao(d_decisoes$decision)
+table(tipo_decisao)
+```
+
+Exercício
+
+1. melhore essa classificação. Dica: é importante avaliar os casos que as expressões regulares não capturaram, para verficar se deixamos algo de fora.
+
+```{r echo=TRUE}
+str_trunc(d_decisoes$decision[tipo_decisao == "outros"], 60) %>% 
+  head(10)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Mas como é que `d_decisoes` foi obtido de `d_cposg`? Para saber isso, precisaremos aprimorar nossos conhecimentos obtidos de `lubridate` e `stringr`, completando com o melhor toolkit de transformação de dados de todos os tempos: `dplyr` e seus amigos.
+
+
+
+
+
+
+
+<!-- ----------------------------------------------------------------------- -->
+
+
+
+
+
+
+
+## Pacotes `dplyr` e `tidyr`
+
+Vamos trabalhar com `d_cjsg`!
+
+### Características do `dplyr`
+
+- O _input_  é sempre uma `tibble`, e o _output_  é sempre um `tibble`.
+- No primeiro argumento colocamos o `tibble`, e nos outros argumentos colocamo o que queremos fazer.
+- A utilização é facilitada com o emprego do operador `%>%`
+
+### As cinco funções principais
+
+- `filter`
+- `mutate`
+- `select`
+- `arrange`
+- `summarise`
+
+### `select`
+
+- Utilizar `starts_with(x)`, `contains(x)`, `matches(x)`, `one_of(x)`, etc.
+- Possível colocar nomes, índices, e intervalos de variáveis com `:`.
+
+```{r, echo=TRUE}
+d_cjsg %>% 
+  select(id_lawsuit, id_decision, district, rapporteur)
+```
+
+```{r, echo=TRUE}
+d_cjsg %>% 
+  select(id_decision:district, class_subject)
+```
+
+```{r, echo=TRUE}
+d_cjsg %>% 
+  select(id_lawsuit, starts_with('dt_'))
+```
+
+Exercícios: 
+
+1. selecione as colunas que acabam com "ion" ou que contêm "sum".
+2. tire as colunas de texto.
+
+### `filter`
+
+- Use `|` para "ou".
+- Condições separadas por vírgulas é o mesmo que separar por `&`.
+
+```{r, echo=TRUE}
+d_cjsg %>% 
+  select(id_lawsuit, id_decision, district, rapporteur) %>% 
+  filter(district == 'São Paulo')
+```
+
+Dica: usar `%in%`
+
+```{r, echo=TRUE}
+d_cjsg %>% 
+  select(id_lawsuit, id_decision, district, dt_decision, rapporteur) %>% 
+  filter(district %in% c('Campinas', 'Sorocaba') &
+         (day(dmy(dt_decision)) >= 29 | day(dmy(dt_decision)) < 25))
+```
+
+```{r, echo=TRUE}
+d_cjsg %>% 
+  select(rapporteur) %>% 
+  filter(str_detect(rapporteur, '[zZ]')) %>% 
+  count(rapporteur, sort = TRUE)
+```
+
+Exercícios:
+
+1. filtre todas as decisões de 2018.
+2. filtre apenas casos em que `id_decision` não é `NA`
+3. A aplicação de `filter` modifica o objeto `d_cjsg`?
+
+### `mutate`
+
+- Aceita várias novas colunas iterativamente.
+- Novas variáveis devem ter o mesmo `length` que o `nrow` do bd original ou `1`.
+
+```{r, echo=TRUE}
+d_cjsg %>% 
+  select(id_lawsuit, dt_decision) %>% 
+  mutate(ano_julgamento = year(dmy(dt_decision)),
+         ano_proc = str_sub(id_lawsuit, 12, 15),
+         ano_proc = as.numeric(ano_proc),
+         tempo_anos = ano_julgamento - ano_proc)
+```
+
+Exercícios
+
+1. Crie uma coluna `comarca_limpa` com a comarca sem acentos e maiúscula
+2. Crie uma coluna binária `drogas` que vale `TRUE` se no texto da decisão algo é falado de drogas e `FALSE` caso contrário. Considere tanto a palavra `droga` como seus sinônimos, algum exemplo de droga e a Lei de Drogas.
+
+### `arrange`
+
+- Simplesmente ordena de acordo com as opções.
+- Utilizar `desc` para ordem decrescente.
+
+```{r, echo=TRUE}
+d_cjsg %>% 
+  select(id_lawsuit, dt_decision) %>% 
+  mutate(ano_julgamento = year(dmy(dt_decision)),
+         ano_proc = str_sub(id_lawsuit, 12, 15),
+         ano_proc = as.numeric(ano_proc)) %>% 
+  mutate(tempo_anos = ano_julgamento - ano_proc) %>% 
+  arrange(desc(tempo_anos))
+```
+
+
+### `summarise`
+
+- Retorna um vetor de tamanho `1` a partir de uma conta com as variáveis.
+- Geralmente é utilizado em conjunto com `group_by`.
+- Algumas funções importantes: `n()`, `n_distinct()`.
+
+```{r, echo=TRUE}
+d_cjsg %>% 
+  select(id_lawsuit, district, dt_decision, court) %>% 
+  mutate(ano_julgamento = year(dmy(dt_decision)),
+         ano_proc = str_sub(id_lawsuit, 12, 15),
+         ano_proc = as.numeric(ano_proc)) %>% 
+  mutate(tempo_anos = ano_julgamento - ano_proc) %>% 
+  arrange(desc(tempo_anos)) %>% 
+  group_by(district, court) %>% 
+  summarise(n = n(),
+            media_anos = mean(tempo_anos),
+            min_anos = min(tempo_anos),
+            max_anos = max(tempo_anos)) %>% 
+  filter(n > 5) %>% 
+  arrange(desc(media_anos))
+```
+
+A função `count()` simplifica um `group_by %>% summarise %>% ungroup` e é bem útil:
+
+```{r, echo=TRUE}
+d_cjsg %>% 
+  count(rapporteur, sort = TRUE) %>% 
+  mutate(prop = n / sum(n), prop = scales::percent(prop))
+```
+
+Exercício
+
+1. Quem é o relator mais prolixo?
+
+### `gather`
+
+- "Empilha" o banco de dados
+
+```{r, echo=TRUE, warning=FALSE, message=FALSE}
+d_cjsg %>% 
+  filter(!is.na(id_decision)) %>% 
+  select(id_decision:dt_registration) %>% 
+  gather(key, value, -id_decision) %>% 
+  arrange(id_decision)
+```
+
+### `spread`
+
+- "Joga" uma variável nas colunas
+- É essencialmente a função inversa de `gather`
+
+```{r, echo=TRUE}
+d_cjsg %>% 
+  filter(!is.na(id_decision)) %>% 
+  select(id_decision:dt_registration) %>% 
+  gather(key, value, -id_decision) %>% 
+  spread(key, value)
+```
+
+### Funções auxiliares
+
+- `unite` junta duas ou mais colunas usando algum separador (`_`, por exemplo).
+- `separate` faz o inverso de `unite`, e uma coluna em várias usando um separador.
+
+```{r, echo=TRUE, echo=TRUE}
+d_cjsg %>% 
+  select(id_lawsuit, class_subject) %>% 
+  separate(class_subject, c('classe', 'assunto'), sep = ' / ', 
+           extra = 'merge', fill = 'right') %>% 
+  count(assunto, sort = TRUE)
+```
+
+### `nest` e `unnest`
+
+`nest` e `unnest` são operações inversas e servem para tratar dados complecos, como o que temos em `d_cposg`
+
+```{r, echo=TRUE, echo=TRUE}
+d_cposg <- read_rds(glue("{path}/d_cposg.rds"))
+
+d_partes <- d_cposg %>% 
+  select(id_lawsuit, parts) %>% 
+  unnest(parts)
+
+d_data <- d_cposg %>% 
+  select(id_lawsuit, data) %>% 
+  unnest(data)
+```
+
+### Um pouco mais de transformação de dados
+
+- Para juntar tabelas, usar `inner_join`, `left_join`, `anti_join`, etc.
+- Para realizar operações mais gerais, usar `do`.
+- Para retirar duplicatas, utilizar `distinct`.
+- Para fazer algumas mágicas, trabalhar com 
+
+
+
+
+
+<!-- ----------------------------------------------------------------------- -->
+
+
+
+
+
+
+
+## Finalizando análise das câmaras
+
+No exemplo das câmaras, vamos fazer três gráficos. O primeiro mostra a proporção de processos por assunto em cada câmara.
+
+```{r, echo=TRUE, warning=FALSE, fig.width=9, fig.height=5}
+d_cjsg %>%
+  # transformacao
+  filter(!is.na(court)) %>% 
+  separate(class_subject, c('classe', 'assunto'), sep = ' / ', 
+           extra = 'merge', fill = 'right') %>% 
+  mutate(assunto = assunto %>% 
+           str_wrap(19) %>% 
+           fct_infreq() %>% 
+           fct_rev() %>% 
+           fct_lump(n = 11, other_level = "Outros")) %>% 
+  add_count(assunto) %>% 
+  group_by(court, assunto) %>% 
+  summarise(nn = n()) %>% 
+  mutate(ntot = sum(nn), prop = nn / ntot) %>%
+  ungroup() %>%
+  mutate(num = parse_number(court),
+         num = str_pad(num, 2, pad = "0")) %>% 
+  # grafico
+  ggplot(aes(x = num, fill = assunto, y = prop)) +
+  geom_col(colour = 'black', position = "stack") +
+  theme_minimal(14) +
+  scale_y_continuous(labels = scales::percent) +
+  labs(x = 'Órgão julgador', 
+       y = 'Proporção de \nprocessos por assunto',
+       fill = "") +
+  guides(fill = guide_legend(reverse = TRUE)) +
+  theme(legend.position = "bottom")
+```
+
+O segundo mostra a proporção de decisões antes e depois da virada.
+
+```{r, echo=TRUE, fig.width=9, fig.height=5}
+# essa é a classificação final
+negaram <- regex('negara?m|nega-se|negam-se', ignore_case = TRUE)
+parcial <- regex('parcial', ignore_case = TRUE)
+deram <- regex('deram|mantiv|dá-se', ignore_case = TRUE)
+extinto <- regex('extin', ignore_case = TRUE)
+nulo <- regex('nul', ignore_case = TRUE)
+nconhec <- regex('conhec', ignore_case = TRUE)
+tipos_decisao <- function(decisoes) {
+  case_when(
+    str_detect(decisoes, negaram) ~ 'negado',
+    str_detect(decisoes, parcial) ~ 'parcial',
+    str_detect(decisoes, deram) ~ 'provido',
+    str_detect(decisoes, extinto) ~ 'extinto',
+    str_detect(decisoes, nulo) ~ 'nulo',
+    str_detect(decisoes, nconhec) ~ 'não conhecido',
+    TRUE ~ "outros")
+}
+
+partes_apelacoes <- d_cposg %>% 
+  select(id, id_lawsuit, parts) %>% 
+  unnest(parts) %>% 
+  filter(part == 'Apelado', str_detect(name, '[Mm]inist')) %>% 
+  distinct(id_lawsuit)
+
+d_decisoes <- d_cposg %>% 
+  select(id, id_lawsuit, decisions) %>% 
+  unnest(decisions) %>% 
+  semi_join(partes_apelacoes, "id_lawsuit") %>% 
+  arrange(desc(date)) %>%  
+  group_by(id_lawsuit) %>% 
+  slice(1) %>% 
+  ungroup()
+
+# write_rds(d_decisoes, glue("{path}/d_decisoes.rds"), compress = "bz2")
+
+decisoes <- d_decisoes %>% 
+  mutate(tipo_decisao = tipos_decisao(decision)) %>% 
+  select(id_lawsuit, tipo_decisao)
+  
+decisoes_mes <- d_cjsg %>%
+  inner_join(decisoes, 'id_lawsuit') %>% 
+  mutate(data = dmy(dt_decision)) %>%
+  arrange(desc(data)) %>% 
+  distinct(id_lawsuit, .keep_all = TRUE) %>% 
+  mutate(mes = floor_date(data, 'month')) %>% 
+  filter(mes >= "2017-12-01")
+
+
+decisoes_mes %>%
+  mutate(tipo_decisao = case_when(
+    tipo_decisao == "negado" ~ "Negado",
+    tipo_decisao == "provido" ~ "Provido",
+    tipo_decisao == "parcial" ~ "Parcialmente",
+    TRUE ~ "Outros"
+  )) %>% 
+  group_by(mes, tipo_decisao) %>% 
+  summarise(n = n()) %>% 
+  mutate(prop = n / sum(n)) %>%
+  ungroup() %>% 
+  complete(mes, tipo_decisao, fill = list(n = 0, prop = 0)) %>% 
+  # grafico
+  ggplot(aes(x = as.character(mes), y = prop, 
+             colour = tipo_decisao, group = tipo_decisao)) +
+  geom_line() +
+  geom_point(size = 3) +
+  geom_text(aes(y = 0.65, label = n, colour = NULL, group = NULL),
+            data = count(decisoes_mes, mes), size = 5) +
+  scale_y_continuous(labels = scales::percent) +
+  scale_x_discrete(labels = c("Dezembro/2017", "Janeiro/2018")) +
+  xlab('Mês') +
+  ylab('Proporção de cada tipo de decisão') +
+  theme_minimal(16)
+```
+
+O terceiro mostra a proporção de cada tipo de decisão em cada câmara.
+
+```{r, echo=TRUE, eval=TRUE, fig.width=9, fig.height=6}
+d_cjsg %>%
+  filter(!is.na(court)) %>% 
+  distinct(id_lawsuit, .keep_all = TRUE) %>% 
+  inner_join(decisoes, 'id_lawsuit') %>% 
+  group_by(court, tipo_decisao) %>% 
+  summarise(n = n()) %>% 
+  mutate(ntot = sum(n), prop = n / ntot) %>%
+  ungroup() %>%
+  filter(ntot > 10) %>% 
+  mutate(num = parse_number(court),
+         num = str_pad(num, 2, pad = "0")) %>% 
+  complete(num, tipo_decisao, fill = list(n = 0, prop = 0)) %>% 
+  arrange(tipo_decisao) %>% 
+  mutate(num = fct_reorder(num, prop, fun = nth, n = 3, .desc = TRUE),
+         tipo_decisao = fct_reorder(tipo_decisao, prop)) %>% 
+  ggplot(aes(x = num, fill = tipo_decisao, y = prop)) +
+  geom_bar(stat = 'identity', colour = 'black', position = 'stack') +
+  scale_y_continuous(labels = scales::percent) +
+  coord_flip() +
+  theme_minimal(16) +
+  theme(legend.position = "bottom") +
+  labs(x = "Câmara", y = 'Proporção de processos por tipo de decisão', 
+       fill = "Decisão")
+```
+
+
