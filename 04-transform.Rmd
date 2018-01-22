@@ -875,12 +875,16 @@ d_espec_resumida <- read_rds("data-raw/espec/d_espec_resumida.rds")
 glimpse(d_espec_resumida)
 ```
 
-```{r echo=TRUE}
+```{r echo=TRUE, fig.width=9, fig.height=5}
 library(survival)
 d_surv <- d_espec_resumida %>% 
-  mutate(obs = !is.na(dt_baix) | !is.na(dt_julg) | !is.na(dt_sent)) %>% 
-  filter(tempo_total >= 0, tempo_total < 1400)
-fit <- survfit(Surv(tempo_total, obs) ~ 1, data = d_surv)
+  mutate(t_deci = as.numeric(t_deci)) %>% 
+  gather(tipo_tempo, tempo, tempo_total, t_deci) %>% 
+  mutate(obs = n_baix > 0 | n_julg > 0 | n_sent > 0) %>% 
+  filter(tempo >= 0, tempo < 1400)
+
+fit <- survfit(Surv(tempo, obs) ~ tipo_tempo, data = d_surv)
+
 survminer::ggsurvplot(fit, risk.table = TRUE)
 ```
 
