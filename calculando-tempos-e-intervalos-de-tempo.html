@@ -407,9 +407,13 @@ d_espec_resumida &lt;-<span class="st"> </span><span class="kw">read_rds</span>(
 #&gt; $ t_deci        &lt;time&gt; 239 days, 184 days, 8 days, 22 days, 5 days, 13...</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(survival)
 d_surv &lt;-<span class="st"> </span>d_espec_resumida %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">obs =</span> !<span class="kw">is.na</span>(dt_baix) |<span class="st"> </span>!<span class="kw">is.na</span>(dt_julg) |<span class="st"> </span>!<span class="kw">is.na</span>(dt_sent)) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">filter</span>(tempo_total &gt;=<span class="st"> </span><span class="dv">0</span>, tempo_total &lt;<span class="st"> </span><span class="dv">1400</span>)
-fit &lt;-<span class="st"> </span><span class="kw">survfit</span>(<span class="kw">Surv</span>(tempo_total, obs) ~<span class="st"> </span><span class="dv">1</span>, <span class="dt">data =</span> d_surv)
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">t_deci =</span> <span class="kw">as.numeric</span>(t_deci)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">gather</span>(tipo_tempo, tempo, tempo_total, t_deci) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">obs =</span> n_baix &gt;<span class="st"> </span><span class="dv">0</span> |<span class="st"> </span>n_julg &gt;<span class="st"> </span><span class="dv">0</span> |<span class="st"> </span>n_sent &gt;<span class="st"> </span><span class="dv">0</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(tempo &gt;=<span class="st"> </span><span class="dv">0</span>, tempo &lt;<span class="st"> </span><span class="dv">1400</span>)
+
+fit &lt;-<span class="st"> </span><span class="kw">survfit</span>(<span class="kw">Surv</span>(tempo, obs) ~<span class="st"> </span>tipo_tempo, <span class="dt">data =</span> d_surv)
+
 survminer::<span class="kw">ggsurvplot</span>(fit, <span class="dt">risk.table =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p><img src="bookdown_files/figure-html/unnamed-chunk-156-1.svg" width="864" /></p>
 </div>
