@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="pacote-lubridate-para-datas.html">
-<link rel="next" href="expressoes-regulares.html">
+<link rel="prev" href="transformacao-de-dados-2.html">
+<link rel="next" href="finalizando-analise-das-camaras-1.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -256,116 +256,104 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="pacote-stringr-para-trabalhar-com-textos" class="section level2">
-<h2><span class="header-section-number">4.3</span> Pacote <code>stringr</code> para trabalhar com textos</h2>
-<p>O R básico não tem uma sintaxe consistente para trabalhar com textos. O pacote <code>stringr</code> ajuda a realizar todas as tarefas básicas de manipulação de texto, exigindo que o usuário estude apenas uma sintaxe.</p>
-<p>O <code>stringr</code> também é construído sobre a <a href="http://site.icu-project.org/">biblioteca ICU</a>, implementada em <code>C</code> e <code>C++</code>, apresentando resultados rápidos e confiáveis.</p>
-<div id="regras-basicas" class="section level3">
-<h3><span class="header-section-number">4.3.1</span> Regras básicas</h3>
+<div id="funcoes-do-tidyr" class="section level2">
+<h2><span class="header-section-number">5.1</span> Funções do <code>tidyr</code></h2>
+<p>O <code>dplyr</code> está para o <code>tidyr</code> assim como tesoura/cola está para um alicate/martelo.</p>
+<p>Enquanto o <code>dplyr</code> faz recortes na base (com <code>filter()</code>e <code>select()</code>) e adições simples (<code>mutate()</code>, <code>summarise()</code>), o <code>tidyr</code> mexe no <strong>formato</strong> da tabela (<code>gather()</code>, <code>spread()</code>) e faz modificações menos triviais.</p>
+<div id="gather-1" class="section level3">
+<h3><span class="header-section-number">5.1.1</span> <code>gather</code></h3>
 <ul>
-<li>As funções começam com <code>str_</code>. Caso esqueça o nome de uma função, basta digitar <code>stringr::str_</code> e apertar <code>TAB</code> para ver quais são as opções.</li>
-<li>O primeiro argumento da função é sempre uma <code>string</code>.</li>
+<li>“Empilha” o banco de dados</li>
 </ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d_cjsg %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(!<span class="kw">is.na</span>(id_decision)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(id_decision:dt_registration) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">gather</span>(key, value, -id_decision) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">arrange</span>(id_decision)</code></pre></div>
 </div>
-<div id="funcoes-do-stringr" class="section level3">
-<h3><span class="header-section-number">4.3.2</span> Funções do <code>stringr</code></h3>
+<div id="spread-1" class="section level3">
+<h3><span class="header-section-number">5.1.2</span> <code>spread</code></h3>
 <ul>
-<li><code>str_detect()</code> retorna <code>TRUE</code> se a regex é compatível com a string e <code>FALSE</code> caso contrário.</li>
+<li>“Joga” uma variável nas colunas</li>
+<li>É essencialmente a função inversa de <code>gather</code></li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">txt &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;acho que sim&quot;</span>, <span class="st">&quot;acho que não&quot;</span>)
-<span class="kw">str_detect</span>(txt, <span class="st">&quot;que&quot;</span>)</code></pre></div>
-<pre><code>#&gt; [1] TRUE TRUE</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_detect</span>(txt, <span class="st">&quot;sim&quot;</span>)</code></pre></div>
-<pre><code>#&gt; [1]  TRUE FALSE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d_cjsg %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(!<span class="kw">is.na</span>(id_decision)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(id_decision:dt_registration) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">gather</span>(key, value, -id_decision) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">spread</span>(key, value)</code></pre></div>
+</div>
+<div id="unindo-e-separando-colunas" class="section level3">
+<h3><span class="header-section-number">5.1.3</span> Unindo e separando colunas</h3>
 <ul>
-<li><code>str_lengh()</code> retorna o comprimento de uma string.</li>
+<li><code>unite</code> junta duas ou mais colunas usando algum separador (<code>_</code>, por exemplo).</li>
+<li><code>separate</code> faz o inverso de <code>unite</code>, e uma coluna em várias usando um separador.</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_length</span>(<span class="st">&#39;decisão favorável&#39;</span>)</code></pre></div>
-<pre><code>#&gt; [1] 17</code></pre>
-<ul>
-<li><code>str_trim()</code> retira espaços e quebras de linha/tabs no início ou final de string.</li>
-</ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">string &lt;-<span class="st"> &#39;</span><span class="ch">\n</span><span class="st">  essa         string é muito suja                           </span><span class="ch">\n</span><span class="st">&#39;</span>
-<span class="kw">c</span>(string, <span class="kw">str_trim</span>(string))</code></pre></div>
-<pre><code>#&gt; [1] &quot;\n  essa         string é muito suja                           \n&quot;
-#&gt; [2] &quot;essa         string é muito suja&quot;</code></pre>
-<ul>
-<li><code>str_replace()</code> e <code>str_replace_all()</code> substituem um padrão (ou todos) encontrado para um outro padrão</li>
-</ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">string &lt;-<span class="st"> &#39;Recurso parcialmente parcialmente procedente&#39;</span>
-<span class="kw">str_replace</span>(string, <span class="st">&#39;parcialmente &#39;</span>, <span class="st">&#39;&#39;</span>)</code></pre></div>
-<pre><code>#&gt; [1] &quot;Recurso parcialmente procedente&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_replace_all</span>(string, <span class="st">&#39;parcialmente &#39;</span>, <span class="st">&#39;x &#39;</span>)</code></pre></div>
-<pre><code>#&gt; [1] &quot;Recurso x x procedente&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_replace</span>(string, <span class="st">&#39;(parcialmente )+&#39;</span>, <span class="st">&#39;x &#39;</span>)</code></pre></div>
-<pre><code>#&gt; [1] &quot;Recurso x procedente&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_replace_all</span>(<span class="st">&#39;string     com    muitos espaços&#39;</span>, <span class="st">&#39; +&#39;</span>, <span class="st">&#39; &#39;</span>) <span class="co"># tirar espaços extras</span></code></pre></div>
-<pre><code>#&gt; [1] &quot;string com muitos espaços&quot;</code></pre>
-<ul>
-<li><code>str_match()</code> e <code>str_match_all()</code> extrai pedaços da string identificados pela regex. Caso queira extrair somente a parte identificada, use parênteses.</li>
-</ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">frases &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;a roupa do rei&#39;</span>, 
-            <span class="st">&#39;de roma&#39;</span>, 
-            <span class="st">&#39;o rato roeu&#39;</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d_cjsg %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(id_lawsuit, class_subject) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">separate</span>(class_subject, <span class="kw">c</span>(<span class="st">&#39;classe&#39;</span>, <span class="st">&#39;assunto&#39;</span>), <span class="dt">sep =</span> <span class="st">&#39; / &#39;</span>, 
+           <span class="dt">extra =</span> <span class="st">&#39;merge&#39;</span>, <span class="dt">fill =</span> <span class="st">&#39;right&#39;</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">count</span>(assunto, <span class="dt">sort =</span> <span class="ot">TRUE</span>)</code></pre></div>
+</div>
+<div id="list-columns-nest-e-unnest" class="section level3">
+<h3><span class="header-section-number">5.1.4</span> List columns: <code>nest</code> e <code>unnest</code></h3>
+<p><code>nest</code> e <code>unnest</code> são operações inversas e servem para tratar dados complecos, como o que temos em <code>d_cposg</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d_partes &lt;-<span class="st"> </span>d_cposg %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(id_lawsuit, parts) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">unnest</span>(parts)
 
-<span class="kw">str_match</span>(frases, <span class="st">&#39;roe&#39;</span>)</code></pre></div>
-<pre><code>#&gt;      [,1] 
-#&gt; [1,] NA   
-#&gt; [2,] NA   
-#&gt; [3,] &quot;roe&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_match_all</span>(frases, <span class="st">&#39;ro&#39;</span>)</code></pre></div>
-<pre><code>#&gt; [[1]]
-#&gt;      [,1]
-#&gt; [1,] &quot;ro&quot;
-#&gt; 
-#&gt; [[2]]
-#&gt;      [,1]
-#&gt; [1,] &quot;ro&quot;
-#&gt; 
-#&gt; [[3]]
-#&gt;      [,1]
-#&gt; [1,] &quot;ro&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_match</span>(frases, <span class="st">&#39;o (ro)&#39;</span>)</code></pre></div>
-<pre><code>#&gt;      [,1]   [,2]
-#&gt; [1,] NA     NA  
-#&gt; [2,] NA     NA  
-#&gt; [3,] &quot;o ro&quot; &quot;ro&quot;</code></pre>
-<ul>
-<li><code>str_split()</code> separa uma string em várias de acordo com um separador.</li>
-</ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">string &lt;-<span class="st"> &#39;eu sei, usar virgulas, de forma, perfeita&#39;</span>
-
-<span class="kw">str_split</span>(string, <span class="st">&#39;, &#39;</span>)</code></pre></div>
-<pre><code>#&gt; [[1]]
-#&gt; [1] &quot;eu sei&quot;        &quot;usar virgulas&quot; &quot;de forma&quot;      &quot;perfeita&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_split</span>(string, <span class="st">&#39;, &#39;</span>, <span class="dt">simplify =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<pre><code>#&gt;      [,1]     [,2]            [,3]       [,4]      
-#&gt; [1,] &quot;eu sei&quot; &quot;usar virgulas&quot; &quot;de forma&quot; &quot;perfeita&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># avançado: quebrar por um padrão, mas mantendo ele na string</span>
-<span class="co"># look arounds</span>
-<span class="kw">str_split</span>(string, <span class="st">&#39;(?&lt;=, )&#39;</span>)</code></pre></div>
-<pre><code>#&gt; [[1]]
-#&gt; [1] &quot;eu sei, &quot;        &quot;usar virgulas, &quot; &quot;de forma, &quot;      &quot;perfeita&quot;</code></pre>
-<ul>
-<li><code>str_sub()</code> extrai uma parte da string de acordo com os índices.</li>
-</ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">string &lt;-<span class="st"> &#39;quero pegar só uma parte disso&#39;</span>
-<span class="kw">str_sub</span>(string, <span class="dv">13</span>, <span class="dv">14</span>)</code></pre></div>
-<pre><code>#&gt; [1] &quot;só&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_sub</span>(string, -<span class="dv">5</span>, -<span class="dv">1</span>) <span class="co"># usar números negativos para voltar do final da string</span></code></pre></div>
-<pre><code>#&gt; [1] &quot;disso&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">indices &lt;-<span class="st"> </span><span class="kw">str_locate</span>(string, <span class="st">&#39;parte&#39;</span>)
-indices</code></pre></div>
-<pre><code>#&gt;      start end
-#&gt; [1,]    20  24</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_sub</span>(string, indices) <span class="co"># pode ser útil usar com str_locate.</span></code></pre></div>
-<pre><code>#&gt; [1] &quot;parte&quot;</code></pre>
-<ul>
-<li><code>str_subset()</code> retorna somente as strings compatíveis com a regex.</li>
-</ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">frases &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;a roupa do rei&#39;</span>, <span class="st">&#39;de roma&#39;</span>, <span class="st">&#39;o rato roeu&#39;</span>)
-<span class="kw">str_subset</span>(frases, <span class="st">&#39;d[eo]&#39;</span>)</code></pre></div>
-<pre><code>#&gt; [1] &quot;a roupa do rei&quot; &quot;de roma&quot;</code></pre>
+d_data &lt;-<span class="st"> </span>d_cposg %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(id_lawsuit, data) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">unnest</span>(data)</code></pre></div>
+</div>
+<div id="joins" class="section level3">
+<h3><span class="header-section-number">5.1.5</span> Joins</h3>
+<p>Para juntar tabelas, usar <code>inner_join</code>, <code>left_join</code>, <code>anti_join</code>, etc. O melhor material disso está em <a href="http://r4ds.had.co.nz/relational-data.html" class="uri">http://r4ds.had.co.nz/relational-data.html</a>.</p>
+<p>Exemplo de inner join:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d_cjsg %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(<span class="kw">dmy</span>(dt_registration) ==<span class="st"> &quot;2018-01-18&quot;</span>, !<span class="kw">is.na</span>(id_decision)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(id_decision, id_lawsuit) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">inner_join</span>(d_cposg, <span class="st">&quot;id_lawsuit&quot;</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">glimpse</span>()</code></pre></div>
+<pre><code>#&gt; Observations: 170
+#&gt; Variables: 8
+#&gt; $ id_decision &lt;chr&gt; &quot;11109089&quot;, &quot;11109088&quot;, &quot;11108246&quot;, &quot;11108245&quot;, &quot;1...
+#&gt; $ id_lawsuit  &lt;chr&gt; &quot;0003779-93.2015.8.26.0597&quot;, &quot;3001293-25.2013.8.26...
+#&gt; $ id          &lt;chr&gt; &quot;00037799320158260597&quot;, &quot;30012932520138260510&quot;, &quot;0...
+#&gt; $ file        &lt;chr&gt; &quot;data-raw/camaras/cposg/00037799320158260597.html&quot;...
+#&gt; $ hidden      &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, F...
+#&gt; $ data        &lt;list&gt; [&lt;# A tibble: 14 x 2,    data              value ...
+#&gt; $ parts       &lt;list&gt; [&lt;# A tibble: 3 x 4,      id name                ...
+#&gt; $ decisions   &lt;list&gt; [&lt;# A tibble: 1 x 2,   date       decision       ...</code></pre>
+<p>Exemplo de right join:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d_cjsg %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(<span class="kw">dmy</span>(dt_registration) ==<span class="st"> &quot;2018-01-18&quot;</span>, !<span class="kw">is.na</span>(id_decision)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(id_decision, id_lawsuit) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">right_join</span>(d_cposg, <span class="st">&quot;id_lawsuit&quot;</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">glimpse</span>()</code></pre></div>
+<pre><code>#&gt; Observations: 11,763
+#&gt; Variables: 8
+#&gt; $ id_decision &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
+#&gt; $ id_lawsuit  &lt;chr&gt; &quot;0000003-71.2016.8.26.0073&quot;, &quot;0000004-09.2017.8.26...
+#&gt; $ id          &lt;chr&gt; &quot;00000037120168260073&quot;, &quot;00000040920178260142&quot;, &quot;0...
+#&gt; $ file        &lt;chr&gt; &quot;data-raw/camaras/cposg/00000037120168260073.html&quot;...
+#&gt; $ hidden      &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, F...
+#&gt; $ data        &lt;list&gt; [&lt;# A tibble: 11 x 2,    data              value ...
+#&gt; $ parts       &lt;list&gt; [&lt;# A tibble: 3 x 4,      id name                ...
+#&gt; $ decisions   &lt;list&gt; [&lt;# A tibble: 1 x 2,   date       decision       ...</code></pre>
+</div>
+<div id="duplicatas" class="section level3">
+<h3><span class="header-section-number">5.1.6</span> Duplicatas</h3>
+<p>Para retirar duplicatas, utilizar <code>distinct</code>. Ele considera apenas a primeira linha em que encontra um padrão para as combinações de variáveis escolhidas e descarta as demais.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d_cjsg %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">distinct</span>(district)</code></pre></div>
+<p>Para manter as demais colunas, use <code>.keep_all =</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d_cjsg %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">distinct</span>(district, <span class="dt">.keep_all =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>Use <code>janitor::get_dupes()</code> para averiguar os casos em que há repetição de combinações de colunas.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d_cjsg %&gt;%<span class="st"> </span>
+<span class="st">  </span>janitor::<span class="kw">get_dupes</span>(id_lawsuit)</code></pre></div>
+<p>Para mais aplicações do <code>janitor</code>, ver <a href="http://curso-r.com/blog/2017/07/24/2017-07-24-janitor/">este blog post</a>.</p>
 <!-- ----------------------------------------------------------------------- -->
 </div>
 </div>
@@ -374,8 +362,8 @@ indices</code></pre></div>
           </div>
         </div>
       </div>
-<a href="pacote-lubridate-para-datas.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="expressoes-regulares.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="transformacao-de-dados-2.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="finalizando-analise-das-camaras-1.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -404,7 +392,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/yihui/bookdown-crc/edit/master/03-vectors.Rmd",
+"link": "https://github.com/yihui/bookdown-crc/edit/master/04-transform.Rmd",
 "text": "Edit"
 },
 "download": ["bookdown.pdf"],

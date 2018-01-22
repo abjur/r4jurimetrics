@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="pacote-lubridate-para-datas.html">
-<link rel="next" href="expressoes-regulares.html">
+<link rel="prev" href="exemplo-formatando-arquivos.html">
+<link rel="next" href="work-in-progress.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -256,126 +256,189 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="pacote-stringr-para-trabalhar-com-textos" class="section level2">
-<h2><span class="header-section-number">4.3</span> Pacote <code>stringr</code> para trabalhar com textos</h2>
-<p>O R básico não tem uma sintaxe consistente para trabalhar com textos. O pacote <code>stringr</code> ajuda a realizar todas as tarefas básicas de manipulação de texto, exigindo que o usuário estude apenas uma sintaxe.</p>
-<p>O <code>stringr</code> também é construído sobre a <a href="http://site.icu-project.org/">biblioteca ICU</a>, implementada em <code>C</code> e <code>C++</code>, apresentando resultados rápidos e confiáveis.</p>
-<div id="regras-basicas" class="section level3">
-<h3><span class="header-section-number">4.3.1</span> Regras básicas</h3>
+<div id="calculando-tempos-e-intervalos-de-tempo" class="section level2">
+<h2><span class="header-section-number">5.5</span> Calculando tempos e intervalos de tempo</h2>
+<p>Um de nossos objetivos no projeto das especializações é estimar o tempo dos processos por fase. Para isso, precisamos filtrar as movimentações e obter intervalos de tempo que façam sentido.</p>
+<p>Nesse contexto, uma função de interesse poderia ter o código abaixo.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">summarise_dt &lt;-<span class="st"> </span>function(dt, txt, re, .fun, <span class="dt">ignore_case =</span> <span class="ot">TRUE</span>) {
+  <span class="kw">.fun</span>(dt[<span class="kw">str_detect</span>(txt, <span class="kw">regex</span>(re, <span class="dt">ignore_case =</span> ignore_case))])
+}</code></pre></div>
+<p>A função <code>summarise_dt()</code> faz o seguinte:</p>
 <ul>
-<li>As funções começam com <code>str_</code>. Caso esqueça o nome de uma função, basta digitar <code>stringr::str_</code> e apertar <code>TAB</code> para ver quais são as opções.</li>
-<li>O primeiro argumento da função é sempre uma <code>string</code>.</li>
+<li>Recebe um vetor de datas <code>dt</code> e um vetor de movimentações <code>txt</code> de entrada,</li>
+<li>Filtra as datas cujos textos são compatíveis com uma <code>regex</code>,</li>
+<li>aplica uma função <code>.fun</code> para sumarizar essas datas.</li>
 </ul>
+<div id="estatisticas-de-movimentacoes" class="section level3">
+<h3><span class="header-section-number">5.5.1</span> estatísticas de movimentações</h3>
+<p>Queremos aplicar <code>summarise_dt()</code> com diversos parâmetros diferentes, para a tabela de movimentações de cada processo. Vamos analisar a função abaixo.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">summarise_movs &lt;-<span class="st"> </span>function(m) {
+  
+  <span class="co"># partial assignment de summarise_dt</span>
+  partial_summarise_mov &lt;-<span class="st"> </span><span class="kw">partial</span>(summarise_dt, <span class="dt">dt =</span> m$data_mov, <span class="dt">txt =</span> m$mov)
+  
+  <span class="co"># calcula várias estatísticas das movimentações</span>
+  summary_movs &lt;-<span class="st"> </span><span class="kw">tribble</span>(
+    ~tipo, ~name, ~re, ~.fun,
+    <span class="co"># contagens</span>
+    <span class="st">&quot;n&quot;</span>, <span class="st">&quot;julg&quot;</span>, <span class="st">&quot;Trânsito|Julgado&quot;</span>, length,
+    <span class="st">&quot;n&quot;</span>, <span class="st">&quot;baix&quot;</span>, <span class="st">&quot;Baixa&quot;</span>, length,
+    <span class="st">&quot;n&quot;</span>, <span class="st">&quot;recu&quot;</span>, <span class="st">&quot;Recurso&quot;</span>, length,
+    <span class="st">&quot;n&quot;</span>, <span class="st">&quot;sent&quot;</span>, <span class="st">&quot;- Sentença&quot;</span>, length,
+    <span class="st">&quot;n&quot;</span>, <span class="st">&quot;tudo&quot;</span>, <span class="st">&quot;.*&quot;</span>, length,
+    <span class="co"># datas</span>
+    <span class="st">&quot;dt&quot;</span>, <span class="st">&quot;julg&quot;</span>, <span class="st">&quot;Trânsito|Julgado&quot;</span>, min,
+    <span class="st">&quot;dt&quot;</span>, <span class="st">&quot;baix&quot;</span>, <span class="st">&quot;Baixa&quot;</span>, min,
+    <span class="st">&quot;dt&quot;</span>, <span class="st">&quot;recu&quot;</span>, <span class="st">&quot;Recurso&quot;</span>, min,
+    <span class="st">&quot;dt&quot;</span>, <span class="st">&quot;sent&quot;</span>, <span class="st">&quot;- Sentença&quot;</span>, min,
+    <span class="st">&quot;dt&quot;</span>, <span class="st">&quot;min&quot;</span>, <span class="st">&quot;.*&quot;</span>, min,
+    <span class="st">&quot;dt&quot;</span>, <span class="st">&quot;max&quot;</span>, <span class="st">&quot;.*&quot;</span>, max) %&gt;%
+<span class="st">    </span><span class="kw">mutate</span>(<span class="dt">val =</span> <span class="kw">map2</span>(re, .fun, <span class="kw">quietly</span>(partial_summarise_mov)),
+           <span class="dt">val =</span> <span class="kw">map_dbl</span>(val, <span class="st">&quot;result&quot;</span>)) %&gt;%
+<span class="st">    </span><span class="kw">unite</span>(variavel, tipo, name) %&gt;%
+<span class="st">    </span><span class="kw">select</span>(variavel, val) %&gt;%
+<span class="st">    </span><span class="co"># joga tudo para as colunas</span>
+<span class="st">    </span><span class="kw">spread</span>(variavel, val) %&gt;%
+<span class="st">    </span><span class="co"># refaz colunas de datas</span>
+<span class="st">    </span><span class="kw">mutate</span>(<span class="dt">tempo_total =</span> dt_max -<span class="st"> </span>dt_min) %&gt;%
+<span class="st">    </span><span class="kw">mutate_at</span>(<span class="kw">vars</span>(<span class="kw">starts_with</span>(<span class="st">&quot;dt_&quot;</span>)),
+              <span class="kw">funs</span>(<span class="kw">as.Date</span>(., <span class="dt">origin =</span> <span class="st">&quot;1970-01-01&quot;</span>)))
+}</code></pre></div>
+<p><strong>Exercícios</strong>:</p>
+<ol style="list-style-type: decimal">
+<li>O que faz a função <code>tribble()</code>?</li>
+<li>No código abaixo, quais funções são do <code>dplyr</code>, quais são do <code>tidyr</code> e quais são do <code>purrr</code>?</li>
+<li>O que faz <code>mutate_at()</code>?</li>
+</ol>
 </div>
-<div id="funcoes-do-stringr" class="section level3">
-<h3><span class="header-section-number">4.3.2</span> Funções do <code>stringr</code></h3>
-<ul>
-<li><code>str_detect()</code> retorna <code>TRUE</code> se a regex é compatível com a string e <code>FALSE</code> caso contrário.</li>
-</ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">txt &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;acho que sim&quot;</span>, <span class="st">&quot;acho que não&quot;</span>)
-<span class="kw">str_detect</span>(txt, <span class="st">&quot;que&quot;</span>)</code></pre></div>
-<pre><code>#&gt; [1] TRUE TRUE</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_detect</span>(txt, <span class="st">&quot;sim&quot;</span>)</code></pre></div>
-<pre><code>#&gt; [1]  TRUE FALSE</code></pre>
-<ul>
-<li><code>str_lengh()</code> retorna o comprimento de uma string.</li>
-</ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_length</span>(<span class="st">&#39;decisão favorável&#39;</span>)</code></pre></div>
-<pre><code>#&gt; [1] 17</code></pre>
-<ul>
-<li><code>str_trim()</code> retira espaços e quebras de linha/tabs no início ou final de string.</li>
-</ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">string &lt;-<span class="st"> &#39;</span><span class="ch">\n</span><span class="st">  essa         string é muito suja                           </span><span class="ch">\n</span><span class="st">&#39;</span>
-<span class="kw">c</span>(string, <span class="kw">str_trim</span>(string))</code></pre></div>
-<pre><code>#&gt; [1] &quot;\n  essa         string é muito suja                           \n&quot;
-#&gt; [2] &quot;essa         string é muito suja&quot;</code></pre>
-<ul>
-<li><code>str_replace()</code> e <code>str_replace_all()</code> substituem um padrão (ou todos) encontrado para um outro padrão</li>
-</ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">string &lt;-<span class="st"> &#39;Recurso parcialmente parcialmente procedente&#39;</span>
-<span class="kw">str_replace</span>(string, <span class="st">&#39;parcialmente &#39;</span>, <span class="st">&#39;&#39;</span>)</code></pre></div>
-<pre><code>#&gt; [1] &quot;Recurso parcialmente procedente&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_replace_all</span>(string, <span class="st">&#39;parcialmente &#39;</span>, <span class="st">&#39;x &#39;</span>)</code></pre></div>
-<pre><code>#&gt; [1] &quot;Recurso x x procedente&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_replace</span>(string, <span class="st">&#39;(parcialmente )+&#39;</span>, <span class="st">&#39;x &#39;</span>)</code></pre></div>
-<pre><code>#&gt; [1] &quot;Recurso x procedente&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_replace_all</span>(<span class="st">&#39;string     com    muitos espaços&#39;</span>, <span class="st">&#39; +&#39;</span>, <span class="st">&#39; &#39;</span>) <span class="co"># tirar espaços extras</span></code></pre></div>
-<pre><code>#&gt; [1] &quot;string com muitos espaços&quot;</code></pre>
-<ul>
-<li><code>str_match()</code> e <code>str_match_all()</code> extrai pedaços da string identificados pela regex. Caso queira extrair somente a parte identificada, use parênteses.</li>
-</ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">frases &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;a roupa do rei&#39;</span>, 
-            <span class="st">&#39;de roma&#39;</span>, 
-            <span class="st">&#39;o rato roeu&#39;</span>)
+<div id="calculando-intervalos-de-tempo" class="section level3">
+<h3><span class="header-section-number">5.5.2</span> Calculando intervalos de tempo</h3>
+<p>O segredo para calcular intervalos de tempo é utilizar a função <code>lag()</code>. Esta é uma das funções do tipo <em>janela</em>, que são muito úteis para séries temporais e outras aplicações.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">summarise_decisions &lt;-<span class="st"> </span>function(d_movs) {
+  <span class="co"># algumas regex</span>
+  re_decisao &lt;-<span class="st"> </span><span class="kw">regex</span>(<span class="st">&quot;- Decisão| - Despacho&quot;</span>, <span class="dt">ignore_case =</span> <span class="ot">TRUE</span>)
+  re_concluso &lt;-<span class="st"> </span><span class="kw">regex</span>(<span class="st">&quot;Concluso&quot;</span>, <span class="dt">ignore_case =</span> <span class="ot">TRUE</span>)
+  
+  d_movs %&gt;%
+<span class="st">    </span><span class="kw">arrange</span>(data_mov) %&gt;%
+<span class="st">    </span><span class="co"># dados com lag</span>
+<span class="st">    </span><span class="kw">mutate</span>(<span class="dt">last_mov =</span> <span class="kw">lag</span>(mov), 
+           <span class="dt">last_data_mov =</span> <span class="kw">lag</span>(data_mov)) %&gt;%
+<span class="st">    </span><span class="co"># somente movimentações em que há decisão</span>
+<span class="st">    </span><span class="kw">filter</span>(<span class="kw">str_detect</span>(mov, re_decisao)) %&gt;%
+<span class="st">    </span><span class="co"># tempo entre movimentação atual e movimentação anterior</span>
+<span class="st">    </span><span class="kw">mutate</span>(<span class="dt">tempo =</span> data_mov -<span class="st"> </span>last_data_mov,
+           <span class="dt">tem_concluso =</span> <span class="kw">str_detect</span>(mov, re_concluso)) %&gt;%
+<span class="st">    </span><span class="co"># restrição: somamos apenas os casos em que não há concluso na mov</span>
+<span class="st">    </span><span class="co"># (pode ser que existam conclusos na movimentação com lag)</span>
+<span class="st">    </span><span class="kw">summarise</span>(<span class="dt">n_deci_e_desp =</span> <span class="kw">length</span>(mov),
+              <span class="dt">n_deci_n_nula =</span> <span class="kw">sum</span>(!tem_concluso),
+              <span class="dt">t_deci =</span> <span class="kw">sum</span>((!tem_concluso) *<span class="st"> </span>tempo, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))
+}</code></pre></div>
+<p>Finalmente, juntamos essas funções numa função que recebe uma <code>tibble</code> de movimentações e retorna uma <code>tibble sumarizada</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">calcular_resumos &lt;-<span class="st"> </span>function(d_movs) {
+  <span class="co"># limpeza das movimentações</span>
+  clean_movs &lt;-<span class="st"> </span>d_movs %&gt;%
+<span class="st">    </span><span class="kw">filter</span>(!<span class="kw">str_detect</span>(<span class="st">&quot;Agravo&quot;</span>, mov)) %&gt;%
+<span class="st">    </span><span class="kw">mutate</span>(<span class="dt">data_mov =</span> <span class="kw">dmy</span>(data_mov)) %&gt;%
+<span class="st">    </span><span class="kw">group_by</span>(data_mov) %&gt;%
+<span class="st">    </span><span class="kw">summarise</span>(<span class="dt">mov =</span> <span class="kw">str_c</span>(mov, <span class="dt">collapse =</span> <span class="st">&quot;, &quot;</span>))
 
-<span class="kw">str_match</span>(frases, <span class="st">&#39;roe&#39;</span>)</code></pre></div>
-<pre><code>#&gt;      [,1] 
-#&gt; [1,] NA   
-#&gt; [2,] NA   
-#&gt; [3,] &quot;roe&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_match_all</span>(frases, <span class="st">&#39;ro&#39;</span>)</code></pre></div>
-<pre><code>#&gt; [[1]]
-#&gt;      [,1]
-#&gt; [1,] &quot;ro&quot;
-#&gt; 
-#&gt; [[2]]
-#&gt;      [,1]
-#&gt; [1,] &quot;ro&quot;
-#&gt; 
-#&gt; [[3]]
-#&gt;      [,1]
-#&gt; [1,] &quot;ro&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_match</span>(frases, <span class="st">&#39;o (ro)&#39;</span>)</code></pre></div>
-<pre><code>#&gt;      [,1]   [,2]
-#&gt; [1,] NA     NA  
-#&gt; [2,] NA     NA  
-#&gt; [3,] &quot;o ro&quot; &quot;ro&quot;</code></pre>
+  <span class="co"># funções definidas acima</span>
+  summ_movs &lt;-<span class="st"> </span><span class="kw">summarise_movs</span>(clean_movs)
+  summ_decisions &lt;-<span class="st"> </span><span class="kw">summarise_decisions</span>(clean_movs)
+  
+  <span class="co"># concatena os dois sumários</span>
+  <span class="kw">bind_cols</span>(summ_movs, summ_decisions)
+}</code></pre></div>
+</div>
+<div id="resultados" class="section level3">
+<h3><span class="header-section-number">5.5.3</span> Resultados</h3>
+<p>Quando a função é muito demorada, pode ser útil utilizar barras de progresso para acompanhar o andamento do download. É possível utilizar barras de progresso com o pacote <code>progress</code>, com uma pequena adaptação da função original. Exemplo:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pb &lt;-<span class="st"> </span>progress::progress_bar$<span class="kw">new</span>(<span class="dt">total =</span> <span class="kw">nrow</span>(d_espec))
+calcular_resumos_pb &lt;-<span class="st"> </span>function(x) {
+  pb$<span class="kw">tick</span>()
+  <span class="kw">calcular_resumos</span>(x)
+}</code></pre></div>
+<p><strong>Exercício</strong>:</p>
+<ol style="list-style-type: decimal">
+<li>quais outras opções interessantes temos para barras de progresso?</li>
+<li><em>nãrd question</em>: qual o tipo de objeto do <code>progress</code>?</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## NAO RODE
+d_espec_resumida &lt;-<span class="st"> </span>d_espec %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="co"># não vamos usar partes na análise</span>
+<span class="st">  </span><span class="kw">select</span>(id_lawsuit, d_infos, d_movs) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="co"># vamos abrir d_infos, já que tem só uma linha por processo</span>
+<span class="st">  </span><span class="kw">unnest</span>(d_infos) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="co"># vamos apenas analisar as varas cíveis do João Mendes</span>
+<span class="st">  </span><span class="kw">filter</span>(<span class="kw">str_detect</span>(vara, <span class="kw">regex</span>(<span class="st">&quot;vara cível&quot;</span>, <span class="dt">ignore_case =</span> <span class="ot">TRUE</span>))) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="co"># adicionar as contagens!</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">d_contas =</span> <span class="kw">map</span>(d_movs, calcular_resumos_pb)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(-d_movs) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="co"># explodir as contas</span>
+<span class="st">  </span><span class="kw">unnest</span>(d_contas)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># leia aqui</span>
+d_espec_resumida &lt;-<span class="st"> </span><span class="kw">read_rds</span>(<span class="st">&quot;data-raw/espec/d_espec_resumida.rds&quot;</span>)
+<span class="kw">glimpse</span>(d_espec_resumida)</code></pre></div>
+<pre><code>#&gt; Observations: 27,892
+#&gt; Variables: 22
+#&gt; $ id_lawsuit    &lt;chr&gt; &quot;0004007-47.2013.8.26.0368&quot;, &quot;0001909-75.2013.8....
+#&gt; $ comarca       &lt;chr&gt; &quot;Foro Central Cível&quot;, &quot;Foro Central Cível&quot;, &quot;For...
+#&gt; $ foro          &lt;chr&gt; &quot;Foro Central Cível&quot;, &quot;Foro Central Cível&quot;, &quot;For...
+#&gt; $ vara          &lt;chr&gt; &quot;39ª Vara Cível&quot;, &quot;34ª Vara Cível&quot;, &quot;14ª Vara Cí...
+#&gt; $ classe        &lt;chr&gt; &quot;Procedimento Comum&quot;, &quot;Exibição&quot;, &quot;Procedimento ...
+#&gt; $ assunto       &lt;chr&gt; &quot;Obrigação de Fazer / Não Fazer&quot;, &quot;Medida Cautel...
+#&gt; $ data_dist     &lt;chr&gt; &quot;23/08/2013&quot;, &quot;17/01/2013&quot;, &quot;10/05/2013&quot;, &quot;14/05...
+#&gt; $ dt_baix       &lt;date&gt; NA, NA, NA, 2015-01-07, NA, 2014-02-13, 2014-03...
+#&gt; $ dt_julg       &lt;date&gt; NA, NA, NA, 2015-01-07, NA, 2013-11-12, 2014-01...
+#&gt; $ dt_max        &lt;date&gt; 2015-05-13, 2016-03-18, 2016-06-13, 2015-01-07,...
+#&gt; $ dt_min        &lt;date&gt; 2013-08-23, 2013-01-17, 2013-05-10, 2013-05-14,...
+#&gt; $ dt_recu       &lt;date&gt; 2014-10-01, NA, NA, NA, NA, NA, NA, NA, NA, NA,...
+#&gt; $ dt_sent       &lt;date&gt; 2014-07-14, 2015-05-21, 2014-01-27, 2014-11-19,...
+#&gt; $ n_baix        &lt;dbl&gt; 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, ...
+#&gt; $ n_julg        &lt;dbl&gt; 0, 0, 0, 1, 0, 2, 2, 0, 3, 0, 0, 0, 0, 0, 0, 0, ...
+#&gt; $ n_recu        &lt;dbl&gt; 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...
+#&gt; $ n_sent        &lt;dbl&gt; 1, 1, 1, 1, 2, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 0, ...
+#&gt; $ n_tudo        &lt;dbl&gt; 41, 35, 38, 50, 65, 27, 25, 3, 64, 33, 15, 30, 4...
+#&gt; $ tempo_total   &lt;dbl&gt; 628, 1156, 1130, 603, 795, 254, 267, 218, 962, 1...
+#&gt; $ n_deci_e_desp &lt;int&gt; 6, 3, 4, 4, 6, 5, 2, 0, 3, 4, 2, 2, 5, 5, 4, 9, ...
+#&gt; $ n_deci_n_nula &lt;int&gt; 6, 3, 1, 3, 5, 1, 0, 0, 2, 4, 1, 2, 4, 5, 2, 7, ...
+#&gt; $ t_deci        &lt;time&gt; 239 days, 184 days, 8 days, 22 days, 5 days, 13...</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(survival)
+d_surv &lt;-<span class="st"> </span>d_espec_resumida %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">obs =</span> !<span class="kw">is.na</span>(dt_baix) |<span class="st"> </span>!<span class="kw">is.na</span>(dt_julg) |<span class="st"> </span>!<span class="kw">is.na</span>(dt_sent)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(tempo_total &gt;=<span class="st"> </span><span class="dv">0</span>, tempo_total &lt;<span class="st"> </span><span class="dv">1400</span>)
+fit &lt;-<span class="st"> </span><span class="kw">survfit</span>(<span class="kw">Surv</span>(tempo_total, obs) ~<span class="st"> </span><span class="dv">1</span>, <span class="dt">data =</span> d_surv)
+survminer::<span class="kw">ggsurvplot</span>(fit, <span class="dt">risk.table =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-156-1.svg" width="864" /></p>
+</div>
+<div id="wrap-up-de-hoje" class="section level3">
+<h3><span class="header-section-number">5.5.4</span> Wrap-up de hoje</h3>
 <ul>
-<li><code>str_split()</code> separa uma string em várias de acordo com um separador.</li>
+<li>Terminamos o projeto das câmaras
+<ul>
+<li>Aprendemos <code>tidyr</code> no meio do caminho</li>
+<li>revisitamos <code>ggplot2</code> e brincamos de visualização.</li>
+</ul></li>
+<li>Aprendemos as funções do <code>purrr</code>. Principais: <code>map()</code>, <code>map_*()</code>.</li>
+<li>Montamos a base de dados do projeto de especialização.
+<ul>
+<li>Usando todos os pacotes juntos.</li>
+</ul></li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">string &lt;-<span class="st"> &#39;eu sei, usar virgulas, de forma, perfeita&#39;</span>
+<p>Próxima aula: Modelos! - Sobrevivência - Captcha - Rede bayesiana (se der tempo)</p>
 
-<span class="kw">str_split</span>(string, <span class="st">&#39;, &#39;</span>)</code></pre></div>
-<pre><code>#&gt; [[1]]
-#&gt; [1] &quot;eu sei&quot;        &quot;usar virgulas&quot; &quot;de forma&quot;      &quot;perfeita&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_split</span>(string, <span class="st">&#39;, &#39;</span>, <span class="dt">simplify =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<pre><code>#&gt;      [,1]     [,2]            [,3]       [,4]      
-#&gt; [1,] &quot;eu sei&quot; &quot;usar virgulas&quot; &quot;de forma&quot; &quot;perfeita&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># avançado: quebrar por um padrão, mas mantendo ele na string</span>
-<span class="co"># look arounds</span>
-<span class="kw">str_split</span>(string, <span class="st">&#39;(?&lt;=, )&#39;</span>)</code></pre></div>
-<pre><code>#&gt; [[1]]
-#&gt; [1] &quot;eu sei, &quot;        &quot;usar virgulas, &quot; &quot;de forma, &quot;      &quot;perfeita&quot;</code></pre>
-<ul>
-<li><code>str_sub()</code> extrai uma parte da string de acordo com os índices.</li>
-</ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">string &lt;-<span class="st"> &#39;quero pegar só uma parte disso&#39;</span>
-<span class="kw">str_sub</span>(string, <span class="dv">13</span>, <span class="dv">14</span>)</code></pre></div>
-<pre><code>#&gt; [1] &quot;só&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_sub</span>(string, -<span class="dv">5</span>, -<span class="dv">1</span>) <span class="co"># usar números negativos para voltar do final da string</span></code></pre></div>
-<pre><code>#&gt; [1] &quot;disso&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">indices &lt;-<span class="st"> </span><span class="kw">str_locate</span>(string, <span class="st">&#39;parte&#39;</span>)
-indices</code></pre></div>
-<pre><code>#&gt;      start end
-#&gt; [1,]    20  24</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_sub</span>(string, indices) <span class="co"># pode ser útil usar com str_locate.</span></code></pre></div>
-<pre><code>#&gt; [1] &quot;parte&quot;</code></pre>
-<ul>
-<li><code>str_subset()</code> retorna somente as strings compatíveis com a regex.</li>
-</ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">frases &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;a roupa do rei&#39;</span>, <span class="st">&#39;de roma&#39;</span>, <span class="st">&#39;o rato roeu&#39;</span>)
-<span class="kw">str_subset</span>(frases, <span class="st">&#39;d[eo]&#39;</span>)</code></pre></div>
-<pre><code>#&gt; [1] &quot;a roupa do rei&quot; &quot;de roma&quot;</code></pre>
-<!-- ----------------------------------------------------------------------- -->
 </div>
 </div>
+<!-- </div> -->
             </section>
 
           </div>
         </div>
       </div>
-<a href="pacote-lubridate-para-datas.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="expressoes-regulares.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="exemplo-formatando-arquivos.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="work-in-progress.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -404,7 +467,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/yihui/bookdown-crc/edit/master/03-vectors.Rmd",
+"link": "https://github.com/yihui/bookdown-crc/edit/master/04-transform.Rmd",
 "text": "Edit"
 },
 "download": ["bookdown.pdf"],

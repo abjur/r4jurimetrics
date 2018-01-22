@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="pacote-lubridate-para-datas.html">
-<link rel="next" href="expressoes-regulares.html">
+<link rel="prev" href="finalizando-analise-das-camaras.html">
+<link rel="next" href="funcoes-do-tidyr.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -256,126 +256,42 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="pacote-stringr-para-trabalhar-com-textos" class="section level2">
-<h2><span class="header-section-number">4.3</span> Pacote <code>stringr</code> para trabalhar com textos</h2>
-<p>O R básico não tem uma sintaxe consistente para trabalhar com textos. O pacote <code>stringr</code> ajuda a realizar todas as tarefas básicas de manipulação de texto, exigindo que o usuário estude apenas uma sintaxe.</p>
-<p>O <code>stringr</code> também é construído sobre a <a href="http://site.icu-project.org/">biblioteca ICU</a>, implementada em <code>C</code> e <code>C++</code>, apresentando resultados rápidos e confiáveis.</p>
-<div id="regras-basicas" class="section level3">
-<h3><span class="header-section-number">4.3.1</span> Regras básicas</h3>
+<div id="transformacao-de-dados-2" class="section level1">
+<h1><span class="header-section-number">Capítulo 5</span> Transformação de dados 2</h1>
+<p>Até agora, estudamos as principais ferramentas de transformação de dados do <code>tidyverse</code>. Hoje vamos aumentar um pouco mais nosso toolkit e vamos utilizá-lo na prática nos exempos das câmaras e especialização.</p>
+<div id="na-ultima-vez" class="section level3">
+<h3><span class="header-section-number">5.0.1</span> Na última vez</h3>
 <ul>
-<li>As funções começam com <code>str_</code>. Caso esqueça o nome de uma função, basta digitar <code>stringr::str_</code> e apertar <code>TAB</code> para ver quais são as opções.</li>
-<li>O primeiro argumento da função é sempre uma <code>string</code>.</li>
+<li><code>lubridate</code>: <code>dmy()</code> &amp; friends.</li>
+<li><code>stringr</code>: família <code>str_*()</code>
+<ul>
+<li>um pouquinho de regex</li>
+</ul></li>
+<li><code>dplyr</code>: 5 verbos <code>select</code>, <code>filter</code>, <code>mutate</code>, <code>arrange</code>, <code>summarise</code></li>
 </ul>
 </div>
-<div id="funcoes-do-stringr" class="section level3">
-<h3><span class="header-section-number">4.3.2</span> Funções do <code>stringr</code></h3>
-<ul>
-<li><code>str_detect()</code> retorna <code>TRUE</code> se a regex é compatível com a string e <code>FALSE</code> caso contrário.</li>
-</ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">txt &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;acho que sim&quot;</span>, <span class="st">&quot;acho que não&quot;</span>)
-<span class="kw">str_detect</span>(txt, <span class="st">&quot;que&quot;</span>)</code></pre></div>
-<pre><code>#&gt; [1] TRUE TRUE</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_detect</span>(txt, <span class="st">&quot;sim&quot;</span>)</code></pre></div>
-<pre><code>#&gt; [1]  TRUE FALSE</code></pre>
-<ul>
-<li><code>str_lengh()</code> retorna o comprimento de uma string.</li>
-</ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_length</span>(<span class="st">&#39;decisão favorável&#39;</span>)</code></pre></div>
-<pre><code>#&gt; [1] 17</code></pre>
-<ul>
-<li><code>str_trim()</code> retira espaços e quebras de linha/tabs no início ou final de string.</li>
-</ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">string &lt;-<span class="st"> &#39;</span><span class="ch">\n</span><span class="st">  essa         string é muito suja                           </span><span class="ch">\n</span><span class="st">&#39;</span>
-<span class="kw">c</span>(string, <span class="kw">str_trim</span>(string))</code></pre></div>
-<pre><code>#&gt; [1] &quot;\n  essa         string é muito suja                           \n&quot;
-#&gt; [2] &quot;essa         string é muito suja&quot;</code></pre>
-<ul>
-<li><code>str_replace()</code> e <code>str_replace_all()</code> substituem um padrão (ou todos) encontrado para um outro padrão</li>
-</ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">string &lt;-<span class="st"> &#39;Recurso parcialmente parcialmente procedente&#39;</span>
-<span class="kw">str_replace</span>(string, <span class="st">&#39;parcialmente &#39;</span>, <span class="st">&#39;&#39;</span>)</code></pre></div>
-<pre><code>#&gt; [1] &quot;Recurso parcialmente procedente&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_replace_all</span>(string, <span class="st">&#39;parcialmente &#39;</span>, <span class="st">&#39;x &#39;</span>)</code></pre></div>
-<pre><code>#&gt; [1] &quot;Recurso x x procedente&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_replace</span>(string, <span class="st">&#39;(parcialmente )+&#39;</span>, <span class="st">&#39;x &#39;</span>)</code></pre></div>
-<pre><code>#&gt; [1] &quot;Recurso x procedente&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_replace_all</span>(<span class="st">&#39;string     com    muitos espaços&#39;</span>, <span class="st">&#39; +&#39;</span>, <span class="st">&#39; &#39;</span>) <span class="co"># tirar espaços extras</span></code></pre></div>
-<pre><code>#&gt; [1] &quot;string com muitos espaços&quot;</code></pre>
-<ul>
-<li><code>str_match()</code> e <code>str_match_all()</code> extrai pedaços da string identificados pela regex. Caso queira extrair somente a parte identificada, use parênteses.</li>
-</ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">frases &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;a roupa do rei&#39;</span>, 
-            <span class="st">&#39;de roma&#39;</span>, 
-            <span class="st">&#39;o rato roeu&#39;</span>)
-
-<span class="kw">str_match</span>(frases, <span class="st">&#39;roe&#39;</span>)</code></pre></div>
-<pre><code>#&gt;      [,1] 
-#&gt; [1,] NA   
-#&gt; [2,] NA   
-#&gt; [3,] &quot;roe&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_match_all</span>(frases, <span class="st">&#39;ro&#39;</span>)</code></pre></div>
-<pre><code>#&gt; [[1]]
-#&gt;      [,1]
-#&gt; [1,] &quot;ro&quot;
-#&gt; 
-#&gt; [[2]]
-#&gt;      [,1]
-#&gt; [1,] &quot;ro&quot;
-#&gt; 
-#&gt; [[3]]
-#&gt;      [,1]
-#&gt; [1,] &quot;ro&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_match</span>(frases, <span class="st">&#39;o (ro)&#39;</span>)</code></pre></div>
-<pre><code>#&gt;      [,1]   [,2]
-#&gt; [1,] NA     NA  
-#&gt; [2,] NA     NA  
-#&gt; [3,] &quot;o ro&quot; &quot;ro&quot;</code></pre>
-<ul>
-<li><code>str_split()</code> separa uma string em várias de acordo com um separador.</li>
-</ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">string &lt;-<span class="st"> &#39;eu sei, usar virgulas, de forma, perfeita&#39;</span>
-
-<span class="kw">str_split</span>(string, <span class="st">&#39;, &#39;</span>)</code></pre></div>
-<pre><code>#&gt; [[1]]
-#&gt; [1] &quot;eu sei&quot;        &quot;usar virgulas&quot; &quot;de forma&quot;      &quot;perfeita&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_split</span>(string, <span class="st">&#39;, &#39;</span>, <span class="dt">simplify =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<pre><code>#&gt;      [,1]     [,2]            [,3]       [,4]      
-#&gt; [1,] &quot;eu sei&quot; &quot;usar virgulas&quot; &quot;de forma&quot; &quot;perfeita&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># avançado: quebrar por um padrão, mas mantendo ele na string</span>
-<span class="co"># look arounds</span>
-<span class="kw">str_split</span>(string, <span class="st">&#39;(?&lt;=, )&#39;</span>)</code></pre></div>
-<pre><code>#&gt; [[1]]
-#&gt; [1] &quot;eu sei, &quot;        &quot;usar virgulas, &quot; &quot;de forma, &quot;      &quot;perfeita&quot;</code></pre>
-<ul>
-<li><code>str_sub()</code> extrai uma parte da string de acordo com os índices.</li>
-</ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">string &lt;-<span class="st"> &#39;quero pegar só uma parte disso&#39;</span>
-<span class="kw">str_sub</span>(string, <span class="dv">13</span>, <span class="dv">14</span>)</code></pre></div>
-<pre><code>#&gt; [1] &quot;só&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_sub</span>(string, -<span class="dv">5</span>, -<span class="dv">1</span>) <span class="co"># usar números negativos para voltar do final da string</span></code></pre></div>
-<pre><code>#&gt; [1] &quot;disso&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">indices &lt;-<span class="st"> </span><span class="kw">str_locate</span>(string, <span class="st">&#39;parte&#39;</span>)
-indices</code></pre></div>
-<pre><code>#&gt;      start end
-#&gt; [1,]    20  24</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str_sub</span>(string, indices) <span class="co"># pode ser útil usar com str_locate.</span></code></pre></div>
-<pre><code>#&gt; [1] &quot;parte&quot;</code></pre>
-<ul>
-<li><code>str_subset()</code> retorna somente as strings compatíveis com a regex.</li>
-</ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">frases &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;a roupa do rei&#39;</span>, <span class="st">&#39;de roma&#39;</span>, <span class="st">&#39;o rato roeu&#39;</span>)
-<span class="kw">str_subset</span>(frases, <span class="st">&#39;d[eo]&#39;</span>)</code></pre></div>
-<pre><code>#&gt; [1] &quot;a roupa do rei&quot; &quot;de roma&quot;</code></pre>
-<!-- ----------------------------------------------------------------------- -->
-</div>
+<div id="setup-2" class="section level3">
+<h3><span class="header-section-number">5.0.2</span> Setup</h3>
+<ol style="list-style-type: decimal">
+<li>Logar no servidor <a href="http://r.abj.org.br" class="uri">http://r.abj.org.br</a></li>
+<li>No projeto r4jurimetrics, aba git -&gt; Pull</li>
+<li>Abrir o arquivo 03-vectors.Rmd</li>
+<li>Rodar <code>library(tidyverse)</code></li>
+<li>Ler as bases:</li>
+</ol>
+<p>Você, depois dessa aula</p>
+<p><img src="imgs/stark.jpg" width="315" /></p>
+<p>Se você não praticar depois</p>
+<p><img src="imgs/meme_purrr.jpg" width="250" /></p>
+</div> 
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="pacote-lubridate-para-datas.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="expressoes-regulares.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="finalizando-analise-das-camaras.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="funcoes-do-tidyr.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -404,7 +320,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/yihui/bookdown-crc/edit/master/03-vectors.Rmd",
+"link": "https://github.com/yihui/bookdown-crc/edit/master/04-transform.Rmd",
 "text": "Edit"
 },
 "download": ["bookdown.pdf"],
