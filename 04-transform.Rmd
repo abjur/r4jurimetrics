@@ -17,7 +17,7 @@ Até agora, estudamos as principais ferramentas de transformação de dados do `
 4. Rodar `library(tidyverse)`
 5. Ler as bases:
 
-```{r}
+```{r echo=TRUE}
 d_cjsg <- read_rds(glue("{path}/d_cjsg.rds"))
 d_cposg <- read_rds(glue("{path}/d_cposg.rds"))
 ```
@@ -25,13 +25,13 @@ d_cposg <- read_rds(glue("{path}/d_cposg.rds"))
 Você, depois dessa aula
 
 
-```{r}
+```{r, out.width="90%", fig.align="center"}
 knitr::include_graphics("imgs/stark.jpg")
 ```
 
 Se você não praticar depois
 
-```{r}
+```{r, out.width="90%", fig.align="center"}
 knitr::include_graphics("imgs/meme_purrr.jpg")
 ```
 
@@ -158,7 +158,7 @@ Para mais aplicações do `janitor`, ver [este blog post](http://curso-r.com/blo
 
 Agora vamos fazer gráficos!
 
-```{r}
+```{r, out.width="70%", fig.align="center"}
 knitr::include_graphics("imgs/dataviz.jpg")
 ```
 
@@ -391,7 +391,7 @@ Apesar de o R `base` já ter funções que podem ser consideradas elementos de P
 
 **Cuidado**: material altamente viciante.
 
-```{r}
+```{r, out.width="90%", fig.align="center"}
 knitr::include_graphics("imgs/izbicki.jpg")
 ```
 
