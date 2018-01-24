@@ -549,11 +549,11 @@ w_list &lt;-<span class="st"> </span>purrr::<span class="kw">map</span>(<span cl
 bias &lt;-<span class="st"> </span>keras::<span class="kw">get_weights</span>(m$model$layers[[<span class="dv">1</span>]])[[<span class="dv">2</span>]]
 w_list[[<span class="dv">1</span>]]</code></pre></div>
 <pre><code>#&gt;             [,1]        [,2]        [,3]        [,4]        [,5]
-#&gt; [1,] -0.00889198  0.04569587  0.11906113  0.08591988 -0.09028889
-#&gt; [2,] -0.05898214  0.20692091 -0.13479255 -0.15641896 -0.10511240
-#&gt; [3,]  0.02517573 -0.63352644 -3.81658459 -4.39883375 -1.05918467
-#&gt; [4,] -0.22003661 -1.80763698 -3.13373542 -1.73096466 -0.01640752
-#&gt; [5,] -0.02915078 -0.11879896 -0.07475707  0.06014036  0.15733875</code></pre>
+#&gt; [1,]  0.15733875  0.06014036 -0.07475707 -0.11879896 -0.02915078
+#&gt; [2,] -0.01640752 -1.73096466 -3.13373542 -1.80763698 -0.22003661
+#&gt; [3,] -1.05918467 -4.39883375 -3.81658459 -0.63352644  0.02517573
+#&gt; [4,] -0.10511240 -0.15641896 -0.13479255  0.20692091 -0.05898214
+#&gt; [5,] -0.09028889  0.08591988  0.11906113  0.04569587 -0.00889198</code></pre>
 <p>Os doze valores de <code>bias</code> estimados pelo modelo (um para cada matriz) são dados por</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">round</span>(bias, <span class="dv">3</span>)</code></pre></div>
 <pre><code>#&gt;  [1]  0.150  0.013  0.181 -0.275  0.179  0.040 -0.128 -0.036  0.030  0.042
