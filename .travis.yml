@@ -1,5 +1,14 @@
 language: r
-cache: packages
+cache:
+  packages: true
+  directories:
+    - $HOME/.keras
+    - $HOME/.cache/pip
+
+env:
+  - KERAS_BACKEND="tensorflow"
+  - KERAS_BACKEND="theano" THEANO_FLAGS=optimizer=fast_compile
+  - KERAS_IMPLEMENTATION="tensorflow"
 
 addons:
   apt:
@@ -13,8 +22,12 @@ addons:
       - libmagick++-dev
 
 before_script:
+  - pip2.7 install --upgrade --ignore-installed --user travis pip setuptools wheel virtualenv
+  - pip2.7 install --upgrade --ignore-installed --user travis keras h5py pyyaml requests Pillow scipy theano
+  - R -e 'tensorflow::install_tensorflow()'
   - chmod +x ./_build.sh
   - chmod +x ./_deploy.sh
+
 
 script:
   - ./_build.sh
