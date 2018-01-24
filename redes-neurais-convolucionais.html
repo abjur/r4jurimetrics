@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>R para jurimetria</title>
+  <meta name="description" content="Template de relatório da ABJ.">
+  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+
+  <meta property="og:title" content="R para jurimetria" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Template de relatório da ABJ." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="R para jurimetria" />
+  
+  <meta name="twitter:description" content="Template de relatório da ABJ." />
+  
+
+<meta name="author" content="Associação Brasileira de Jurimetria">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="funcao-deviance.html">
+<link rel="next" href="wrap-up-do-curso.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-1.0/htmlwidgets.js"></script>
+<script src="libs/viz-0.3/viz.js"></script>
+<link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+<script src="libs/grViz-binding-0.9.2/grViz.js"></script>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href='http://abj.org.br'><img src='https://raw.githubusercontent.com/abjur/tjspBook/master/abj_logo_cut.png' style="max-width:100%;"/></a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Apresentação</a></li>
+<li class="chapter" data-level="2" data-path="introducao.html"><a href="introducao.html"><i class="fa fa-check"></i><b>2</b> Introdução</a><ul>
+<li class="chapter" data-level="2.1" data-path="o-que-e-jurimetria.html"><a href="o-que-e-jurimetria.html"><i class="fa fa-check"></i><b>2.1</b> O que é Jurimetria?</a></li>
+<li class="chapter" data-level="2.2" data-path="tipos-de-estudo.html"><a href="tipos-de-estudo.html"><i class="fa fa-check"></i><b>2.2</b> Tipos de estudo</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="tipos-de-estudo.html"><a href="tipos-de-estudo.html#exemplo"><i class="fa fa-check"></i><b>2.2.1</b> Exemplo</a></li>
+<li class="chapter" data-level="2.2.2" data-path="tipos-de-estudo.html"><a href="tipos-de-estudo.html#divisao-regional"><i class="fa fa-check"></i><b>2.2.2</b> Divisão regional</a></li>
+<li class="chapter" data-level="2.2.3" data-path="tipos-de-estudo.html"><a href="tipos-de-estudo.html#qual-tipo-escolher"><i class="fa fa-check"></i><b>2.2.3</b> Qual tipo escolher?</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="estudo-1-camaras-criminais.html"><a href="estudo-1-camaras-criminais.html"><i class="fa fa-check"></i><b>2.3</b> Estudo 1: Câmaras criminais</a></li>
+<li class="chapter" data-level="2.4" data-path="estudo-2-especializacao-de-varas-empresariais.html"><a href="estudo-2-especializacao-de-varas-empresariais.html"><i class="fa fa-check"></i><b>2.4</b> Estudo 2: Especialização de varas empresariais</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="estudo-2-especializacao-de-varas-empresariais.html"><a href="estudo-2-especializacao-de-varas-empresariais.html#contextualizacao"><i class="fa fa-check"></i><b>2.4.1</b> Contextualização</a></li>
+<li class="chapter" data-level="2.4.2" data-path="estudo-2-especializacao-de-varas-empresariais.html"><a href="estudo-2-especializacao-de-varas-empresariais.html#desafio-adicional-cifra-oculta"><i class="fa fa-check"></i><b>2.4.2</b> Desafio adicional: cifra oculta</a></li>
+<li class="chapter" data-level="2.4.3" data-path="estudo-2-especializacao-de-varas-empresariais.html"><a href="estudo-2-especializacao-de-varas-empresariais.html#voltando-a-complexidade"><i class="fa fa-check"></i><b>2.4.3</b> Voltando à complexidade</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="estudo-3-captchas.html"><a href="estudo-3-captchas.html"><i class="fa fa-check"></i><b>2.5</b> Estudo 3: CAPTCHAs</a></li>
+<li class="chapter" data-level="2.6" data-path="cuidado.html"><a href="cuidado.html"><i class="fa fa-check"></i><b>2.6</b> Cuidado</a></li>
+<li class="chapter" data-level="2.7" data-path="organizacao-do-curso.html"><a href="organizacao-do-curso.html"><i class="fa fa-check"></i><b>2.7</b> Organização do curso</a></li>
+<li class="chapter" data-level="2.8" data-path="configuracao-necessaria-para-o-curso.html"><a href="configuracao-necessaria-para-o-curso.html"><i class="fa fa-check"></i><b>2.8</b> Configuração necessária para o curso</a><ul>
+<li class="chapter" data-level="2.8.1" data-path="configuracao-necessaria-para-o-curso.html"><a href="configuracao-necessaria-para-o-curso.html#pacotes"><i class="fa fa-check"></i><b>2.8.1</b> Pacotes</a></li>
+<li class="chapter" data-level="2.8.2" data-path="configuracao-necessaria-para-o-curso.html"><a href="configuracao-necessaria-para-o-curso.html#fork-e-upstream-experimental"><i class="fa fa-check"></i><b>2.8.2</b> Fork e upstream (experimental)</a></li>
+</ul></li>
+<li class="chapter" data-level="2.9" data-path="suas-tarefas-para-1701-demora-30-min.html"><a href="suas-tarefas-para-1701-demora-30-min.html"><i class="fa fa-check"></i><b>2.9</b> Suas tarefas para 17/01 (demora 30 min)</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="importacao-de-dados.html"><a href="importacao-de-dados.html"><i class="fa fa-check"></i><b>3</b> Importação de dados</a><ul>
+<li class="chapter" data-level="3.0.1" data-path="importacao-de-dados.html"><a href="importacao-de-dados.html#setup"><i class="fa fa-check"></i><b>3.0.1</b> Setup</a></li>
+<li class="chapter" data-level="3.1" data-path="pipe.html"><a href="pipe.html"><i class="fa fa-check"></i><b>3.1</b> Pipe <code>%&gt;%</code></a><ul>
+<li class="chapter" data-level="3.1.1" data-path="pipe.html"><a href="pipe.html#receita-de-bolo"><i class="fa fa-check"></i><b>3.1.1</b> Receita de bolo</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="usando-o-inspect.html"><a href="usando-o-inspect.html"><i class="fa fa-check"></i><b>3.2</b> Usando o Inspect</a></li>
+<li class="chapter" data-level="3.3" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html"><i class="fa fa-check"></i><b>3.3</b> Pacotes <code>httr</code>, <code>xml2</code> e <code>rvest</code></a><ul>
+<li class="chapter" data-level="3.3.1" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#get-e-post"><i class="fa fa-check"></i><b>3.3.1</b> <code>GET</code> e <code>POST</code></a></li>
+<li class="chapter" data-level="3.3.2" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#exercicios"><i class="fa fa-check"></i><b>3.3.2</b> Exercícios</a></li>
+<li class="chapter" data-level="3.3.3" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#sessoes-e-cookies"><i class="fa fa-check"></i><b>3.3.3</b> Sessões e cookies</a></li>
+<li class="chapter" data-level="3.3.4" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#outras-funcoes-do-httr"><i class="fa fa-check"></i><b>3.3.4</b> Outras funções do <code>httr</code></a></li>
+<li class="chapter" data-level="3.3.5" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#principais-funcoes-do-rvest"><i class="fa fa-check"></i><b>3.3.5</b> Principais funções do <code>rvest</code></a></li>
+<li class="chapter" data-level="3.3.6" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#css-path-e-xpath"><i class="fa fa-check"></i><b>3.3.6</b> CSS path e XPath</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="melhores-praticas-para-web-scraping.html"><a href="melhores-praticas-para-web-scraping.html"><i class="fa fa-check"></i><b>3.4</b> Melhores práticas para web scraping</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="melhores-praticas-para-web-scraping.html"><a href="melhores-praticas-para-web-scraping.html#informacoes-iniciais"><i class="fa fa-check"></i><b>3.4.1</b> Informações iniciais</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="listando-processos.html"><a href="listando-processos.html"><i class="fa fa-check"></i><b>3.5</b> Listando processos</a></li>
+<li class="chapter" data-level="3.6" data-path="usando-o-esaj-para-listar-processos.html"><a href="usando-o-esaj-para-listar-processos.html"><i class="fa fa-check"></i><b>3.6</b> Usando o <code>esaj</code> para listar processos</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="usando-o-esaj-para-listar-processos.html"><a href="usando-o-esaj-para-listar-processos.html#pesquisa-por-palavras-chave"><i class="fa fa-check"></i><b>3.6.1</b> Pesquisa por palavras-chave</a></li>
+<li class="chapter" data-level="3.6.2" data-path="usando-o-esaj-para-listar-processos.html"><a href="usando-o-esaj-para-listar-processos.html#pesquisa-por-datas"><i class="fa fa-check"></i><b>3.6.2</b> Pesquisa por datas</a></li>
+<li class="chapter" data-level="3.6.3" data-path="usando-o-esaj-para-listar-processos.html"><a href="usando-o-esaj-para-listar-processos.html#tabelas-de-classes-assuntos-e-camaras"><i class="fa fa-check"></i><b>3.6.3</b> Tabelas de classes, assuntos e câmaras</a></li>
+<li class="chapter" data-level="3.6.4" data-path="usando-o-esaj-para-listar-processos.html"><a href="usando-o-esaj-para-listar-processos.html#a-funcao-download_cjsg"><i class="fa fa-check"></i><b>3.6.4</b> A função <code>download_cjsg</code></a></li>
+<li class="chapter" data-level="3.6.5" data-path="usando-o-esaj-para-listar-processos.html"><a href="usando-o-esaj-para-listar-processos.html#exercicios-1"><i class="fa fa-check"></i><b>3.6.5</b> Exercícios</a></li>
+<li class="chapter" data-level="3.6.6" data-path="usando-o-esaj-para-listar-processos.html"><a href="usando-o-esaj-para-listar-processos.html#arrumando-os-dados"><i class="fa fa-check"></i><b>3.6.6</b> Arrumando os dados</a></li>
+<li class="chapter" data-level="3.6.7" data-path="usando-o-esaj-para-listar-processos.html"><a href="usando-o-esaj-para-listar-processos.html#exercicios-2"><i class="fa fa-check"></i><b>3.6.7</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="usando-o-dje-para-listar-processos.html"><a href="usando-o-dje-para-listar-processos.html"><i class="fa fa-check"></i><b>3.7</b> Usando o <code>dje</code> para listar processos</a><ul>
+<li class="chapter" data-level="3.7.1" data-path="usando-o-dje-para-listar-processos.html"><a href="usando-o-dje-para-listar-processos.html#exercicio"><i class="fa fa-check"></i><b>3.7.1</b> Exercício</a></li>
+<li class="chapter" data-level="3.7.2" data-path="usando-o-dje-para-listar-processos.html"><a href="usando-o-dje-para-listar-processos.html#parse-dje"><i class="fa fa-check"></i><b>3.7.2</b> Parse DJE</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="baixando-documentos.html"><a href="baixando-documentos.html"><i class="fa fa-check"></i><b>3.8</b> Baixando documentos</a><ul>
+<li class="chapter" data-level="3.8.1" data-path="baixando-documentos.html"><a href="baixando-documentos.html#download-cposg"><i class="fa fa-check"></i><b>3.8.1</b> Download CPOSG</a></li>
+<li class="chapter" data-level="3.8.2" data-path="baixando-documentos.html"><a href="baixando-documentos.html#baixando-decisoes"><i class="fa fa-check"></i><b>3.8.2</b> Baixando decisões</a></li>
+</ul></li>
+<li class="chapter" data-level="3.9" data-path="processando-documentos.html"><a href="processando-documentos.html"><i class="fa fa-check"></i><b>3.9</b> Processando documentos</a><ul>
+<li class="chapter" data-level="3.9.1" data-path="processando-documentos.html"><a href="processando-documentos.html#parse-cposg"><i class="fa fa-check"></i><b>3.9.1</b> Parse CPOSG</a></li>
+<li class="chapter" data-level="3.9.2" data-path="processando-documentos.html"><a href="processando-documentos.html#exercicios-3"><i class="fa fa-check"></i><b>3.9.2</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="3.10" data-path="pacote-abjutils.html"><a href="pacote-abjutils.html"><i class="fa fa-check"></i><b>3.10</b> Pacote <code>abjutils</code></a><ul>
+<li class="chapter" data-level="3.10.1" data-path="pacote-abjutils.html"><a href="pacote-abjutils.html#trabalhando-com-numeros-de-processos"><i class="fa fa-check"></i><b>3.10.1</b> Trabalhando com números de processos</a></li>
+<li class="chapter" data-level="3.10.2" data-path="pacote-abjutils.html"><a href="pacote-abjutils.html#trabalhando-com-acentos"><i class="fa fa-check"></i><b>3.10.2</b> Trabalhando com acentos</a></li>
+</ul></li>
+<li class="chapter" data-level="3.11" data-path="wrap-up.html"><a href="wrap-up.html"><i class="fa fa-check"></i><b>3.11</b> Wrap-up</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="transformacao-de-dados-1.html"><a href="transformacao-de-dados-1.html"><i class="fa fa-check"></i><b>4</b> Transformação de dados 1</a><ul>
+<li class="chapter" data-level="4.0.1" data-path="transformacao-de-dados-1.html"><a href="transformacao-de-dados-1.html#setup-1"><i class="fa fa-check"></i><b>4.0.1</b> Setup</a></li>
+<li class="chapter" data-level="4.1" data-path="revisao.html"><a href="revisao.html"><i class="fa fa-check"></i><b>4.1</b> Revisão</a></li>
+<li class="chapter" data-level="4.2" data-path="pacote-lubridate-para-datas.html"><a href="pacote-lubridate-para-datas.html"><i class="fa fa-check"></i><b>4.2</b> Pacote <code>lubridate</code> para datas</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="pacote-lubridate-para-datas.html"><a href="pacote-lubridate-para-datas.html#exercicios-4"><i class="fa fa-check"></i><b>4.2.1</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="pacote-stringr-para-trabalhar-com-textos.html"><a href="pacote-stringr-para-trabalhar-com-textos.html"><i class="fa fa-check"></i><b>4.3</b> Pacote <code>stringr</code> para trabalhar com textos</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="pacote-stringr-para-trabalhar-com-textos.html"><a href="pacote-stringr-para-trabalhar-com-textos.html#regras-basicas"><i class="fa fa-check"></i><b>4.3.1</b> Regras básicas</a></li>
+<li class="chapter" data-level="4.3.2" data-path="pacote-stringr-para-trabalhar-com-textos.html"><a href="pacote-stringr-para-trabalhar-com-textos.html#funcoes-do-stringr"><i class="fa fa-check"></i><b>4.3.2</b> Funções do <code>stringr</code></a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="expressoes-regulares.html"><a href="expressoes-regulares.html"><i class="fa fa-check"></i><b>4.4</b> Expressões regulares</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="expressoes-regulares.html"><a href="expressoes-regulares.html#quantificadores"><i class="fa fa-check"></i><b>4.4.1</b> Quantificadores</a></li>
+<li class="chapter" data-level="4.4.2" data-path="expressoes-regulares.html"><a href="expressoes-regulares.html#conjuntos"><i class="fa fa-check"></i><b>4.4.2</b> Conjuntos</a></li>
+<li class="chapter" data-level="4.4.3" data-path="expressoes-regulares.html"><a href="expressoes-regulares.html#miscelanea"><i class="fa fa-check"></i><b>4.4.3</b> Miscelânea</a></li>
+<li class="chapter" data-level="4.4.4" data-path="expressoes-regulares.html"><a href="expressoes-regulares.html#outros-links"><i class="fa fa-check"></i><b>4.4.4</b> Outros links</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="exemplo-decisoes-das-camaras.html"><a href="exemplo-decisoes-das-camaras.html"><i class="fa fa-check"></i><b>4.5</b> Exemplo: decisões das câmaras</a></li>
+<li class="chapter" data-level="4.6" data-path="pacotes-dplyr-e-tidyr.html"><a href="pacotes-dplyr-e-tidyr.html"><i class="fa fa-check"></i><b>4.6</b> Pacotes <code>dplyr</code> e <code>tidyr</code></a><ul>
+<li class="chapter" data-level="4.6.1" data-path="pacotes-dplyr-e-tidyr.html"><a href="pacotes-dplyr-e-tidyr.html#caracteristicas-do-dplyr"><i class="fa fa-check"></i><b>4.6.1</b> Características do <code>dplyr</code></a></li>
+<li class="chapter" data-level="4.6.2" data-path="pacotes-dplyr-e-tidyr.html"><a href="pacotes-dplyr-e-tidyr.html#as-cinco-funcoes-principais"><i class="fa fa-check"></i><b>4.6.2</b> As cinco funções principais</a></li>
+<li class="chapter" data-level="4.6.3" data-path="pacotes-dplyr-e-tidyr.html"><a href="pacotes-dplyr-e-tidyr.html#select"><i class="fa fa-check"></i><b>4.6.3</b> <code>select</code></a></li>
+<li class="chapter" data-level="4.6.4" data-path="pacotes-dplyr-e-tidyr.html"><a href="pacotes-dplyr-e-tidyr.html#filter"><i class="fa fa-check"></i><b>4.6.4</b> <code>filter</code></a></li>
+<li class="chapter" data-level="4.6.5" data-path="pacotes-dplyr-e-tidyr.html"><a href="pacotes-dplyr-e-tidyr.html#mutate"><i class="fa fa-check"></i><b>4.6.5</b> <code>mutate</code></a></li>
+<li class="chapter" data-level="4.6.6" data-path="pacotes-dplyr-e-tidyr.html"><a href="pacotes-dplyr-e-tidyr.html#arrange"><i class="fa fa-check"></i><b>4.6.6</b> <code>arrange</code></a></li>
+<li class="chapter" data-level="4.6.7" data-path="pacotes-dplyr-e-tidyr.html"><a href="pacotes-dplyr-e-tidyr.html#summarise"><i class="fa fa-check"></i><b>4.6.7</b> <code>summarise</code></a></li>
+<li class="chapter" data-level="4.6.8" data-path="pacotes-dplyr-e-tidyr.html"><a href="pacotes-dplyr-e-tidyr.html#gather"><i class="fa fa-check"></i><b>4.6.8</b> <code>gather</code></a></li>
+<li class="chapter" data-level="4.6.9" data-path="pacotes-dplyr-e-tidyr.html"><a href="pacotes-dplyr-e-tidyr.html#spread"><i class="fa fa-check"></i><b>4.6.9</b> <code>spread</code></a></li>
+<li class="chapter" data-level="4.6.10" data-path="pacotes-dplyr-e-tidyr.html"><a href="pacotes-dplyr-e-tidyr.html#funcoes-auxiliares"><i class="fa fa-check"></i><b>4.6.10</b> Funções auxiliares</a></li>
+<li class="chapter" data-level="4.6.11" data-path="pacotes-dplyr-e-tidyr.html"><a href="pacotes-dplyr-e-tidyr.html#nest-e-unnest"><i class="fa fa-check"></i><b>4.6.11</b> <code>nest</code> e <code>unnest</code></a></li>
+<li class="chapter" data-level="4.6.12" data-path="pacotes-dplyr-e-tidyr.html"><a href="pacotes-dplyr-e-tidyr.html#um-pouco-mais-de-transformacao-de-dados"><i class="fa fa-check"></i><b>4.6.12</b> Um pouco mais de transformação de dados</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="finalizando-analise-das-camaras.html"><a href="finalizando-analise-das-camaras.html"><i class="fa fa-check"></i><b>4.7</b> Finalizando análise das câmaras</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="transformacao-de-dados-2.html"><a href="transformacao-de-dados-2.html"><i class="fa fa-check"></i><b>5</b> Transformação de dados 2</a><ul>
+<li class="chapter" data-level="5.0.1" data-path="transformacao-de-dados-2.html"><a href="transformacao-de-dados-2.html#na-ultima-vez"><i class="fa fa-check"></i><b>5.0.1</b> Na última vez</a></li>
+<li class="chapter" data-level="5.0.2" data-path="transformacao-de-dados-2.html"><a href="transformacao-de-dados-2.html#setup-2"><i class="fa fa-check"></i><b>5.0.2</b> Setup</a></li>
+<li class="chapter" data-level="5.1" data-path="funcoes-do-tidyr.html"><a href="funcoes-do-tidyr.html"><i class="fa fa-check"></i><b>5.1</b> Funções do <code>tidyr</code></a><ul>
+<li class="chapter" data-level="5.1.1" data-path="funcoes-do-tidyr.html"><a href="funcoes-do-tidyr.html#gather-1"><i class="fa fa-check"></i><b>5.1.1</b> <code>gather</code></a></li>
+<li class="chapter" data-level="5.1.2" data-path="funcoes-do-tidyr.html"><a href="funcoes-do-tidyr.html#spread-1"><i class="fa fa-check"></i><b>5.1.2</b> <code>spread</code></a></li>
+<li class="chapter" data-level="5.1.3" data-path="funcoes-do-tidyr.html"><a href="funcoes-do-tidyr.html#unindo-e-separando-colunas"><i class="fa fa-check"></i><b>5.1.3</b> Unindo e separando colunas</a></li>
+<li class="chapter" data-level="5.1.4" data-path="funcoes-do-tidyr.html"><a href="funcoes-do-tidyr.html#list-columns-nest-e-unnest"><i class="fa fa-check"></i><b>5.1.4</b> List columns: <code>nest</code> e <code>unnest</code></a></li>
+<li class="chapter" data-level="5.1.5" data-path="funcoes-do-tidyr.html"><a href="funcoes-do-tidyr.html#joins"><i class="fa fa-check"></i><b>5.1.5</b> Joins</a></li>
+<li class="chapter" data-level="5.1.6" data-path="funcoes-do-tidyr.html"><a href="funcoes-do-tidyr.html#duplicatas"><i class="fa fa-check"></i><b>5.1.6</b> Duplicatas</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="finalizando-analise-das-camaras-1.html"><a href="finalizando-analise-das-camaras-1.html"><i class="fa fa-check"></i><b>5.2</b> Finalizando análise das câmaras</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="finalizando-analise-das-camaras-1.html"><a href="finalizando-analise-das-camaras-1.html#como-se-distribuem-os-assuntos-em-cada-camara"><i class="fa fa-check"></i><b>5.2.1</b> Como se distribuem os assuntos em cada câmara?</a></li>
+<li class="chapter" data-level="5.2.2" data-path="finalizando-analise-das-camaras-1.html"><a href="finalizando-analise-das-camaras-1.html#quantas-decisoes-proferidas-por-semana"><i class="fa fa-check"></i><b>5.2.2</b> Quantas decisões proferidas por semana?</a></li>
+<li class="chapter" data-level="5.2.3" data-path="finalizando-analise-das-camaras-1.html"><a href="finalizando-analise-das-camaras-1.html#qual-a-proporcao-de-decisoes-por-camara"><i class="fa fa-check"></i><b>5.2.3</b> Qual a proporção de decisões por câmara?</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="purrr.html"><a href="purrr.html"><i class="fa fa-check"></i><b>5.3</b> purrr</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="purrr.html"><a href="purrr.html#iteracoes-basicas"><i class="fa fa-check"></i><b>5.3.1</b> Iterações básicas</a></li>
+<li class="chapter" data-level="5.3.2" data-path="purrr.html"><a href="purrr.html#iteracoes-intermediarias"><i class="fa fa-check"></i><b>5.3.2</b> Iterações intermediárias</a></li>
+<li class="chapter" data-level="5.3.3" data-path="purrr.html"><a href="purrr.html#iteracoes-avancadas"><i class="fa fa-check"></i><b>5.3.3</b> Iterações avançadas</a></li>
+<li class="chapter" data-level="5.3.4" data-path="purrr.html"><a href="purrr.html#reducao-e-acumulo"><i class="fa fa-check"></i><b>5.3.4</b> Redução e acúmulo</a></li>
+<li class="chapter" data-level="5.3.5" data-path="purrr.html"><a href="purrr.html#miscelanea-1"><i class="fa fa-check"></i><b>5.3.5</b> Miscelânea</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="exemplo-formatando-arquivos.html"><a href="exemplo-formatando-arquivos.html"><i class="fa fa-check"></i><b>5.4</b> Exemplo: formatando arquivos</a></li>
+<li class="chapter" data-level="5.5" data-path="calculando-tempos-e-intervalos-de-tempo.html"><a href="calculando-tempos-e-intervalos-de-tempo.html"><i class="fa fa-check"></i><b>5.5</b> Calculando tempos e intervalos de tempo</a><ul>
+<li class="chapter" data-level="5.5.1" data-path="calculando-tempos-e-intervalos-de-tempo.html"><a href="calculando-tempos-e-intervalos-de-tempo.html#estatisticas-de-movimentacoes"><i class="fa fa-check"></i><b>5.5.1</b> estatísticas de movimentações</a></li>
+<li class="chapter" data-level="5.5.2" data-path="calculando-tempos-e-intervalos-de-tempo.html"><a href="calculando-tempos-e-intervalos-de-tempo.html#calculando-intervalos-de-tempo"><i class="fa fa-check"></i><b>5.5.2</b> Calculando intervalos de tempo</a></li>
+<li class="chapter" data-level="5.5.3" data-path="calculando-tempos-e-intervalos-de-tempo.html"><a href="calculando-tempos-e-intervalos-de-tempo.html#resultados"><i class="fa fa-check"></i><b>5.5.3</b> Resultados</a></li>
+<li class="chapter" data-level="5.5.4" data-path="calculando-tempos-e-intervalos-de-tempo.html"><a href="calculando-tempos-e-intervalos-de-tempo.html#wrap-up-de-hoje"><i class="fa fa-check"></i><b>5.5.4</b> Wrap-up de hoje</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="modelos.html"><a href="modelos.html"><i class="fa fa-check"></i><b>6</b> Modelos</a><ul>
+<li class="chapter" data-level="6.0.1" data-path="modelos.html"><a href="modelos.html#setup-3"><i class="fa fa-check"></i><b>6.0.1</b> Setup</a></li>
+<li class="chapter" data-level="6.1" data-path="sobrevivencia.html"><a href="sobrevivencia.html"><i class="fa fa-check"></i><b>6.1</b> Sobrevivência</a><ul>
+<li class="chapter" data-level="6.1.1" data-path="sobrevivencia.html"><a href="sobrevivencia.html#base-de-dados"><i class="fa fa-check"></i><b>6.1.1</b> Base de dados</a></li>
+<li class="chapter" data-level="6.1.2" data-path="sobrevivencia.html"><a href="sobrevivencia.html#ajustando-de-modelos-no-r"><i class="fa fa-check"></i><b>6.1.2</b> Ajustando de modelos no R</a></li>
+<li class="chapter" data-level="6.1.3" data-path="sobrevivencia.html"><a href="sobrevivencia.html#curvas-de-sobrevivencia"><i class="fa fa-check"></i><b>6.1.3</b> Curvas de sobrevivência</a></li>
+<li class="chapter" data-level="6.1.4" data-path="sobrevivencia.html"><a href="sobrevivencia.html#comparacao-das-curvas"><i class="fa fa-check"></i><b>6.1.4</b> Comparação das curvas</a></li>
+<li class="chapter" data-level="6.1.5" data-path="sobrevivencia.html"><a href="sobrevivencia.html#resultados-1"><i class="fa fa-check"></i><b>6.1.5</b> Resultados</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="captchas-sim-captchas.html"><a href="captchas-sim-captchas.html"><i class="fa fa-check"></i><b>6.2</b> CAPTCHAs? SIM, CAPTCHAs</a></li>
+<li class="chapter" data-level="6.3" data-path="pacote-decryptr.html"><a href="pacote-decryptr.html"><i class="fa fa-check"></i><b>6.3</b> Pacote <code>decryptr</code></a><ul>
+<li class="chapter" data-level="6.3.1" data-path="pacote-decryptr.html"><a href="pacote-decryptr.html#suposicoes-do-decryptr"><i class="fa fa-check"></i><b>6.3.1</b> Suposições do <code>decryptr</code></a></li>
+<li class="chapter" data-level="6.3.2" data-path="pacote-decryptr.html"><a href="pacote-decryptr.html#instalacao"><i class="fa fa-check"></i><b>6.3.2</b> Instalação</a></li>
+<li class="chapter" data-level="6.3.3" data-path="pacote-decryptr.html"><a href="pacote-decryptr.html#fluxo-de-utilizacao"><i class="fa fa-check"></i><b>6.3.3</b> Fluxo de utilização</a></li>
+<li class="chapter" data-level="6.3.4" data-path="pacote-decryptr.html"><a href="pacote-decryptr.html#download"><i class="fa fa-check"></i><b>6.3.4</b> Download</a></li>
+<li class="chapter" data-level="6.3.5" data-path="pacote-decryptr.html"><a href="pacote-decryptr.html#visualizacao"><i class="fa fa-check"></i><b>6.3.5</b> Visualização</a></li>
+<li class="chapter" data-level="6.3.6" data-path="pacote-decryptr.html"><a href="pacote-decryptr.html#classificacao"><i class="fa fa-check"></i><b>6.3.6</b> Classificação</a></li>
+<li class="chapter" data-level="6.3.7" data-path="pacote-decryptr.html"><a href="pacote-decryptr.html#carregar-modelo"><i class="fa fa-check"></i><b>6.3.7</b> Carregar modelo</a></li>
+<li class="chapter" data-level="6.3.8" data-path="pacote-decryptr.html"><a href="pacote-decryptr.html#quebrar-captcha"><i class="fa fa-check"></i><b>6.3.8</b> Quebrar captcha</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="segmentacao.html"><a href="segmentacao.html"><i class="fa fa-check"></i><b>6.4</b> Segmentação</a><ul>
+<li class="chapter" data-level="6.4.1" data-path="segmentacao.html"><a href="segmentacao.html#nem-tudo-sao-rosas"><i class="fa fa-check"></i><b>6.4.1</b> Nem tudo são rosas</a></li>
+<li class="chapter" data-level="6.4.2" data-path="segmentacao.html"><a href="segmentacao.html#exercicio-1"><i class="fa fa-check"></i><b>6.4.2</b> Exercício</a></li>
+<li class="chapter" data-level="6.4.3" data-path="segmentacao.html"><a href="segmentacao.html#wrap-up-1"><i class="fa fa-check"></i><b>6.4.3</b> Wrap-up</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="estrutura-de-dados.html"><a href="estrutura-de-dados.html"><i class="fa fa-check"></i><b>6.5</b> Estrutura de Dados</a><ul>
+<li class="chapter" data-level="6.5.1" data-path="estrutura-de-dados.html"><a href="estrutura-de-dados.html#resposta"><i class="fa fa-check"></i><b>6.5.1</b> Resposta</a></li>
+<li class="chapter" data-level="6.5.2" data-path="estrutura-de-dados.html"><a href="estrutura-de-dados.html#explicativas"><i class="fa fa-check"></i><b>6.5.2</b> Explicativas</a></li>
+</ul></li>
+<li class="chapter" data-level="6.6" data-path="redes-neurais-com-keras.html"><a href="redes-neurais-com-keras.html"><i class="fa fa-check"></i><b>6.6</b> Redes neurais com <code>keras</code></a><ul>
+<li class="chapter" data-level="6.6.1" data-path="redes-neurais-com-keras.html"><a href="redes-neurais-com-keras.html#novos-tempos"><i class="fa fa-check"></i><b>6.6.1</b> Novos tempos?</a></li>
+<li class="chapter" data-level="6.6.2" data-path="redes-neurais-com-keras.html"><a href="redes-neurais-com-keras.html#deep-learning"><i class="fa fa-check"></i><b>6.6.2</b> Deep Learning</a></li>
+<li class="chapter" data-level="6.6.3" data-path="redes-neurais-com-keras.html"><a href="redes-neurais-com-keras.html#problemas"><i class="fa fa-check"></i><b>6.6.3</b> Problemas</a></li>
+<li class="chapter" data-level="6.6.4" data-path="redes-neurais-com-keras.html"><a href="redes-neurais-com-keras.html#nao-entre-em-panico"><i class="fa fa-check"></i><b>6.6.4</b> Não entre em pânico!</a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="regressao-logistica.html"><a href="regressao-logistica.html"><i class="fa fa-check"></i><b>6.7</b> Regressão logística</a></li>
+<li class="chapter" data-level="6.8" data-path="funcao-deviance.html"><a href="funcao-deviance.html"><i class="fa fa-check"></i><b>6.8</b> Função Deviance</a><ul>
+<li class="chapter" data-level="6.8.1" data-path="funcao-deviance.html"><a href="funcao-deviance.html#funcao-de-custo-categorical-cross-entropy"><i class="fa fa-check"></i><b>6.8.1</b> Função de custo: categorical cross-entropy</a></li>
+<li class="chapter" data-level="6.8.2" data-path="funcao-deviance.html"><a href="funcao-deviance.html#exemplot"><i class="fa fa-check"></i><b>6.8.2</b> Exemplot</a></li>
+</ul></li>
+<li class="chapter" data-level="6.9" data-path="redes-neurais-convolucionais.html"><a href="redes-neurais-convolucionais.html"><i class="fa fa-check"></i><b>6.9</b> Redes neurais convolucionais</a><ul>
+<li class="chapter" data-level="6.9.1" data-path="redes-neurais-convolucionais.html"><a href="redes-neurais-convolucionais.html#o-que-e-convolucao-afinal"><i class="fa fa-check"></i><b>6.9.1</b> O que é convolução, afinal?</a></li>
+<li class="chapter" data-level="6.9.2" data-path="redes-neurais-convolucionais.html"><a href="redes-neurais-convolucionais.html#aplicando-nos-captchas"><i class="fa fa-check"></i><b>6.9.2</b> Aplicando nos captchas</a></li>
+<li class="chapter" data-level="6.9.3" data-path="redes-neurais-convolucionais.html"><a href="redes-neurais-convolucionais.html#e-se-pudermos-usar-kernels-treinados"><i class="fa fa-check"></i><b>6.9.3</b> E se pudermos usar kernels treinados?</a></li>
+<li class="chapter" data-level="6.9.4" data-path="redes-neurais-convolucionais.html"><a href="redes-neurais-convolucionais.html#primeira-convolucao"><i class="fa fa-check"></i><b>6.9.4</b> Primeira convolução</a></li>
+<li class="chapter" data-level="6.9.5" data-path="redes-neurais-convolucionais.html"><a href="redes-neurais-convolucionais.html#segunda-convolucao"><i class="fa fa-check"></i><b>6.9.5</b> Segunda convolução</a></li>
+<li class="chapter" data-level="6.9.6" data-path="redes-neurais-convolucionais.html"><a href="redes-neurais-convolucionais.html#terceira-convolucao"><i class="fa fa-check"></i><b>6.9.6</b> Terceira convolução</a></li>
+<li class="chapter" data-level="6.9.7" data-path="redes-neurais-convolucionais.html"><a href="redes-neurais-convolucionais.html#passos-finais"><i class="fa fa-check"></i><b>6.9.7</b> Passos finais</a></li>
+<li class="chapter" data-level="6.9.8" data-path="redes-neurais-convolucionais.html"><a href="redes-neurais-convolucionais.html#wrap-up-2"><i class="fa fa-check"></i><b>6.9.8</b> Wrap-up</a></li>
+</ul></li>
+<li class="chapter" data-level="6.10" data-path="wrap-up-do-curso.html"><a href="wrap-up-do-curso.html"><i class="fa fa-check"></i><b>6.10</b> Wrap-up do curso</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://bookdown.org" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R para jurimetria</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="redes-neurais-convolucionais" class="section level2">
+<h2><span class="header-section-number">6.9</span> Redes neurais convolucionais</h2>
+<p>Nosso objetivo é aprender a aplicar a <strong>operação da convolução</strong> em imagens, replicando o modelo já ajustado dos captchas.</p>
+<div id="o-que-e-convolucao-afinal" class="section level3">
+<h3><span class="header-section-number">6.9.1</span> O que é convolução, afinal?</h3>
+<p><img src="imgs/vivalaconv.jpg" width="50%" /></p>
+<p>Convolução é uma técnica usada há muito tempo na área de <em>visão computacional</em> para aplicar filtros em imagens e detectar padrões. Basicamente, o que ela faz é calcular um novo valor para um pixel da imagem com base nos pixels da vizinhança. Por exemplo, você pode fazer com que o pixel <span class="math inline">\((i,j)\)</span> da sua imagem seja atualizado pela soma ponderada dos valores dos pixels na vizinhança.</p>
+<p>Uma forma esperta de fazer essa soma ponderada é criando uma matriz de pesos: dessa forma, você não precisa ficar procurando os pontos da vizinhança. Para cada ponto <span class="math inline">\((i,j)\)</span>, você pega o subset da matriz de vizinhança, multiplica pontualmente pela matriz de pesos e soma todos os valores. Isso é <em>exatamente</em> o que a convolução faz.</p>
+<p>Daqui em diante, chamaremos essa matriz de pesos de <strong>kernel</strong>. Considere esse exemplo 3x3:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">kern_horizontal &lt;-<span class="st"> </span><span class="kw">rbind</span>(<span class="kw">c</span>(-<span class="dv">1</span>,-<span class="dv">1</span>,-<span class="dv">1</span>),
+                         <span class="kw">c</span>( <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>),
+                         <span class="kw">c</span>( <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>))
+kern_horizontal</code></pre></div>
+<pre><code>#&gt;      [,1] [,2] [,3]
+#&gt; [1,]   -1   -1   -1
+#&gt; [2,]    0    0    0
+#&gt; [3,]    1    1    1</code></pre>
+<p>E considere essa imagem super complexa:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="st">&quot;imgs/emoji3.png&quot;</span> %&gt;%<span class="st"> </span>
+<span class="st">  </span>magick::<span class="kw">image_read</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">plot</span>()</code></pre></div>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-190-1.svg" width="30%" /></p>
+<p>Na prática, essa imagem é isso aqui (tirei algumas linhas e colunas):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">emoji &lt;-<span class="st"> </span>decryptr:::<span class="kw">load_image</span>(<span class="st">&quot;imgs/emoji3.png&quot;</span>)[,,<span class="dv">1</span>] 
+<span class="kw">round</span>(emoji, <span class="dv">1</span>)[<span class="dv">1</span>:<span class="dv">10</span>, <span class="dv">1</span>:<span class="dv">12</span>]</code></pre></div>
+<pre><code>#&gt;       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12]
+#&gt;  [1,]    1    1    1  1.0  1.0  1.0  1.0  1.0  1.0   1.0   1.0   1.0
+#&gt;  [2,]    1    1    1  1.0  1.0  1.0  1.0  1.0  1.0   1.0   1.0   1.0
+#&gt;  [3,]    1    1    1  1.0  1.0  1.0  1.0  1.0  1.0   1.0   1.0   1.0
+#&gt;  [4,]    1    1    1  1.0  1.0  1.0  1.0  1.0  0.8   0.7   0.7   0.7
+#&gt;  [5,]    1    1    1  1.0  1.0  1.0  0.9  0.6  0.8   1.0   1.0   1.0
+#&gt;  [6,]    1    1    1  1.0  1.0  0.8  0.7  1.0  1.0   1.0   1.0   1.0
+#&gt;  [7,]    1    1    1  1.0  0.9  0.7  1.0  1.0  1.0   1.0   1.0   1.0
+#&gt;  [8,]    1    1    1  1.0  0.6  1.0  1.0  1.0  1.0   1.0   1.0   1.0
+#&gt;  [9,]    1    1    1  0.8  0.8  1.0  1.0  0.9  0.9   1.0   1.0   1.0
+#&gt; [10,]    1    1    1  0.7  1.0  1.0  0.7  0.4  0.2   0.7   0.9   1.0</code></pre>
+<p>Tome por exemplo o ponto <span class="math inline">\((i,j) = (12,16)\)</span>. A vizinhança 3x3 em torno desse ponto é dada por</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">emoji[<span class="dv">12</span> +<span class="st"> </span>(-<span class="dv">1</span>):<span class="dv">1</span>, <span class="dv">16</span> +<span class="st"> </span>(-<span class="dv">1</span>):<span class="dv">1</span>]</code></pre></div>
+<pre><code>#&gt;           [,1]      [,2]      [,3]
+#&gt; [1,] 0.9843137 0.5294118 0.7921569
+#&gt; [2,] 0.9725490 0.9882353 1.0000000
+#&gt; [3,] 0.9843137 1.0000000 0.9960784</code></pre>
+<p>A operação de convolução é feita da seguinte forma:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(emoji[<span class="dv">12</span> +<span class="st"> </span>(-<span class="dv">1</span>):<span class="dv">1</span>, <span class="dv">16</span> +<span class="st"> </span>(-<span class="dv">1</span>):<span class="dv">1</span>] *<span class="st"> </span>kern_horizontal)</code></pre></div>
+<pre><code>#&gt; [1] 0.6745098</code></pre>
+<p>Pronto, esse é o valor a ser colocado no ponto <span class="math inline">\((i,j)\)</span>. Fazemos isso para todos os outros pontos. Algumas dúvidas que podem rolar nesse ponto:</p>
+<p>Exercício</p>
+<ol style="list-style-type: decimal">
+<li>Qual o resultado se aplicarmos a convolução no ponto (12, 12)?</li>
+<li>Qual o resultado se aplicarmos a convolução no ponto (1, 1)?</li>
+</ol>
+<p><strong>Q</strong>: Mas os números não devem variar de 0 a 1?</p>
+<p><strong>R</strong>: Não! Para visualizar a imagem, você poderia normalizar essas quantidades (por exemplo, dividindo pelo máximo). Mas quem disse que o resultado da sua operação precisa ser visualizável? O resultado pode até ser negativo. Sem problemas.</p>
+<blockquote>
+<p>Para visualização, por padrão os valores menores que zero são substituídos por zero (preto) e valores maiores que um são substituídos por um (branco).</p>
+</blockquote>
+<p><strong>Q</strong>: Mas e no canto da imagem, o que fazemos?</p>
+<p><strong>R</strong>: Nos cantos, você tem duas opções: 1) considerar apenas os pixels <em>válidos</em>, ou seja, pixels em que você consegue encaixar a matriz <code>kernel</code> inteira, resultando numa matriz de tamanho menor; ou 2) criar uma borda na imagem, preenchendo com zeros, para que toda a imagem fique com pixels válidos. Por isso que o <code>keras</code> disponibiliza as opções <em>valid</em> (apenas os válidos) e <em>same</em> (mantém a mesma dimensão).</p>
+<p><strong>Q</strong>: E se a imagem for colorida?</p>
+<p><strong>R</strong>: Boa pergunta! Se a imagem for colorida, você pode considerar um <code>kernel</code> diferente para cada cor, e depois você soma todos os valores. Mais pra frente, chamaremos as cores de <em>canais</em>, pois teremos muito mais do que 3 kernels.</p>
+<p>Com base nisso, montamos um algoritmo que faz a conta para todos os pixels, já criando uma borda na imagem:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">convolve &lt;-<span class="st"> </span>function(img, kern) {
+  <span class="co"># monta a bordinha na imagem. A borda deve ter (tamanho kernel) / 2,</span>
+  <span class="co"># de tamanho, arredondando para baixo</span>
+  pad &lt;-<span class="st"> </span><span class="kw">floor</span>(<span class="kw">dim</span>(kern)[<span class="dv">1</span>] /<span class="st"> </span><span class="dv">2</span>)
+  img_pad &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">nrow =</span> <span class="kw">nrow</span>(img) +<span class="st"> </span><span class="dv">2</span> *<span class="st"> </span>pad, <span class="dt">ncol =</span> <span class="kw">ncol</span>(img) +<span class="st"> </span><span class="dv">2</span> *<span class="st"> </span>pad)
+  img_pad[pad +<span class="st"> </span><span class="dv">1</span>:<span class="kw">nrow</span>(img), pad +<span class="st"> </span><span class="dv">1</span>:<span class="kw">ncol</span>(img)] &lt;-<span class="st"> </span>img[,,<span class="dv">1</span>]
+  <span class="co"># aplica a convolução nos pontos da imagem</span>
+  for (i in <span class="kw">seq_len</span>(<span class="kw">nrow</span>(img))) {
+    for (j in <span class="kw">seq_len</span>(<span class="kw">ncol</span>(img))) {
+      img[i, j, <span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">sum</span>(img_pad[i +<span class="st"> </span><span class="dv">0</span>:(<span class="dv">2</span> *<span class="st"> </span>pad), j +<span class="st"> </span><span class="dv">0</span>:(<span class="dv">2</span> *<span class="st"> </span>pad)] *<span class="st"> </span>kern)
+    }
+  }
+  img[,,<span class="dv">2</span>] &lt;-<span class="st"> </span>img[,,<span class="dv">3</span>] &lt;-<span class="st"> </span>img[,,<span class="dv">1</span>]
+  img
+}</code></pre></div>
+<p>Exercício</p>
+<ol style="list-style-type: decimal">
+<li>Qual é o problema do código acima?</li>
+</ol>
+<p>Voltando para nossa imagem agora. No nosso caso, o resultado fica assim:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="st">&quot;imgs/emoji3.png&quot;</span> %&gt;%<span class="st"> </span>
+<span class="st">  </span>decryptr:::<span class="kw">load_image</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">convolve</span>(kern_horizontal) %&gt;%<span class="st"> </span>
+<span class="st">  </span>magick::<span class="kw">image_read</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">plot</span>()</code></pre></div>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-195-1.svg" width="30%" /></p>
+<p>Ficou um pouco assustador, não? Essa matriz não foi escolhida por acaso. Ela serve para destacar padrões horizontais da imagem. Como a primeira linha é formada <code>-1</code>s e a última é formada por <code>1</code>s, a matriz fica com valor alto se a parte de cima do pixel for preta e a parte de baixo for branca (<code>grande * 1 + pequeno * (-1)</code>). A parte destacada da imagem acabou sendo os olhos (pois temos maior concentração de pixels pretos ali), além das extremidades superior e inferior do rosto.</p>
+<p>Com esse kernel aqui (vertical), a parte destacada do rosto são as extremidades dos lados:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">kern_vertical &lt;-<span class="st"> </span><span class="kw">rbind</span>(<span class="kw">c</span>(-<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>),
+                       <span class="kw">c</span>(-<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>),
+                       <span class="kw">c</span>(-<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>))
+kern_vertical</code></pre></div>
+<pre><code>#&gt;      [,1] [,2] [,3]
+#&gt; [1,]   -1    0    1
+#&gt; [2,]   -1    0    1
+#&gt; [3,]   -1    0    1</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="st">&quot;imgs/emoji3.png&quot;</span> %&gt;%<span class="st"> </span>
+<span class="st">  </span>decryptr:::<span class="kw">load_image</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">convolve</span>(kern_vertical) %&gt;%<span class="st"> </span>
+<span class="st">  </span>magick::<span class="kw">image_read</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">plot</span>()</code></pre></div>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-196-1.svg" width="30%" /></p>
+</div>
+<div id="aplicando-nos-captchas" class="section level3">
+<h3><span class="header-section-number">6.9.2</span> Aplicando nos captchas</h3>
+<p>Não tem segredo! Basta reaplicar o que já vimos. Vou apenas introduzir uma nova função chamada <code>add_bias()</code>, que simplesmente adiciona uma constante numérica para a matriz. Isso pode auxiliar na visualização, pois controlamos melhor os valores que ficam dentro do intervalo <code>[0,1]</code>. Lá na frente você entenderá o porquê do “bias”.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">add_bias &lt;-<span class="st"> </span>function (x, b) x +<span class="st"> </span>b</code></pre></div>
+<p>Esse é o resultado de adicionar o kernel vertical e bias de <code>0.6</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">arq &lt;-<span class="st"> &quot;imgs/receita/captcha48ec12131bab.png&quot;</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">op &lt;-<span class="st"> </span>graphics::<span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">4</span>))
+arq %&gt;%<span class="st"> </span>
+<span class="st">  </span>decryptr:::<span class="kw">load_image</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">convolve</span>(kern_vertical) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">add_bias</span>(.<span class="dv">6</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span>magick::<span class="kw">image_read</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">plot</span>()</code></pre></div>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-199-1.svg" width="345.6" /></p>
+<p>Agora o kernel na horizontal. Note que identificamos padrões das linhas horizontais que tentam atrapalhar a visão das letras.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">op &lt;-<span class="st"> </span>graphics::<span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">4</span>))
+arq %&gt;%<span class="st"> </span>
+<span class="st">  </span>decryptr:::<span class="kw">load_image</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">convolve</span>(kern_horizontal) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">add_bias</span>(.<span class="dv">6</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span>magick::<span class="kw">image_read</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">plot</span>()</code></pre></div>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-200-1.svg" width="345.6" /></p>
+<p>Colocando um após o outro, temos um resultado bem esquisito:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">op &lt;-<span class="st"> </span>graphics::<span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">4</span>))
+arq %&gt;%<span class="st"> </span>
+<span class="st">  </span>decryptr:::<span class="kw">load_image</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">convolve</span>(kern_horizontal) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">convolve</span>(kern_vertical) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">add_bias</span>(.<span class="dv">5</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span>magick::<span class="kw">image_read</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">plot</span>()</code></pre></div>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-201-1.svg" width="345.6" /></p>
+<p>Também vou introduzir uma função chamada <code>relu()</code> aqui. <strong>ReLu</strong> significa <em>Restricted Linear Unit</em> e é uma função bem simples que zera tudo aquilo que é negativo e mantém tudo aquilo que é positivo. Assim, temos:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">relu &lt;-<span class="st"> </span>function(x) (x +<span class="st"> </span><span class="kw">abs</span>(x)) /<span class="st"> </span><span class="dv">2</span>
+<span class="kw">relu</span>(-<span class="dv">1</span>)</code></pre></div>
+<pre><code>#&gt; [1] 0</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">relu</span>( <span class="dv">3</span>)</code></pre></div>
+<pre><code>#&gt; [1] 3</code></pre>
+<p>Para visualização, essa função não serve para muita coisa, pois já fazemos a substituição de valores negativos por zero. No entanto, podemos fazer combos com a aplicação de várias convoluções. O resultado dos combos não seria possível somente com somas e multiplicações.</p>
+<p>Na prática, isso significa que com a aplicação de convoluções, bias e ReLu, podemos montar operações <strong>não lineares</strong> para extrair componentes da imagem.</p>
+<p>Olhe o exemplo abaixo. Parece que consegui identificar bem as coisas que são inúteis na imagem.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">op &lt;-<span class="st"> </span>graphics::<span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">4</span>))
+arq %&gt;%<span class="st"> </span>
+<span class="st">  </span>decryptr:::<span class="kw">load_image</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="co"># primeira convolucao</span>
+<span class="st">  </span><span class="kw">convolve</span>(kern_horizontal) %&gt;%
+<span class="st">  </span><span class="kw">add_bias</span>(-.<span class="dv">25</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">relu</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="co"># segunda convolucao</span>
+<span class="st">  </span><span class="kw">convolve</span>(kern_vertical) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">add_bias</span>(.<span class="dv">1</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span>magick::<span class="kw">image_read</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">plot</span>()</code></pre></div>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-203-1.svg" width="345.6" /></p>
+<p>Isso tudo nos leva a pensar: será que eu consigo pensar em kernels que me ajudem a identificar as letras de uma forma razoável?</p>
+</div>
+<div id="e-se-pudermos-usar-kernels-treinados" class="section level3">
+<h3><span class="header-section-number">6.9.3</span> E se pudermos usar kernels treinados?</h3>
+<p><img src="imgs/strong_robot-1.png" width="90%" style="display: block; margin: auto;" /></p>
+<p>A revolução da convolução aparece quando conseguimos obter kernels úteis por métodos estatísticos. Podemos pensar na matriz abaixo</p>
+<p><span class="math display">\[
+W = \left[\begin{array}{ccccc}
+w_{11} &amp; w_{12} &amp; w_{13} &amp; w_{14} &amp; w_{15} \\
+w_{21} &amp; w_{22} &amp; w_{23} &amp; w_{24} &amp; w_{25} \\
+w_{31} &amp; w_{32} &amp; w_{33} &amp; w_{34} &amp; w_{35} \\
+w_{41} &amp; w_{42} &amp; w_{43} &amp; w_{44} &amp; w_{45} \\
+w_{51} &amp; w_{52} &amp; w_{53} &amp; w_{54} &amp; w_{55}
+\end{array}\right]
+\]</span></p>
+<p>e tentar encontrar os valores de <span class="math inline">\(W\)</span> que minimizem alguma função de interesse. Podemos pensar que esses são os <span class="math inline">\(\beta\)</span>’s de uma regressão logística, e queremos encontrar os valores que minimizam uma <em>Loss</em> ou maximizam uma <em>verossimilhança</em>. Nós também podemos fazer vários <span class="math inline">\(W\)</span> como esse, sendo que cada um extrai alguma coisa de importante da imagem.</p>
+<p>Nosso super modelo de magia negra nada mais é do que isso: a aplicação consecutiva de <code>convolve()</code>, <code>add_bias()</code> e <code>relu()</code>, mas com pesos escolhidos a dedo (ou por um moedor de carne super-poderoso como o <code>keras</code>).</p>
+<p>Agora podemos ver nosso modelo atual da Receita Federal:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span>decryptr::<span class="kw">load_model</span>(<span class="st">&quot;rfb&quot;</span>)
+m$model</code></pre></div>
+<pre><code>#&gt; Model
+#&gt; ___________________________________________________________________________
+#&gt; Layer (type)                     Output Shape                  Param #     
+#&gt; ===========================================================================
+#&gt; conv2d_4 (Conv2D)                (None, 50, 180, 12)           312         
+#&gt; ___________________________________________________________________________
+#&gt; max_pooling2d_4 (MaxPooling2D)   (None, 25, 90, 12)            0           
+#&gt; ___________________________________________________________________________
+#&gt; conv2d_5 (Conv2D)                (None, 25, 90, 48)            14448       
+#&gt; ___________________________________________________________________________
+#&gt; max_pooling2d_5 (MaxPooling2D)   (None, 12, 45, 48)            0           
+#&gt; ___________________________________________________________________________
+#&gt; conv2d_6 (Conv2D)                (None, 12, 45, 96)            115296      
+#&gt; ___________________________________________________________________________
+#&gt; max_pooling2d_6 (MaxPooling2D)   (None, 6, 22, 96)             0           
+#&gt; ___________________________________________________________________________
+#&gt; flatten_2 (Flatten)              (None, 12672)                 0           
+#&gt; ___________________________________________________________________________
+#&gt; dense_3 (Dense)                  (None, 32)                    405536      
+#&gt; ___________________________________________________________________________
+#&gt; dropout_2 (Dropout)              (None, 32)                    0           
+#&gt; ___________________________________________________________________________
+#&gt; dense_4 (Dense)                  (None, 210)                   6930        
+#&gt; ___________________________________________________________________________
+#&gt; reshape_2 (Reshape)              (None, 6, 35)                 0           
+#&gt; ___________________________________________________________________________
+#&gt; activation_2 (Activation)        (None, 6, 35)                 0           
+#&gt; ===========================================================================
+#&gt; Total params: 542,522
+#&gt; Trainable params: 542,522
+#&gt; Non-trainable params: 0
+#&gt; ___________________________________________________________________________</code></pre>
+<p>O modelo aplica convolução 3 vezes consecutivas e faz algumas contas que não entendemos. Explico agora:</p>
+<ol style="list-style-type: decimal">
+<li><code>conv2d_</code>: são as convoluções. As aplicações de <code>add_bias()</code> e <code>relu()</code> estão escondidas aí dentro.</li>
+<li><code>max_pooling2d_</code>: serve para simplificar a imagem. Isso ajuda a fazer computações mais rápido e ajuda a pegar mais relações entre partes da imagem, sem precisar mudar o tamanho dos kernels.</li>
+<li><code>dropout_</code>: é utilizado para regularização. Serve para evitar que seu modelo quebre apenas o captcha que você tem na base, e não novos captchas que chegam. Na prática, o <em>dropout</em> joga fora uma parte dos <span class="math inline">\(W\)</span> obtidos. Se você consegue prever coisas bem sem esses <span class="math inline">\(W\)</span>, isso significa que eles não são tão úteis assim.</li>
+<li><code>flatten_</code> e <code>reshape_</code>: não fazem nada demais, só reorganizam os parâmetros de matriz para um vetor ou de vetor para matriz. Isso é útil pois i) depois de aplicar os kernels, nós misturamos todos os parâmetros resultantes e ii) no final, precisamos prever 6 letras, então precisamos deixar as probabilidades numa matriz.</li>
+<li><code>dense_</code>: são camadas de redes neurais comuns como as que vimos antes, próximas da regressão logística.</li>
+</ol>
+<p><strong>NÃO NOS ABANDONE AQUI!!!</strong> Se você não estiver entendendo direito, saiba apenas que a execução de um modelo de deep learning envolve somente</p>
+<ol style="list-style-type: decimal">
+<li>Pegar o input (imagem).</li>
+<li>Multiplicar (convoluir) por alguns pesos <span class="math inline">\(W\)</span>.</li>
+<li>Adicionar um viés (ou bias, ou intercepto) <span class="math inline">\(b\)</span>.</li>
+<li>Aplicar uma função não linear, por exemplo ReLu.</li>
+<li>Voltar para 2 várias vezes (o deep vem daí).</li>
+<li>Pegar os pesos finais e normalizar (usando, por exemplo, <em>softmax</em>) para obter probabilidades dos resultados.</li>
+</ol>
+<p>No nosso caso, repetimos o passo 2 três vezes, aplicando três convoluções seguidas.</p>
+</div>
+<div id="primeira-convolucao" class="section level3">
+<h3><span class="header-section-number">6.9.4</span> Primeira convolução</h3>
+<p>Para obter os valores de kernels ajustados pelo modelo, podemos usar a função <code>get_weights()</code> do <code>keras</code>. Nessa primeira parte, utilizamos 12 kernels 5x5.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">w &lt;-<span class="st"> </span>keras::<span class="kw">get_weights</span>(m$model$layers[[<span class="dv">1</span>]])[[<span class="dv">1</span>]]
+w_list &lt;-<span class="st"> </span>purrr::<span class="kw">map</span>(<span class="kw">seq_len</span>(<span class="kw">dim</span>(w)[<span class="dv">4</span>]), ~w[,,<span class="dv">1</span>,.x])
+bias &lt;-<span class="st"> </span>keras::<span class="kw">get_weights</span>(m$model$layers[[<span class="dv">1</span>]])[[<span class="dv">2</span>]]
+w_list[[<span class="dv">1</span>]]</code></pre></div>
+<pre><code>#&gt;             [,1]        [,2]        [,3]        [,4]        [,5]
+#&gt; [1,] -0.00889198  0.04569587  0.11906113  0.08591988 -0.09028889
+#&gt; [2,] -0.05898214  0.20692091 -0.13479255 -0.15641896 -0.10511240
+#&gt; [3,]  0.02517573 -0.63352644 -3.81658459 -4.39883375 -1.05918467
+#&gt; [4,] -0.22003661 -1.80763698 -3.13373542 -1.73096466 -0.01640752
+#&gt; [5,] -0.02915078 -0.11879896 -0.07475707  0.06014036  0.15733875</code></pre>
+<p>Os doze valores de <code>bias</code> estimados pelo modelo (um para cada matriz) são dados por</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">round</span>(bias, <span class="dv">3</span>)</code></pre></div>
+<pre><code>#&gt;  [1]  0.150  0.013  0.181 -0.275  0.179  0.040 -0.128 -0.036  0.030  0.042
+#&gt; [11]  0.201  0.043</code></pre>
+<p>Para cada um dos doze kernels, calculamos uma matriz convoluída. Esses os resultados que o modelo entende serem úteis para prever o captcha.</p>
+<p>O código abaixo aplica <code>convolve()</code>, <code>add_bias()</code> e <code>relu()</code> para todos os kernels. Para isso usamos o <code>purrr</code>. Se você não entende <code>purrr</code>, leia <a href="http://ctlente.com/pt/purrr-magic/">este maravilhoso post do Caio Lente</a>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">conv1 &lt;-<span class="st"> </span>purrr::<span class="kw">map2</span>(w_list, bias, ~{
+  arq %&gt;%<span class="st"> </span>
+<span class="st">    </span>decryptr:::<span class="kw">load_image</span>() %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">convolve</span>(.x) %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">add_bias</span>(.y) %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">relu</span>()
+})</code></pre></div>
+<p>E como será que ficam essas imagens? Abaixo, temos o resultado da aplicação dos doze kernels. A maioria parece estar extraindo partes das letras. A sétima (posição <code>(2,3)</code>) parece estar pegando o ruído e a quarta parece guardar a imagem original.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">conv1_img &lt;-<span class="st"> </span>purrr::<span class="kw">map</span>(conv1, magick::image_read)
+<span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">4</span>), <span class="dt">mar =</span> <span class="kw">c</span>(.<span class="dv">1</span>,.<span class="dv">1</span>,.<span class="dv">1</span>,.<span class="dv">1</span>))
+purrr::<span class="kw">walk</span>(conv1_img, plot)</code></pre></div>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-209-1.svg" width="864" /></p>
+<p>O gif animado abaixo mostra a aplicação do oitavo kernel da nossa lista. Com esse kernel dá pra pegar bem o padrão das letras, não é?</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">convolve_image &lt;-<span class="st"> </span>function(img, kern) {
+  pad &lt;-<span class="st"> </span><span class="kw">floor</span>(<span class="kw">dim</span>(kern)[<span class="dv">1</span>] /<span class="st"> </span><span class="dv">2</span>)
+  img_pad &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">nrow =</span> <span class="kw">nrow</span>(img) +<span class="st"> </span><span class="dv">2</span> *<span class="st"> </span>pad, <span class="dt">ncol =</span> <span class="kw">ncol</span>(img) +<span class="st"> </span><span class="dv">2</span> *<span class="st"> </span>pad)
+  img_pad[pad +<span class="st"> </span><span class="dv">1</span>:<span class="kw">nrow</span>(img), pad +<span class="st"> </span><span class="dv">1</span>:<span class="kw">ncol</span>(img)] &lt;-<span class="st"> </span>img[,,<span class="dv">1</span>]
+  d &lt;-<span class="st"> </span>tibble::<span class="kw">tibble</span>(<span class="dt">i =</span> <span class="dv">0</span>, <span class="dt">j =</span> <span class="dv">0</span>, <span class="dt">img =</span> <span class="kw">list</span>())
+  for (i in <span class="kw">seq_len</span>(<span class="kw">nrow</span>(img))) {
+    for(j in <span class="kw">seq_len</span>(<span class="kw">ncol</span>(img))) {
+      img[i,j,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">sum</span>(img_pad[i +<span class="st"> </span><span class="dv">0</span>:(<span class="dv">2</span> *<span class="st"> </span>pad), j +<span class="st"> </span><span class="dv">0</span>:(<span class="dv">2</span> *<span class="st"> </span>pad)] *<span class="st"> </span>kern)
+    }
+    img[,,<span class="dv">2</span>] &lt;-<span class="st"> </span>img[,,<span class="dv">3</span>] &lt;-<span class="st"> </span>img[,,<span class="dv">1</span>]
+    d &lt;-<span class="st"> </span>tibble::<span class="kw">add_row</span>(d, <span class="dt">i =</span> i, <span class="dt">j =</span> j, 
+                         <span class="dt">img =</span> <span class="kw">list</span>(magick::<span class="kw">image_read</span>(img) %&gt;%<span class="st"> </span>
+<span class="st">                                      </span>magick::<span class="kw">image_scale</span>(<span class="st">&quot;300%&quot;</span>)))
+  }
+  d
+}
+arq %&gt;%<span class="st"> </span>
+<span class="st">  </span>decryptr:::<span class="kw">load_image</span>() %&gt;%
+<span class="st">  </span><span class="kw">convolve_image</span>(w_list[[<span class="dv">8</span>]]) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">with</span>(img) %&gt;%<span class="st"> </span>
+<span class="st">  </span>magick::<span class="kw">image_join</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span>magick::<span class="kw">image_animate</span>(<span class="dt">fps =</span> <span class="dv">100</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span>magick::<span class="kw">image_write</span>(<span class="st">&quot;imgs/captcha_conv.gif&quot;</span>)
+
+magick::<span class="kw">image_read</span>(<span class="st">&quot;imgs/captcha_conv.gif&quot;</span>)</code></pre></div>
+<p>No próximo nível, vamos convoluir mais 48 kernels. Essa operação será feita com todos os doze filtros atuais, ou seja, é uma contaiada que não acaba mais. Para simplificar as contas e para permitir a obtenção de padrões diferentes, faz sentido simplificar a imagem. Para isso, usamos o <em>max pooling</em>.</p>
+<div id="aplicando-max-pooling" class="section level4">
+<h4><span class="header-section-number">6.9.4.1</span> Aplicando max pooling</h4>
+<p>O max pooling simplesmente pega o pixel de maior valor dentro de uma janela. No caso, estamos usando uma janela 2x2 e aplicamos ela igualzinho convolução, só que ao invés de pegar a soma ponderada dos pixels, pegamos o pixel máximo. Outra diferença é que ao invés de andar o pixel de 1 em 1, andamos de 2 em 2. Assim cada janelinha é considerada apenas uma vez (esse é o conceito de <em>strides</em>, que não vamos discutir aqui).</p>
+<p>Montei esse algoritmo que faz max pooling:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">max_pool &lt;-<span class="st"> </span>function(img) {
+  <span class="co"># monta a matriz com metade da resolução</span>
+  x_new &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="fl">0.0</span>, <span class="dt">nrow =</span> <span class="kw">floor</span>(<span class="kw">nrow</span>(img) /<span class="st"> </span><span class="dv">2</span>), <span class="dt">ncol =</span> <span class="kw">floor</span>(<span class="kw">ncol</span>(img) /<span class="st"> </span><span class="dv">2</span>))
+  <span class="co"># adiciona uma bordinha para o caso da matriz ter um número ímpar de pixels</span>
+  <span class="co"># por exemplo, se ela é 51x181, daria bug se não adicionar a bordinha</span>
+  img &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="kw">rbind</span>(img[,,<span class="dv">1</span>], <span class="dv">0</span>), <span class="dv">0</span>)
+  <span class="co"># percorre a matrix pegando o máximo das janelinhas</span>
+  for (i in <span class="dv">1</span>:<span class="kw">nrow</span>(x_new)) {
+    for (j in <span class="dv">1</span>:<span class="kw">ncol</span>(x_new)) {
+      x_new[i, j] &lt;-<span class="st"> </span><span class="kw">max</span>(img[i *<span class="st"> </span><span class="dv">2</span> -<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">0</span>:<span class="dv">1</span>, j *<span class="st"> </span><span class="dv">2</span> -<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span><span class="dv">0</span>:<span class="dv">1</span>])
+    }
+  }
+  <span class="kw">array</span>(x_new, <span class="kw">c</span>(<span class="kw">dim</span>(x_new), <span class="dv">3</span>))
+}</code></pre></div>
+<p>A aplicação da primeira convolução com max pooling é feita igual anteriormente:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">result_conv1 &lt;-<span class="st"> </span>purrr::<span class="kw">map2</span>(w_list, bias, ~{
+  arq %&gt;%<span class="st"> </span>
+<span class="st">    </span>decryptr:::<span class="kw">load_image</span>() %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">convolve</span>(.x) %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">add_bias</span>(.y) %&gt;%
+<span class="st">    </span><span class="kw">relu</span>() %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">max_pool</span>()
+})</code></pre></div>
+<p>No final, temos essas imagens com resolução <code>25x90</code> (as originais são <code>50x180</code>).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">op &lt;-<span class="st"> </span>graphics::<span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">4</span>))
+<span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">4</span>), <span class="dt">mar =</span> <span class="kw">c</span>(.<span class="dv">1</span>,.<span class="dv">1</span>,.<span class="dv">1</span>,.<span class="dv">1</span>))
+result_conv1 %&gt;%<span class="st"> </span>
+<span class="st">  </span>purrr::<span class="kw">walk</span>(~<span class="kw">plot</span>(magick::<span class="kw">image_read</span>(.x)))</code></pre></div>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-212-1.svg" width="864" /></p>
+<p>Ficou bem parecido com o anterior!</p>
+<p>Ao final da convolução, é como se tivéssemos uma nova imagem, menor e alterada, mas com 12 cores. Como não faz muito sentido pensar em 12 cores primárias, vamos chamá-las de canais.</p>
+</div>
+</div>
+<div id="segunda-convolucao" class="section level3">
+<h3><span class="header-section-number">6.9.5</span> Segunda convolução</h3>
+<p>Os parâmetros da segunda convolução são obtidos novamente pelo <code>keras</code>. Sugiro que você dê uma olhada nesses índices para entender o que exatamente estamos pegando.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">w2 &lt;-<span class="st"> </span>keras::<span class="kw">get_weights</span>(m$model$layers[[<span class="dv">3</span>]])[[<span class="dv">1</span>]]
+bias2 &lt;-<span class="st"> </span>keras::<span class="kw">get_weights</span>(m$model$layers[[<span class="dv">3</span>]])[[<span class="dv">2</span>]]
+
+<span class="kw">dim</span>(w2)</code></pre></div>
+<pre><code>#&gt; [1]  5  5 12 48</code></pre>
+<p>Agora temos <code>12 * 48</code> kernels 5x5 a serem aplicados. Precisamos seguir essas operações:</p>
+<ol style="list-style-type: decimal">
+<li>Para cada uma das 48 matrizes:
+<ol style="list-style-type: decimal">
+<li>Faça a convolução das 12 matrizes obtidos na convolução anterior pelos 12 kernels atuais e <strong>some</strong> os valores obtidos.</li>
+<li>Adicione o bias.</li>
+<li>Faça a ativação com ReLu.</li>
+<li>Aplique o max pooling.</li>
+</ol></li>
+</ol>
+<p>Logo, temos 2 laços. O código para fazer isso fica assim:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">result_conv2 &lt;-<span class="st"> </span>purrr::<span class="kw">map</span>(<span class="dv">1</span>:<span class="kw">dim</span>(w2)[<span class="dv">4</span>], ~{
+  kern &lt;-<span class="st"> </span>w2[,,,.x] %&gt;%<span class="st"> </span>
+<span class="st">    </span>plyr::<span class="kw">alply</span>(<span class="dv">3</span>, identity) %&gt;%<span class="st"> </span>
+<span class="st">    </span>purrr::<span class="kw">map</span>(as.matrix)
+  actual_bias &lt;-<span class="st"> </span>bias2[[.x]]
+  purrr::<span class="kw">map2</span>(result_conv1, kern, convolve) %&gt;%<span class="st"> </span>
+<span class="st">    </span>purrr::<span class="kw">reduce</span>(magrittr::add) %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">add_bias</span>(actual_bias) %&gt;%
+<span class="st">    </span><span class="kw">relu</span>() %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">max_pool</span>()
+})</code></pre></div>
+<p>Plotamos os 48 resultados abaixo. Alguns resultados foram completamente zerados (eles devem ser úteis em outros captchas mais esquisitos), enquanto os demais pegam pedaços da imagem anterior que mal lembram o captcha original. A imagem da posição <code>(4,1)</code> é uma das únicas que mostra o captcha claramente. Isso mostra uma coisa comum do deep learning: quanto mais profundo vamos, menos entendemos o que de fato o modelo está fazendo. Recomendo fortemente a leitura <a href="https://distill.pub/2017/feature-visualization/">desse blog do distill</a>, que discute o assunto detalhadamente</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">op &lt;-<span class="st"> </span>graphics::<span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">4</span>))
+<span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">8</span>, <span class="dv">6</span>), <span class="dt">mar =</span> <span class="kw">c</span>(.<span class="dv">1</span>,.<span class="dv">1</span>,.<span class="dv">1</span>,.<span class="dv">1</span>))
+purrr::<span class="kw">walk</span>(result_conv2, ~<span class="kw">plot</span>(magick::<span class="kw">image_read</span>(.x)))</code></pre></div>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-215-1.svg" width="864" /></p>
+<p>Agora temos 48 canais de uma imagem com dimensões <code>12x45</code>. Vamos em frente.</p>
+</div>
+<div id="terceira-convolucao" class="section level3">
+<h3><span class="header-section-number">6.9.6</span> Terceira convolução</h3>
+<p>A terceira convolução é feita de forma idêntica à segunda. A única diferença é que teremos no final 96 canais, pois estamos ajustando essa quantidade de kernels para cada canal.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">w3 &lt;-<span class="st"> </span>keras::<span class="kw">get_weights</span>(m$model$layers[[<span class="dv">5</span>]])[[<span class="dv">1</span>]]
+bias3 &lt;-<span class="st"> </span>keras::<span class="kw">get_weights</span>(m$model$layers[[<span class="dv">5</span>]])[[<span class="dv">2</span>]]
+
+<span class="kw">dim</span>(w3)</code></pre></div>
+<pre><code>#&gt; [1]  5  5 48 96</code></pre>
+<p>Revisando o algoritmo:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">result_conv3 &lt;-<span class="st"> </span>purrr::<span class="kw">map</span>(<span class="dv">1</span>:<span class="kw">dim</span>(w3)[<span class="dv">4</span>], ~{
+  kern &lt;-<span class="st"> </span>w3[,,,.x] %&gt;%<span class="st"> </span>
+<span class="st">    </span>plyr::<span class="kw">alply</span>(<span class="dv">3</span>, identity) %&gt;%<span class="st"> </span>
+<span class="st">    </span>purrr::<span class="kw">map</span>(as.matrix)
+  actual_bias &lt;-<span class="st"> </span>bias3[[.x]]
+  purrr::<span class="kw">map2</span>(result_conv2, kern, convolve) %&gt;%<span class="st"> </span>
+<span class="st">    </span>purrr::<span class="kw">reduce</span>(magrittr::add) %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">add_bias</span>(actual_bias) %&gt;%
+<span class="st">    </span><span class="kw">relu</span>() %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">max_pool</span>()
+})</code></pre></div>
+<p>Plotando os resultados, temos</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">12</span>, <span class="dv">8</span>), <span class="dt">mar =</span> <span class="kw">c</span>(.<span class="dv">1</span>,.<span class="dv">1</span>,.<span class="dv">1</span>,.<span class="dv">1</span>))
+purrr::<span class="kw">walk</span>(result_conv3, ~<span class="kw">plot</span>(magick::<span class="kw">image_read</span>(.x)))</code></pre></div>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-218-1.svg" width="864" /></p>
+<p>No final, ficamos com 96 imagens com resolução <code>6x22</code> cada. Várias imagens ficaram zeradas e as que não ficaram parecem apenas feixes de luz no meio do breu. Pode ser que a posição dessas luzes tenha a ver com a posição de pedaços importantes do captcha original, que por sua vez seriam importantes para determinar o valor do captcha.</p>
+<div id="visualizando-na-imagem-original" class="section level4">
+<h4><span class="header-section-number">6.9.6.1</span> Visualizando na imagem original</h4>
+<p>Aqui fiz um esforço para tentar entender de qual parte da imagem original esses resultados estão pegando informações. Para isso, re-escalei essas imagens de resolução mais baixa na última convolução para o tamanho original do captcha (<code>50x180</code>) e depois multipliquei os valores das matrizes pelos valores da imagem original.</p>
+<p>O resultado foi esse gif. Cada imagem é um dos canais obtidos.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">op &lt;-<span class="st"> </span>graphics::<span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">4</span>))
+mat_captcha &lt;-<span class="st"> </span><span class="dv">1</span> -<span class="st"> </span>decryptr:::<span class="kw">load_image</span>(arq)[,,<span class="dv">1</span>]
+imagens_alteradas &lt;-<span class="st"> </span>purrr::<span class="kw">imap</span>(result_conv3, ~{
+  .x %&gt;%<span class="st"> </span>
+<span class="st">    </span>magick::<span class="kw">image_read</span>() %&gt;%<span class="st"> </span>
+<span class="st">    </span>magick::<span class="kw">image_scale</span>(<span class="st">&quot;180x!50&quot;</span>) %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">as.raster</span>() %&gt;%<span class="st"> </span>{
+      <span class="kw">apply</span>(., <span class="dv">2</span>, function(x) <span class="kw">col2rgb</span>(x)[<span class="dv">1</span>,]) /<span class="st"> </span><span class="dv">255</span>
+    } %&gt;%<span class="st"> </span>
+<span class="st">    </span>magrittr::<span class="kw">multiply_by</span>(mat_captcha) %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">array</span>(<span class="dt">dim =</span> <span class="kw">c</span>(<span class="kw">dim</span>(.), <span class="dv">3</span>)) %&gt;%<span class="st"> </span>
+<span class="st">    </span>magick::<span class="kw">image_read</span>() %&gt;%<span class="st"> </span>
+<span class="st">    </span>magick::<span class="kw">image_scale</span>(<span class="st">&quot;400%&quot;</span>) %&gt;%<span class="st"> </span>
+<span class="st">    </span>magick::<span class="kw">image_annotate</span>(<span class="kw">as.character</span>(.y), <span class="dt">color =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">size =</span> <span class="dv">40</span>)
+}) %&gt;%<span class="st"> </span>
+<span class="st">  </span>magick::<span class="kw">image_join</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span>magick::<span class="kw">image_animate</span>(<span class="dt">fps =</span> <span class="dv">1</span>)
+imagens_alteradas</code></pre></div>
+<div class="figure">
+<img src="imgs/captcha_conv_final.gif" alt="" />
+
+</div>
+<p>Parece que os filtros são capazes de pegar as curvas que as letras fazem no captcha. Mas não tenho opinião formada sobre isso.</p>
+</div>
+</div>
+<div id="passos-finais" class="section level3">
+<h3><span class="header-section-number">6.9.7</span> Passos finais</h3>
+<p>Para acabar a predição do captcha, nós pegamos os resultados das imagens anteriores e juntamos todos os pixels num vetorzão que junta tudo. Em estatistiquês, esse vetor nada mais é do que uma linha de um <code>data.frame</code>, que podemos usar numa regressão logística, por exemplo.</p>
+<p>Ou seja, essas convolucionais funcionam como um grande gerador automático de features importantes para prever os resultados do captcha. A vantagem é que essas features são obtidas de forma automática e são otimizadas dentro do processo de estimação. Por essas e outras que deep learning é realmente sensacional!</p>
+<p>Como já estamos no framework do <code>keras</code>, acabamos fazendo tudo lá dentro. Após jogar tudo no vetorzão, aplicamos mais dois layers de redes neurais comuns, que funcionam como a regressão logística. O único detalhe sensível é que, como estamos prevendo 6 letras ao mesmo tempo, precisamos novamente transformar esse vetor em uma matriz <code>35x6</code>, sendo <code>35</code> o total de letras possíveis por posição e <code>6</code> a quantidade de posições.</p>
+<p>Abaixo, montei uma tabelinha com as probabilidades de cada letra nas posições correspondentes. Substituí valores muito pequenos por <code>.</code> para ver melhor.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">captcha &lt;-<span class="st"> </span><span class="kw">read_captcha</span>(arq)
+X &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="dt">dim =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="kw">nrow</span>(captcha[[<span class="dv">1</span>]]$x), <span class="kw">ncol</span>(captcha[[<span class="dv">1</span>]]$x), <span class="dv">1</span>))
+X[<span class="dv">1</span>, , , ] &lt;-<span class="st"> </span>captcha[[<span class="dv">1</span>]]$x
+
+res2 &lt;-<span class="st"> </span>keras::<span class="kw">predict_proba</span>(m$model, X)
+probabilidades &lt;-<span class="st"> </span>res2[<span class="dv">1</span>,,] %&gt;%<span class="st"> </span>
+<span class="st">  </span>tibble::<span class="kw">as_tibble</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span>purrr::<span class="kw">set_names</span>(m$labs) %&gt;%<span class="st"> </span>
+<span class="st">  </span>tidyr::<span class="kw">gather</span>(letra, prob) %&gt;%<span class="st"> </span>
+<span class="st">  </span>dplyr::<span class="kw">group_by</span>(letra) %&gt;%<span class="st"> </span>
+<span class="st">  </span>dplyr::<span class="kw">mutate</span>(<span class="dt">pos =</span> <span class="dv">1</span>:<span class="kw">n</span>()) %&gt;%<span class="st"> </span>
+<span class="st">  </span>dplyr::<span class="kw">ungroup</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span>dplyr::<span class="kw">mutate</span>(<span class="dt">prob =</span> dplyr::<span class="kw">if_else</span>(prob &lt;<span class="st"> </span><span class="fl">5e-5</span>, <span class="st">&quot;.&quot;</span>, 
+                                      <span class="kw">as.character</span>(<span class="kw">round</span>(prob, <span class="dv">6</span>))) ) %&gt;%<span class="st"> </span>
+<span class="st">  </span>tidyr::<span class="kw">spread</span>(pos, prob, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr::<span class="kw">kable</span>(probabilidades)</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">letra</th>
+<th align="left">pos1</th>
+<th align="left">pos2</th>
+<th align="left">pos3</th>
+<th align="left">pos4</th>
+<th align="left">pos5</th>
+<th align="left">pos6</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+</tr>
+<tr class="odd">
+<td align="left">3</td>
+<td align="left">.</td>
+<td align="left">0.999983</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+</tr>
+<tr class="even">
+<td align="left">4</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+</tr>
+<tr class="odd">
+<td align="left">5</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+</tr>
+<tr class="even">
+<td align="left">6</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+</tr>
+<tr class="odd">
+<td align="left">7</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+</tr>
+<tr class="even">
+<td align="left">8</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+</tr>
+<tr class="odd">
+<td align="left">9</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+</tr>
+<tr class="even">
+<td align="left">a</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+</tr>
+<tr class="odd">
+<td align="left">b</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+</tr>
+<tr class="even">
+<td align="left">c</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+</tr>
+<tr class="odd">
+<td align="left">d</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+</tr>
+<tr class="even">
+<td align="left">e</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+</tr>
+<tr class="odd">
+<td align="left">f</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+</tr>
+<tr class="even">
+<td align="left">g</td>
+<td align="left">1</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">0.999996</td>
+</tr>
+<tr class="odd">
+<td align="left">h</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+</tr>
+<tr class="even">
+<td align="left">i</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+</tr>
+<tr class="odd">
+<td align="left">j</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">1</td>
+<td align="left">.</td>
+</tr>
+<tr class="even">
+<td align="left">k</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">0.999987</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+</tr>
+<tr class="odd">
+<td align="left">l</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+</tr>
+<tr class="even">
+<td align="left">m</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+</tr>
+<tr class="odd">
+<td align="left">n</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+</tr>
+<tr class="even">
+<td align="left">o</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+</tr>
+<tr class="odd">
+<td align="left">p</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+</tr>
+<tr class="even">
+<td align="left">q</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+</tr>
+<tr class="odd">
+<td align="left">r</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+</tr>
+<tr class="even">
+<td align="left">s</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+</tr>
+<tr class="odd">
+<td align="left">t</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+</tr>
+<tr class="even">
+<td align="left">u</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+</tr>
+<tr class="odd">
+<td align="left">v</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">0.994037</td>
+<td align="left">.</td>
+<td align="left">.</td>
+</tr>
+<tr class="even">
+<td align="left">w</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+</tr>
+<tr class="odd">
+<td align="left">x</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">0.000151</td>
+<td align="left">.</td>
+<td align="left">.</td>
+</tr>
+<tr class="even">
+<td align="left">y</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">0.005796</td>
+<td align="left">.</td>
+<td align="left">.</td>
+</tr>
+<tr class="odd">
+<td align="left">z</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+<td align="left">.</td>
+</tr>
+</tbody>
+</table>
+<p>Ficamos então com “g” na primeira posição, “3” na segunda posição, “k” na terceira posição, “v” na quarta posição, “j” na quinta posição e “g” na sexta posição. Ou seja, “g3kvjg”.</p>
+<p>Vamos ver a imagem novamente:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">arq %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">read_captcha</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">plot</span>()</code></pre></div>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-222-1.svg" width="672" /></p>
+<p>Parece que funcionou!</p>
+</div>
+<div id="wrap-up-2" class="section level3">
+<h3><span class="header-section-number">6.9.8</span> Wrap-up</h3>
+<p>Resumindo:</p>
+<ul>
+<li>Convoluções são somas ponderadas dos valores da vizinhança de um pixel. Esses pesos são dados por uma matriz chamada kernel.</li>
+<li>Aplicar redes neurais convolucionais consiste em i) aplicar convolução; ii) adicionar um bias; iii) aplicar uma função não linear (geralmente ReLu).</li>
+<li><em>max pooling</em> serve para simplificar a resolução da imagem.</li>
+<li>Na prática, aplicamos vários kernels. O número de kernels de uma convolucional igual ao número de canais da operação anterior (input), multiplicado pelo número de canais que queremos de output.</li>
+<li>Para a convolução inicial, os canais são as cores: partimos de 1 canal se a imagem for preto e branco ou 3 canais se for colorida.</li>
+<li>No nosso caso, aplicamos três convolucionais com kernels 5x5, sendo <code>1*12</code> no primeiro nível, <code>12*48</code> no segundo nível e <code>48*96</code> no terceiro nível.</li>
+<li>Depois, pegamos as imagens resultantes e aplicamos o <code>flatten</code>, para trabalhar com esses números como se fossem a matriz <code>X</code> de uma regressão logística usual.</li>
+<li>Como vimos, é possível implementar todas essas operações na mão sem muita dificuldade.</li>
+</ul>
+<!-- ----------------------------------------------------------------------- -->
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="funcao-deviance.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="wrap-up-do-curso.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/yihui/bookdown-crc/edit/master/05-model.Rmd",
+"text": "Edit"
+},
+"download": ["bookdown.pdf"],
+"toc": {
+"collapse": "none"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

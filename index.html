@@ -46,6 +46,10 @@
 
 
 
+<script src="libs/htmlwidgets-1.0/htmlwidgets.js"></script>
+<script src="libs/viz-0.3/viz.js"></script>
+<link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+<script src="libs/grViz-binding-0.9.2/grViz.js"></script>
 
 
 <style type="text/css">
@@ -234,7 +238,58 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="5.5.4" data-path="calculando-tempos-e-intervalos-de-tempo.html"><a href="calculando-tempos-e-intervalos-de-tempo.html#wrap-up-de-hoje"><i class="fa fa-check"></i><b>5.5.4</b> Wrap-up de hoje</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="work-in-progress.html"><a href="work-in-progress.html"><i class="fa fa-check"></i><b>6</b> Work in progress</a></li>
+<li class="chapter" data-level="6" data-path="modelos.html"><a href="modelos.html"><i class="fa fa-check"></i><b>6</b> Modelos</a><ul>
+<li class="chapter" data-level="6.0.1" data-path="modelos.html"><a href="modelos.html#setup-3"><i class="fa fa-check"></i><b>6.0.1</b> Setup</a></li>
+<li class="chapter" data-level="6.1" data-path="sobrevivencia.html"><a href="sobrevivencia.html"><i class="fa fa-check"></i><b>6.1</b> Sobrevivência</a><ul>
+<li class="chapter" data-level="6.1.1" data-path="sobrevivencia.html"><a href="sobrevivencia.html#base-de-dados"><i class="fa fa-check"></i><b>6.1.1</b> Base de dados</a></li>
+<li class="chapter" data-level="6.1.2" data-path="sobrevivencia.html"><a href="sobrevivencia.html#ajustando-de-modelos-no-r"><i class="fa fa-check"></i><b>6.1.2</b> Ajustando de modelos no R</a></li>
+<li class="chapter" data-level="6.1.3" data-path="sobrevivencia.html"><a href="sobrevivencia.html#curvas-de-sobrevivencia"><i class="fa fa-check"></i><b>6.1.3</b> Curvas de sobrevivência</a></li>
+<li class="chapter" data-level="6.1.4" data-path="sobrevivencia.html"><a href="sobrevivencia.html#comparacao-das-curvas"><i class="fa fa-check"></i><b>6.1.4</b> Comparação das curvas</a></li>
+<li class="chapter" data-level="6.1.5" data-path="sobrevivencia.html"><a href="sobrevivencia.html#resultados-1"><i class="fa fa-check"></i><b>6.1.5</b> Resultados</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="captchas-sim-captchas.html"><a href="captchas-sim-captchas.html"><i class="fa fa-check"></i><b>6.2</b> CAPTCHAs? SIM, CAPTCHAs</a></li>
+<li class="chapter" data-level="6.3" data-path="pacote-decryptr.html"><a href="pacote-decryptr.html"><i class="fa fa-check"></i><b>6.3</b> Pacote <code>decryptr</code></a><ul>
+<li class="chapter" data-level="6.3.1" data-path="pacote-decryptr.html"><a href="pacote-decryptr.html#suposicoes-do-decryptr"><i class="fa fa-check"></i><b>6.3.1</b> Suposições do <code>decryptr</code></a></li>
+<li class="chapter" data-level="6.3.2" data-path="pacote-decryptr.html"><a href="pacote-decryptr.html#instalacao"><i class="fa fa-check"></i><b>6.3.2</b> Instalação</a></li>
+<li class="chapter" data-level="6.3.3" data-path="pacote-decryptr.html"><a href="pacote-decryptr.html#fluxo-de-utilizacao"><i class="fa fa-check"></i><b>6.3.3</b> Fluxo de utilização</a></li>
+<li class="chapter" data-level="6.3.4" data-path="pacote-decryptr.html"><a href="pacote-decryptr.html#download"><i class="fa fa-check"></i><b>6.3.4</b> Download</a></li>
+<li class="chapter" data-level="6.3.5" data-path="pacote-decryptr.html"><a href="pacote-decryptr.html#visualizacao"><i class="fa fa-check"></i><b>6.3.5</b> Visualização</a></li>
+<li class="chapter" data-level="6.3.6" data-path="pacote-decryptr.html"><a href="pacote-decryptr.html#classificacao"><i class="fa fa-check"></i><b>6.3.6</b> Classificação</a></li>
+<li class="chapter" data-level="6.3.7" data-path="pacote-decryptr.html"><a href="pacote-decryptr.html#carregar-modelo"><i class="fa fa-check"></i><b>6.3.7</b> Carregar modelo</a></li>
+<li class="chapter" data-level="6.3.8" data-path="pacote-decryptr.html"><a href="pacote-decryptr.html#quebrar-captcha"><i class="fa fa-check"></i><b>6.3.8</b> Quebrar captcha</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="segmentacao.html"><a href="segmentacao.html"><i class="fa fa-check"></i><b>6.4</b> Segmentação</a><ul>
+<li class="chapter" data-level="6.4.1" data-path="segmentacao.html"><a href="segmentacao.html#nem-tudo-sao-rosas"><i class="fa fa-check"></i><b>6.4.1</b> Nem tudo são rosas</a></li>
+<li class="chapter" data-level="6.4.2" data-path="segmentacao.html"><a href="segmentacao.html#exercicio-1"><i class="fa fa-check"></i><b>6.4.2</b> Exercício</a></li>
+<li class="chapter" data-level="6.4.3" data-path="segmentacao.html"><a href="segmentacao.html#wrap-up-1"><i class="fa fa-check"></i><b>6.4.3</b> Wrap-up</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="estrutura-de-dados.html"><a href="estrutura-de-dados.html"><i class="fa fa-check"></i><b>6.5</b> Estrutura de Dados</a><ul>
+<li class="chapter" data-level="6.5.1" data-path="estrutura-de-dados.html"><a href="estrutura-de-dados.html#resposta"><i class="fa fa-check"></i><b>6.5.1</b> Resposta</a></li>
+<li class="chapter" data-level="6.5.2" data-path="estrutura-de-dados.html"><a href="estrutura-de-dados.html#explicativas"><i class="fa fa-check"></i><b>6.5.2</b> Explicativas</a></li>
+</ul></li>
+<li class="chapter" data-level="6.6" data-path="redes-neurais-com-keras.html"><a href="redes-neurais-com-keras.html"><i class="fa fa-check"></i><b>6.6</b> Redes neurais com <code>keras</code></a><ul>
+<li class="chapter" data-level="6.6.1" data-path="redes-neurais-com-keras.html"><a href="redes-neurais-com-keras.html#novos-tempos"><i class="fa fa-check"></i><b>6.6.1</b> Novos tempos?</a></li>
+<li class="chapter" data-level="6.6.2" data-path="redes-neurais-com-keras.html"><a href="redes-neurais-com-keras.html#deep-learning"><i class="fa fa-check"></i><b>6.6.2</b> Deep Learning</a></li>
+<li class="chapter" data-level="6.6.3" data-path="redes-neurais-com-keras.html"><a href="redes-neurais-com-keras.html#problemas"><i class="fa fa-check"></i><b>6.6.3</b> Problemas</a></li>
+<li class="chapter" data-level="6.6.4" data-path="redes-neurais-com-keras.html"><a href="redes-neurais-com-keras.html#nao-entre-em-panico"><i class="fa fa-check"></i><b>6.6.4</b> Não entre em pânico!</a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="regressao-logistica.html"><a href="regressao-logistica.html"><i class="fa fa-check"></i><b>6.7</b> Regressão logística</a></li>
+<li class="chapter" data-level="6.8" data-path="funcao-deviance.html"><a href="funcao-deviance.html"><i class="fa fa-check"></i><b>6.8</b> Função Deviance</a><ul>
+<li class="chapter" data-level="6.8.1" data-path="funcao-deviance.html"><a href="funcao-deviance.html#funcao-de-custo-categorical-cross-entropy"><i class="fa fa-check"></i><b>6.8.1</b> Função de custo: categorical cross-entropy</a></li>
+<li class="chapter" data-level="6.8.2" data-path="funcao-deviance.html"><a href="funcao-deviance.html#exemplot"><i class="fa fa-check"></i><b>6.8.2</b> Exemplot</a></li>
+</ul></li>
+<li class="chapter" data-level="6.9" data-path="redes-neurais-convolucionais.html"><a href="redes-neurais-convolucionais.html"><i class="fa fa-check"></i><b>6.9</b> Redes neurais convolucionais</a><ul>
+<li class="chapter" data-level="6.9.1" data-path="redes-neurais-convolucionais.html"><a href="redes-neurais-convolucionais.html#o-que-e-convolucao-afinal"><i class="fa fa-check"></i><b>6.9.1</b> O que é convolução, afinal?</a></li>
+<li class="chapter" data-level="6.9.2" data-path="redes-neurais-convolucionais.html"><a href="redes-neurais-convolucionais.html#aplicando-nos-captchas"><i class="fa fa-check"></i><b>6.9.2</b> Aplicando nos captchas</a></li>
+<li class="chapter" data-level="6.9.3" data-path="redes-neurais-convolucionais.html"><a href="redes-neurais-convolucionais.html#e-se-pudermos-usar-kernels-treinados"><i class="fa fa-check"></i><b>6.9.3</b> E se pudermos usar kernels treinados?</a></li>
+<li class="chapter" data-level="6.9.4" data-path="redes-neurais-convolucionais.html"><a href="redes-neurais-convolucionais.html#primeira-convolucao"><i class="fa fa-check"></i><b>6.9.4</b> Primeira convolução</a></li>
+<li class="chapter" data-level="6.9.5" data-path="redes-neurais-convolucionais.html"><a href="redes-neurais-convolucionais.html#segunda-convolucao"><i class="fa fa-check"></i><b>6.9.5</b> Segunda convolução</a></li>
+<li class="chapter" data-level="6.9.6" data-path="redes-neurais-convolucionais.html"><a href="redes-neurais-convolucionais.html#terceira-convolucao"><i class="fa fa-check"></i><b>6.9.6</b> Terceira convolução</a></li>
+<li class="chapter" data-level="6.9.7" data-path="redes-neurais-convolucionais.html"><a href="redes-neurais-convolucionais.html#passos-finais"><i class="fa fa-check"></i><b>6.9.7</b> Passos finais</a></li>
+<li class="chapter" data-level="6.9.8" data-path="redes-neurais-convolucionais.html"><a href="redes-neurais-convolucionais.html#wrap-up-2"><i class="fa fa-check"></i><b>6.9.8</b> Wrap-up</a></li>
+</ul></li>
+<li class="chapter" data-level="6.10" data-path="wrap-up-do-curso.html"><a href="wrap-up-do-curso.html"><i class="fa fa-check"></i><b>6.10</b> Wrap-up do curso</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://bookdown.org" target="blank">Published with bookdown</a></li>
@@ -259,7 +314,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="header">
 <h1 class="title">R para jurimetria</h1>
 <h4 class="author"><em>Associação Brasileira de Jurimetria</em></h4>
-<h4 class="date"><em>22 de January de 2018</em></h4>
+<h4 class="date"><em>24 de January de 2018</em></h4>
 </div>
 <div id="apresentacao" class="section level1">
 <h1><span class="header-section-number">Capítulo 1</span> Apresentação</h1>

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>R para jurimetria</title>
+  <meta name="description" content="Template de relatório da ABJ.">
+  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+
+  <meta property="og:title" content="R para jurimetria" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Template de relatório da ABJ." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="R para jurimetria" />
+  
+  <meta name="twitter:description" content="Template de relatório da ABJ." />
+  
+
+<meta name="author" content="Associação Brasileira de Jurimetria">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="segmentacao.html">
+<link rel="next" href="redes-neurais-com-keras.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-1.0/htmlwidgets.js"></script>
+<script src="libs/viz-0.3/viz.js"></script>
+<link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+<script src="libs/grViz-binding-0.9.2/grViz.js"></script>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href='http://abj.org.br'><img src='https://raw.githubusercontent.com/abjur/tjspBook/master/abj_logo_cut.png' style="max-width:100%;"/></a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Apresentação</a></li>
+<li class="chapter" data-level="2" data-path="introducao.html"><a href="introducao.html"><i class="fa fa-check"></i><b>2</b> Introdução</a><ul>
+<li class="chapter" data-level="2.1" data-path="o-que-e-jurimetria.html"><a href="o-que-e-jurimetria.html"><i class="fa fa-check"></i><b>2.1</b> O que é Jurimetria?</a></li>
+<li class="chapter" data-level="2.2" data-path="tipos-de-estudo.html"><a href="tipos-de-estudo.html"><i class="fa fa-check"></i><b>2.2</b> Tipos de estudo</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="tipos-de-estudo.html"><a href="tipos-de-estudo.html#exemplo"><i class="fa fa-check"></i><b>2.2.1</b> Exemplo</a></li>
+<li class="chapter" data-level="2.2.2" data-path="tipos-de-estudo.html"><a href="tipos-de-estudo.html#divisao-regional"><i class="fa fa-check"></i><b>2.2.2</b> Divisão regional</a></li>
+<li class="chapter" data-level="2.2.3" data-path="tipos-de-estudo.html"><a href="tipos-de-estudo.html#qual-tipo-escolher"><i class="fa fa-check"></i><b>2.2.3</b> Qual tipo escolher?</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="estudo-1-camaras-criminais.html"><a href="estudo-1-camaras-criminais.html"><i class="fa fa-check"></i><b>2.3</b> Estudo 1: Câmaras criminais</a></li>
+<li class="chapter" data-level="2.4" data-path="estudo-2-especializacao-de-varas-empresariais.html"><a href="estudo-2-especializacao-de-varas-empresariais.html"><i class="fa fa-check"></i><b>2.4</b> Estudo 2: Especialização de varas empresariais</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="estudo-2-especializacao-de-varas-empresariais.html"><a href="estudo-2-especializacao-de-varas-empresariais.html#contextualizacao"><i class="fa fa-check"></i><b>2.4.1</b> Contextualização</a></li>
+<li class="chapter" data-level="2.4.2" data-path="estudo-2-especializacao-de-varas-empresariais.html"><a href="estudo-2-especializacao-de-varas-empresariais.html#desafio-adicional-cifra-oculta"><i class="fa fa-check"></i><b>2.4.2</b> Desafio adicional: cifra oculta</a></li>
+<li class="chapter" data-level="2.4.3" data-path="estudo-2-especializacao-de-varas-empresariais.html"><a href="estudo-2-especializacao-de-varas-empresariais.html#voltando-a-complexidade"><i class="fa fa-check"></i><b>2.4.3</b> Voltando à complexidade</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="estudo-3-captchas.html"><a href="estudo-3-captchas.html"><i class="fa fa-check"></i><b>2.5</b> Estudo 3: CAPTCHAs</a></li>
+<li class="chapter" data-level="2.6" data-path="cuidado.html"><a href="cuidado.html"><i class="fa fa-check"></i><b>2.6</b> Cuidado</a></li>
+<li class="chapter" data-level="2.7" data-path="organizacao-do-curso.html"><a href="organizacao-do-curso.html"><i class="fa fa-check"></i><b>2.7</b> Organização do curso</a></li>
+<li class="chapter" data-level="2.8" data-path="configuracao-necessaria-para-o-curso.html"><a href="configuracao-necessaria-para-o-curso.html"><i class="fa fa-check"></i><b>2.8</b> Configuração necessária para o curso</a><ul>
+<li class="chapter" data-level="2.8.1" data-path="configuracao-necessaria-para-o-curso.html"><a href="configuracao-necessaria-para-o-curso.html#pacotes"><i class="fa fa-check"></i><b>2.8.1</b> Pacotes</a></li>
+<li class="chapter" data-level="2.8.2" data-path="configuracao-necessaria-para-o-curso.html"><a href="configuracao-necessaria-para-o-curso.html#fork-e-upstream-experimental"><i class="fa fa-check"></i><b>2.8.2</b> Fork e upstream (experimental)</a></li>
+</ul></li>
+<li class="chapter" data-level="2.9" data-path="suas-tarefas-para-1701-demora-30-min.html"><a href="suas-tarefas-para-1701-demora-30-min.html"><i class="fa fa-check"></i><b>2.9</b> Suas tarefas para 17/01 (demora 30 min)</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="importacao-de-dados.html"><a href="importacao-de-dados.html"><i class="fa fa-check"></i><b>3</b> Importação de dados</a><ul>
+<li class="chapter" data-level="3.0.1" data-path="importacao-de-dados.html"><a href="importacao-de-dados.html#setup"><i class="fa fa-check"></i><b>3.0.1</b> Setup</a></li>
+<li class="chapter" data-level="3.1" data-path="pipe.html"><a href="pipe.html"><i class="fa fa-check"></i><b>3.1</b> Pipe <code>%&gt;%</code></a><ul>
+<li class="chapter" data-level="3.1.1" data-path="pipe.html"><a href="pipe.html#receita-de-bolo"><i class="fa fa-check"></i><b>3.1.1</b> Receita de bolo</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="usando-o-inspect.html"><a href="usando-o-inspect.html"><i class="fa fa-check"></i><b>3.2</b> Usando o Inspect</a></li>
+<li class="chapter" data-level="3.3" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html"><i class="fa fa-check"></i><b>3.3</b> Pacotes <code>httr</code>, <code>xml2</code> e <code>rvest</code></a><ul>
+<li class="chapter" data-level="3.3.1" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#get-e-post"><i class="fa fa-check"></i><b>3.3.1</b> <code>GET</code> e <code>POST</code></a></li>
+<li class="chapter" data-level="3.3.2" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#exercicios"><i class="fa fa-check"></i><b>3.3.2</b> Exercícios</a></li>
+<li class="chapter" data-level="3.3.3" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#sessoes-e-cookies"><i class="fa fa-check"></i><b>3.3.3</b> Sessões e cookies</a></li>
+<li class="chapter" data-level="3.3.4" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#outras-funcoes-do-httr"><i class="fa fa-check"></i><b>3.3.4</b> Outras funções do <code>httr</code></a></li>
+<li class="chapter" data-level="3.3.5" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#principais-funcoes-do-rvest"><i class="fa fa-check"></i><b>3.3.5</b> Principais funções do <code>rvest</code></a></li>
+<li class="chapter" data-level="3.3.6" data-path="pacotes-httr-xml2-e-rvest.html"><a href="pacotes-httr-xml2-e-rvest.html#css-path-e-xpath"><i class="fa fa-check"></i><b>3.3.6</b> CSS path e XPath</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="melhores-praticas-para-web-scraping.html"><a href="melhores-praticas-para-web-scraping.html"><i class="fa fa-check"></i><b>3.4</b> Melhores práticas para web scraping</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="melhores-praticas-para-web-scraping.html"><a href="melhores-praticas-para-web-scraping.html#informacoes-iniciais"><i class="fa fa-check"></i><b>3.4.1</b> Informações iniciais</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="listando-processos.html"><a href="listando-processos.html"><i class="fa fa-check"></i><b>3.5</b> Listando processos</a></li>
+<li class="chapter" data-level="3.6" data-path="usando-o-esaj-para-listar-processos.html"><a href="usando-o-esaj-para-listar-processos.html"><i class="fa fa-check"></i><b>3.6</b> Usando o <code>esaj</code> para listar processos</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="usando-o-esaj-para-listar-processos.html"><a href="usando-o-esaj-para-listar-processos.html#pesquisa-por-palavras-chave"><i class="fa fa-check"></i><b>3.6.1</b> Pesquisa por palavras-chave</a></li>
+<li class="chapter" data-level="3.6.2" data-path="usando-o-esaj-para-listar-processos.html"><a href="usando-o-esaj-para-listar-processos.html#pesquisa-por-datas"><i class="fa fa-check"></i><b>3.6.2</b> Pesquisa por datas</a></li>
+<li class="chapter" data-level="3.6.3" data-path="usando-o-esaj-para-listar-processos.html"><a href="usando-o-esaj-para-listar-processos.html#tabelas-de-classes-assuntos-e-camaras"><i class="fa fa-check"></i><b>3.6.3</b> Tabelas de classes, assuntos e câmaras</a></li>
+<li class="chapter" data-level="3.6.4" data-path="usando-o-esaj-para-listar-processos.html"><a href="usando-o-esaj-para-listar-processos.html#a-funcao-download_cjsg"><i class="fa fa-check"></i><b>3.6.4</b> A função <code>download_cjsg</code></a></li>
+<li class="chapter" data-level="3.6.5" data-path="usando-o-esaj-para-listar-processos.html"><a href="usando-o-esaj-para-listar-processos.html#exercicios-1"><i class="fa fa-check"></i><b>3.6.5</b> Exercícios</a></li>
+<li class="chapter" data-level="3.6.6" data-path="usando-o-esaj-para-listar-processos.html"><a href="usando-o-esaj-para-listar-processos.html#arrumando-os-dados"><i class="fa fa-check"></i><b>3.6.6</b> Arrumando os dados</a></li>
+<li class="chapter" data-level="3.6.7" data-path="usando-o-esaj-para-listar-processos.html"><a href="usando-o-esaj-para-listar-processos.html#exercicios-2"><i class="fa fa-check"></i><b>3.6.7</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="usando-o-dje-para-listar-processos.html"><a href="usando-o-dje-para-listar-processos.html"><i class="fa fa-check"></i><b>3.7</b> Usando o <code>dje</code> para listar processos</a><ul>
+<li class="chapter" data-level="3.7.1" data-path="usando-o-dje-para-listar-processos.html"><a href="usando-o-dje-para-listar-processos.html#exercicio"><i class="fa fa-check"></i><b>3.7.1</b> Exercício</a></li>
+<li class="chapter" data-level="3.7.2" data-path="usando-o-dje-para-listar-processos.html"><a href="usando-o-dje-para-listar-processos.html#parse-dje"><i class="fa fa-check"></i><b>3.7.2</b> Parse DJE</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="baixando-documentos.html"><a href="baixando-documentos.html"><i class="fa fa-check"></i><b>3.8</b> Baixando documentos</a><ul>
+<li class="chapter" data-level="3.8.1" data-path="baixando-documentos.html"><a href="baixando-documentos.html#download-cposg"><i class="fa fa-check"></i><b>3.8.1</b> Download CPOSG</a></li>
+<li class="chapter" data-level="3.8.2" data-path="baixando-documentos.html"><a href="baixando-documentos.html#baixando-decisoes"><i class="fa fa-check"></i><b>3.8.2</b> Baixando decisões</a></li>
+</ul></li>
+<li class="chapter" data-level="3.9" data-path="processando-documentos.html"><a href="processando-documentos.html"><i class="fa fa-check"></i><b>3.9</b> Processando documentos</a><ul>
+<li class="chapter" data-level="3.9.1" data-path="processando-documentos.html"><a href="processando-documentos.html#parse-cposg"><i class="fa fa-check"></i><b>3.9.1</b> Parse CPOSG</a></li>
+<li class="chapter" data-level="3.9.2" data-path="processando-documentos.html"><a href="processando-documentos.html#exercicios-3"><i class="fa fa-check"></i><b>3.9.2</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="3.10" data-path="pacote-abjutils.html"><a href="pacote-abjutils.html"><i class="fa fa-check"></i><b>3.10</b> Pacote <code>abjutils</code></a><ul>
+<li class="chapter" data-level="3.10.1" data-path="pacote-abjutils.html"><a href="pacote-abjutils.html#trabalhando-com-numeros-de-processos"><i class="fa fa-check"></i><b>3.10.1</b> Trabalhando com números de processos</a></li>
+<li class="chapter" data-level="3.10.2" data-path="pacote-abjutils.html"><a href="pacote-abjutils.html#trabalhando-com-acentos"><i class="fa fa-check"></i><b>3.10.2</b> Trabalhando com acentos</a></li>
+</ul></li>
+<li class="chapter" data-level="3.11" data-path="wrap-up.html"><a href="wrap-up.html"><i class="fa fa-check"></i><b>3.11</b> Wrap-up</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="transformacao-de-dados-1.html"><a href="transformacao-de-dados-1.html"><i class="fa fa-check"></i><b>4</b> Transformação de dados 1</a><ul>
+<li class="chapter" data-level="4.0.1" data-path="transformacao-de-dados-1.html"><a href="transformacao-de-dados-1.html#setup-1"><i class="fa fa-check"></i><b>4.0.1</b> Setup</a></li>
+<li class="chapter" data-level="4.1" data-path="revisao.html"><a href="revisao.html"><i class="fa fa-check"></i><b>4.1</b> Revisão</a></li>
+<li class="chapter" data-level="4.2" data-path="pacote-lubridate-para-datas.html"><a href="pacote-lubridate-para-datas.html"><i class="fa fa-check"></i><b>4.2</b> Pacote <code>lubridate</code> para datas</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="pacote-lubridate-para-datas.html"><a href="pacote-lubridate-para-datas.html#exercicios-4"><i class="fa fa-check"></i><b>4.2.1</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="pacote-stringr-para-trabalhar-com-textos.html"><a href="pacote-stringr-para-trabalhar-com-textos.html"><i class="fa fa-check"></i><b>4.3</b> Pacote <code>stringr</code> para trabalhar com textos</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="pacote-stringr-para-trabalhar-com-textos.html"><a href="pacote-stringr-para-trabalhar-com-textos.html#regras-basicas"><i class="fa fa-check"></i><b>4.3.1</b> Regras básicas</a></li>
+<li class="chapter" data-level="4.3.2" data-path="pacote-stringr-para-trabalhar-com-textos.html"><a href="pacote-stringr-para-trabalhar-com-textos.html#funcoes-do-stringr"><i class="fa fa-check"></i><b>4.3.2</b> Funções do <code>stringr</code></a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="expressoes-regulares.html"><a href="expressoes-regulares.html"><i class="fa fa-check"></i><b>4.4</b> Expressões regulares</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="expressoes-regulares.html"><a href="expressoes-regulares.html#quantificadores"><i class="fa fa-check"></i><b>4.4.1</b> Quantificadores</a></li>
+<li class="chapter" data-level="4.4.2" data-path="expressoes-regulares.html"><a href="expressoes-regulares.html#conjuntos"><i class="fa fa-check"></i><b>4.4.2</b> Conjuntos</a></li>
+<li class="chapter" data-level="4.4.3" data-path="expressoes-regulares.html"><a href="expressoes-regulares.html#miscelanea"><i class="fa fa-check"></i><b>4.4.3</b> Miscelânea</a></li>
+<li class="chapter" data-level="4.4.4" data-path="expressoes-regulares.html"><a href="expressoes-regulares.html#outros-links"><i class="fa fa-check"></i><b>4.4.4</b> Outros links</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="exemplo-decisoes-das-camaras.html"><a href="exemplo-decisoes-das-camaras.html"><i class="fa fa-check"></i><b>4.5</b> Exemplo: decisões das câmaras</a></li>
+<li class="chapter" data-level="4.6" data-path="pacotes-dplyr-e-tidyr.html"><a href="pacotes-dplyr-e-tidyr.html"><i class="fa fa-check"></i><b>4.6</b> Pacotes <code>dplyr</code> e <code>tidyr</code></a><ul>
+<li class="chapter" data-level="4.6.1" data-path="pacotes-dplyr-e-tidyr.html"><a href="pacotes-dplyr-e-tidyr.html#caracteristicas-do-dplyr"><i class="fa fa-check"></i><b>4.6.1</b> Características do <code>dplyr</code></a></li>
+<li class="chapter" data-level="4.6.2" data-path="pacotes-dplyr-e-tidyr.html"><a href="pacotes-dplyr-e-tidyr.html#as-cinco-funcoes-principais"><i class="fa fa-check"></i><b>4.6.2</b> As cinco funções principais</a></li>
+<li class="chapter" data-level="4.6.3" data-path="pacotes-dplyr-e-tidyr.html"><a href="pacotes-dplyr-e-tidyr.html#select"><i class="fa fa-check"></i><b>4.6.3</b> <code>select</code></a></li>
+<li class="chapter" data-level="4.6.4" data-path="pacotes-dplyr-e-tidyr.html"><a href="pacotes-dplyr-e-tidyr.html#filter"><i class="fa fa-check"></i><b>4.6.4</b> <code>filter</code></a></li>
+<li class="chapter" data-level="4.6.5" data-path="pacotes-dplyr-e-tidyr.html"><a href="pacotes-dplyr-e-tidyr.html#mutate"><i class="fa fa-check"></i><b>4.6.5</b> <code>mutate</code></a></li>
+<li class="chapter" data-level="4.6.6" data-path="pacotes-dplyr-e-tidyr.html"><a href="pacotes-dplyr-e-tidyr.html#arrange"><i class="fa fa-check"></i><b>4.6.6</b> <code>arrange</code></a></li>
+<li class="chapter" data-level="4.6.7" data-path="pacotes-dplyr-e-tidyr.html"><a href="pacotes-dplyr-e-tidyr.html#summarise"><i class="fa fa-check"></i><b>4.6.7</b> <code>summarise</code></a></li>
+<li class="chapter" data-level="4.6.8" data-path="pacotes-dplyr-e-tidyr.html"><a href="pacotes-dplyr-e-tidyr.html#gather"><i class="fa fa-check"></i><b>4.6.8</b> <code>gather</code></a></li>
+<li class="chapter" data-level="4.6.9" data-path="pacotes-dplyr-e-tidyr.html"><a href="pacotes-dplyr-e-tidyr.html#spread"><i class="fa fa-check"></i><b>4.6.9</b> <code>spread</code></a></li>
+<li class="chapter" data-level="4.6.10" data-path="pacotes-dplyr-e-tidyr.html"><a href="pacotes-dplyr-e-tidyr.html#funcoes-auxiliares"><i class="fa fa-check"></i><b>4.6.10</b> Funções auxiliares</a></li>
+<li class="chapter" data-level="4.6.11" data-path="pacotes-dplyr-e-tidyr.html"><a href="pacotes-dplyr-e-tidyr.html#nest-e-unnest"><i class="fa fa-check"></i><b>4.6.11</b> <code>nest</code> e <code>unnest</code></a></li>
+<li class="chapter" data-level="4.6.12" data-path="pacotes-dplyr-e-tidyr.html"><a href="pacotes-dplyr-e-tidyr.html#um-pouco-mais-de-transformacao-de-dados"><i class="fa fa-check"></i><b>4.6.12</b> Um pouco mais de transformação de dados</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="finalizando-analise-das-camaras.html"><a href="finalizando-analise-das-camaras.html"><i class="fa fa-check"></i><b>4.7</b> Finalizando análise das câmaras</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="transformacao-de-dados-2.html"><a href="transformacao-de-dados-2.html"><i class="fa fa-check"></i><b>5</b> Transformação de dados 2</a><ul>
+<li class="chapter" data-level="5.0.1" data-path="transformacao-de-dados-2.html"><a href="transformacao-de-dados-2.html#na-ultima-vez"><i class="fa fa-check"></i><b>5.0.1</b> Na última vez</a></li>
+<li class="chapter" data-level="5.0.2" data-path="transformacao-de-dados-2.html"><a href="transformacao-de-dados-2.html#setup-2"><i class="fa fa-check"></i><b>5.0.2</b> Setup</a></li>
+<li class="chapter" data-level="5.1" data-path="funcoes-do-tidyr.html"><a href="funcoes-do-tidyr.html"><i class="fa fa-check"></i><b>5.1</b> Funções do <code>tidyr</code></a><ul>
+<li class="chapter" data-level="5.1.1" data-path="funcoes-do-tidyr.html"><a href="funcoes-do-tidyr.html#gather-1"><i class="fa fa-check"></i><b>5.1.1</b> <code>gather</code></a></li>
+<li class="chapter" data-level="5.1.2" data-path="funcoes-do-tidyr.html"><a href="funcoes-do-tidyr.html#spread-1"><i class="fa fa-check"></i><b>5.1.2</b> <code>spread</code></a></li>
+<li class="chapter" data-level="5.1.3" data-path="funcoes-do-tidyr.html"><a href="funcoes-do-tidyr.html#unindo-e-separando-colunas"><i class="fa fa-check"></i><b>5.1.3</b> Unindo e separando colunas</a></li>
+<li class="chapter" data-level="5.1.4" data-path="funcoes-do-tidyr.html"><a href="funcoes-do-tidyr.html#list-columns-nest-e-unnest"><i class="fa fa-check"></i><b>5.1.4</b> List columns: <code>nest</code> e <code>unnest</code></a></li>
+<li class="chapter" data-level="5.1.5" data-path="funcoes-do-tidyr.html"><a href="funcoes-do-tidyr.html#joins"><i class="fa fa-check"></i><b>5.1.5</b> Joins</a></li>
+<li class="chapter" data-level="5.1.6" data-path="funcoes-do-tidyr.html"><a href="funcoes-do-tidyr.html#duplicatas"><i class="fa fa-check"></i><b>5.1.6</b> Duplicatas</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="finalizando-analise-das-camaras-1.html"><a href="finalizando-analise-das-camaras-1.html"><i class="fa fa-check"></i><b>5.2</b> Finalizando análise das câmaras</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="finalizando-analise-das-camaras-1.html"><a href="finalizando-analise-das-camaras-1.html#como-se-distribuem-os-assuntos-em-cada-camara"><i class="fa fa-check"></i><b>5.2.1</b> Como se distribuem os assuntos em cada câmara?</a></li>
+<li class="chapter" data-level="5.2.2" data-path="finalizando-analise-das-camaras-1.html"><a href="finalizando-analise-das-camaras-1.html#quantas-decisoes-proferidas-por-semana"><i class="fa fa-check"></i><b>5.2.2</b> Quantas decisões proferidas por semana?</a></li>
+<li class="chapter" data-level="5.2.3" data-path="finalizando-analise-das-camaras-1.html"><a href="finalizando-analise-das-camaras-1.html#qual-a-proporcao-de-decisoes-por-camara"><i class="fa fa-check"></i><b>5.2.3</b> Qual a proporção de decisões por câmara?</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="purrr.html"><a href="purrr.html"><i class="fa fa-check"></i><b>5.3</b> purrr</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="purrr.html"><a href="purrr.html#iteracoes-basicas"><i class="fa fa-check"></i><b>5.3.1</b> Iterações básicas</a></li>
+<li class="chapter" data-level="5.3.2" data-path="purrr.html"><a href="purrr.html#iteracoes-intermediarias"><i class="fa fa-check"></i><b>5.3.2</b> Iterações intermediárias</a></li>
+<li class="chapter" data-level="5.3.3" data-path="purrr.html"><a href="purrr.html#iteracoes-avancadas"><i class="fa fa-check"></i><b>5.3.3</b> Iterações avançadas</a></li>
+<li class="chapter" data-level="5.3.4" data-path="purrr.html"><a href="purrr.html#reducao-e-acumulo"><i class="fa fa-check"></i><b>5.3.4</b> Redução e acúmulo</a></li>
+<li class="chapter" data-level="5.3.5" data-path="purrr.html"><a href="purrr.html#miscelanea-1"><i class="fa fa-check"></i><b>5.3.5</b> Miscelânea</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="exemplo-formatando-arquivos.html"><a href="exemplo-formatando-arquivos.html"><i class="fa fa-check"></i><b>5.4</b> Exemplo: formatando arquivos</a></li>
+<li class="chapter" data-level="5.5" data-path="calculando-tempos-e-intervalos-de-tempo.html"><a href="calculando-tempos-e-intervalos-de-tempo.html"><i class="fa fa-check"></i><b>5.5</b> Calculando tempos e intervalos de tempo</a><ul>
+<li class="chapter" data-level="5.5.1" data-path="calculando-tempos-e-intervalos-de-tempo.html"><a href="calculando-tempos-e-intervalos-de-tempo.html#estatisticas-de-movimentacoes"><i class="fa fa-check"></i><b>5.5.1</b> estatísticas de movimentações</a></li>
+<li class="chapter" data-level="5.5.2" data-path="calculando-tempos-e-intervalos-de-tempo.html"><a href="calculando-tempos-e-intervalos-de-tempo.html#calculando-intervalos-de-tempo"><i class="fa fa-check"></i><b>5.5.2</b> Calculando intervalos de tempo</a></li>
+<li class="chapter" data-level="5.5.3" data-path="calculando-tempos-e-intervalos-de-tempo.html"><a href="calculando-tempos-e-intervalos-de-tempo.html#resultados"><i class="fa fa-check"></i><b>5.5.3</b> Resultados</a></li>
+<li class="chapter" data-level="5.5.4" data-path="calculando-tempos-e-intervalos-de-tempo.html"><a href="calculando-tempos-e-intervalos-de-tempo.html#wrap-up-de-hoje"><i class="fa fa-check"></i><b>5.5.4</b> Wrap-up de hoje</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="modelos.html"><a href="modelos.html"><i class="fa fa-check"></i><b>6</b> Modelos</a><ul>
+<li class="chapter" data-level="6.0.1" data-path="modelos.html"><a href="modelos.html#setup-3"><i class="fa fa-check"></i><b>6.0.1</b> Setup</a></li>
+<li class="chapter" data-level="6.1" data-path="sobrevivencia.html"><a href="sobrevivencia.html"><i class="fa fa-check"></i><b>6.1</b> Sobrevivência</a><ul>
+<li class="chapter" data-level="6.1.1" data-path="sobrevivencia.html"><a href="sobrevivencia.html#base-de-dados"><i class="fa fa-check"></i><b>6.1.1</b> Base de dados</a></li>
+<li class="chapter" data-level="6.1.2" data-path="sobrevivencia.html"><a href="sobrevivencia.html#ajustando-de-modelos-no-r"><i class="fa fa-check"></i><b>6.1.2</b> Ajustando de modelos no R</a></li>
+<li class="chapter" data-level="6.1.3" data-path="sobrevivencia.html"><a href="sobrevivencia.html#curvas-de-sobrevivencia"><i class="fa fa-check"></i><b>6.1.3</b> Curvas de sobrevivência</a></li>
+<li class="chapter" data-level="6.1.4" data-path="sobrevivencia.html"><a href="sobrevivencia.html#comparacao-das-curvas"><i class="fa fa-check"></i><b>6.1.4</b> Comparação das curvas</a></li>
+<li class="chapter" data-level="6.1.5" data-path="sobrevivencia.html"><a href="sobrevivencia.html#resultados-1"><i class="fa fa-check"></i><b>6.1.5</b> Resultados</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="captchas-sim-captchas.html"><a href="captchas-sim-captchas.html"><i class="fa fa-check"></i><b>6.2</b> CAPTCHAs? SIM, CAPTCHAs</a></li>
+<li class="chapter" data-level="6.3" data-path="pacote-decryptr.html"><a href="pacote-decryptr.html"><i class="fa fa-check"></i><b>6.3</b> Pacote <code>decryptr</code></a><ul>
+<li class="chapter" data-level="6.3.1" data-path="pacote-decryptr.html"><a href="pacote-decryptr.html#suposicoes-do-decryptr"><i class="fa fa-check"></i><b>6.3.1</b> Suposições do <code>decryptr</code></a></li>
+<li class="chapter" data-level="6.3.2" data-path="pacote-decryptr.html"><a href="pacote-decryptr.html#instalacao"><i class="fa fa-check"></i><b>6.3.2</b> Instalação</a></li>
+<li class="chapter" data-level="6.3.3" data-path="pacote-decryptr.html"><a href="pacote-decryptr.html#fluxo-de-utilizacao"><i class="fa fa-check"></i><b>6.3.3</b> Fluxo de utilização</a></li>
+<li class="chapter" data-level="6.3.4" data-path="pacote-decryptr.html"><a href="pacote-decryptr.html#download"><i class="fa fa-check"></i><b>6.3.4</b> Download</a></li>
+<li class="chapter" data-level="6.3.5" data-path="pacote-decryptr.html"><a href="pacote-decryptr.html#visualizacao"><i class="fa fa-check"></i><b>6.3.5</b> Visualização</a></li>
+<li class="chapter" data-level="6.3.6" data-path="pacote-decryptr.html"><a href="pacote-decryptr.html#classificacao"><i class="fa fa-check"></i><b>6.3.6</b> Classificação</a></li>
+<li class="chapter" data-level="6.3.7" data-path="pacote-decryptr.html"><a href="pacote-decryptr.html#carregar-modelo"><i class="fa fa-check"></i><b>6.3.7</b> Carregar modelo</a></li>
+<li class="chapter" data-level="6.3.8" data-path="pacote-decryptr.html"><a href="pacote-decryptr.html#quebrar-captcha"><i class="fa fa-check"></i><b>6.3.8</b> Quebrar captcha</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="segmentacao.html"><a href="segmentacao.html"><i class="fa fa-check"></i><b>6.4</b> Segmentação</a><ul>
+<li class="chapter" data-level="6.4.1" data-path="segmentacao.html"><a href="segmentacao.html#nem-tudo-sao-rosas"><i class="fa fa-check"></i><b>6.4.1</b> Nem tudo são rosas</a></li>
+<li class="chapter" data-level="6.4.2" data-path="segmentacao.html"><a href="segmentacao.html#exercicio-1"><i class="fa fa-check"></i><b>6.4.2</b> Exercício</a></li>
+<li class="chapter" data-level="6.4.3" data-path="segmentacao.html"><a href="segmentacao.html#wrap-up-1"><i class="fa fa-check"></i><b>6.4.3</b> Wrap-up</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="estrutura-de-dados.html"><a href="estrutura-de-dados.html"><i class="fa fa-check"></i><b>6.5</b> Estrutura de Dados</a><ul>
+<li class="chapter" data-level="6.5.1" data-path="estrutura-de-dados.html"><a href="estrutura-de-dados.html#resposta"><i class="fa fa-check"></i><b>6.5.1</b> Resposta</a></li>
+<li class="chapter" data-level="6.5.2" data-path="estrutura-de-dados.html"><a href="estrutura-de-dados.html#explicativas"><i class="fa fa-check"></i><b>6.5.2</b> Explicativas</a></li>
+</ul></li>
+<li class="chapter" data-level="6.6" data-path="redes-neurais-com-keras.html"><a href="redes-neurais-com-keras.html"><i class="fa fa-check"></i><b>6.6</b> Redes neurais com <code>keras</code></a><ul>
+<li class="chapter" data-level="6.6.1" data-path="redes-neurais-com-keras.html"><a href="redes-neurais-com-keras.html#novos-tempos"><i class="fa fa-check"></i><b>6.6.1</b> Novos tempos?</a></li>
+<li class="chapter" data-level="6.6.2" data-path="redes-neurais-com-keras.html"><a href="redes-neurais-com-keras.html#deep-learning"><i class="fa fa-check"></i><b>6.6.2</b> Deep Learning</a></li>
+<li class="chapter" data-level="6.6.3" data-path="redes-neurais-com-keras.html"><a href="redes-neurais-com-keras.html#problemas"><i class="fa fa-check"></i><b>6.6.3</b> Problemas</a></li>
+<li class="chapter" data-level="6.6.4" data-path="redes-neurais-com-keras.html"><a href="redes-neurais-com-keras.html#nao-entre-em-panico"><i class="fa fa-check"></i><b>6.6.4</b> Não entre em pânico!</a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="regressao-logistica.html"><a href="regressao-logistica.html"><i class="fa fa-check"></i><b>6.7</b> Regressão logística</a></li>
+<li class="chapter" data-level="6.8" data-path="funcao-deviance.html"><a href="funcao-deviance.html"><i class="fa fa-check"></i><b>6.8</b> Função Deviance</a><ul>
+<li class="chapter" data-level="6.8.1" data-path="funcao-deviance.html"><a href="funcao-deviance.html#funcao-de-custo-categorical-cross-entropy"><i class="fa fa-check"></i><b>6.8.1</b> Função de custo: categorical cross-entropy</a></li>
+<li class="chapter" data-level="6.8.2" data-path="funcao-deviance.html"><a href="funcao-deviance.html#exemplot"><i class="fa fa-check"></i><b>6.8.2</b> Exemplot</a></li>
+</ul></li>
+<li class="chapter" data-level="6.9" data-path="redes-neurais-convolucionais.html"><a href="redes-neurais-convolucionais.html"><i class="fa fa-check"></i><b>6.9</b> Redes neurais convolucionais</a><ul>
+<li class="chapter" data-level="6.9.1" data-path="redes-neurais-convolucionais.html"><a href="redes-neurais-convolucionais.html#o-que-e-convolucao-afinal"><i class="fa fa-check"></i><b>6.9.1</b> O que é convolução, afinal?</a></li>
+<li class="chapter" data-level="6.9.2" data-path="redes-neurais-convolucionais.html"><a href="redes-neurais-convolucionais.html#aplicando-nos-captchas"><i class="fa fa-check"></i><b>6.9.2</b> Aplicando nos captchas</a></li>
+<li class="chapter" data-level="6.9.3" data-path="redes-neurais-convolucionais.html"><a href="redes-neurais-convolucionais.html#e-se-pudermos-usar-kernels-treinados"><i class="fa fa-check"></i><b>6.9.3</b> E se pudermos usar kernels treinados?</a></li>
+<li class="chapter" data-level="6.9.4" data-path="redes-neurais-convolucionais.html"><a href="redes-neurais-convolucionais.html#primeira-convolucao"><i class="fa fa-check"></i><b>6.9.4</b> Primeira convolução</a></li>
+<li class="chapter" data-level="6.9.5" data-path="redes-neurais-convolucionais.html"><a href="redes-neurais-convolucionais.html#segunda-convolucao"><i class="fa fa-check"></i><b>6.9.5</b> Segunda convolução</a></li>
+<li class="chapter" data-level="6.9.6" data-path="redes-neurais-convolucionais.html"><a href="redes-neurais-convolucionais.html#terceira-convolucao"><i class="fa fa-check"></i><b>6.9.6</b> Terceira convolução</a></li>
+<li class="chapter" data-level="6.9.7" data-path="redes-neurais-convolucionais.html"><a href="redes-neurais-convolucionais.html#passos-finais"><i class="fa fa-check"></i><b>6.9.7</b> Passos finais</a></li>
+<li class="chapter" data-level="6.9.8" data-path="redes-neurais-convolucionais.html"><a href="redes-neurais-convolucionais.html#wrap-up-2"><i class="fa fa-check"></i><b>6.9.8</b> Wrap-up</a></li>
+</ul></li>
+<li class="chapter" data-level="6.10" data-path="wrap-up-do-curso.html"><a href="wrap-up-do-curso.html"><i class="fa fa-check"></i><b>6.10</b> Wrap-up do curso</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://bookdown.org" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R para jurimetria</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="estrutura-de-dados" class="section level2">
+<h2><span class="header-section-number">6.5</span> Estrutura de Dados</h2>
+<p>No último post sobre <a href="http://curso-r.com/tags/captcha/">CAPTCHAs</a> nós vimos que a segmentação das imagens (separar uma imagem em várias imagens, uma para cada caractere) é um problema complicado. Definir uma largura fixa ou utilizar outros métodos ad-hoc para segmentar as imagens pode dar bons frutos, mas não é o suficiente para quebrar CAPTCHAs mais complexos, como o da Receita Federal.</p>
+<p>Alguns meses atrás, tentamos resolver esse problema de várias formas. Uma delas foi utilizar algoritmos de agrupamento (<span class="math inline">\(k\)</span>-médias) ou de identificação de conjuntos conectados. Esses algoritmos se mostraram instáveis e não aumentaram muito o poder preditivo. Outra ideia que tentamos foi criar vários critérios de corte fixos e incluir todas as colunas geradas na base de dados. Mas isso deixou nos deixou com uma dimensão muito grande pra tratar, e parecia que os modelos precisavam de muito mais dados pra começarem a funcionar.</p>
+<p>Foi aí que o Daniel nos disse que estava trabalhando no pacote do Keras e que existia uma forma de trabalhar com a imagem completa, sem segmentar. A tarefa de segmentação seria “parametrizada” num modelão complexo de deep learning e conseguiríamos resolver o problema <strong>sem pré-processamento</strong>.</p>
+<p>Inicialmente, eu e o Athos ficamos perplexos com a ideia. Foi só quando o Daniel mostrou um modelo que <strong>acertava 100% dos CAPTCHAs do TJMG</strong> que fomos convencidos, e passamos a chamar esse modelo de “magia negra”.</p>
+<p>Vamos discutir como montar a base para fazer a magia negra.</p>
+<div id="resposta" class="section level3">
+<h3><span class="header-section-number">6.5.1</span> Resposta</h3>
+<p>Nossa resposta não é mais uma categoria, e sim uma matriz. A matriz tem <span class="math inline">\(k\)</span> linhas (número de letras em um CAPTCHA) <span class="math inline">\(p\)</span> colunas (número de valores possíveis de um caractere). O elemento <span class="math inline">\((i,j)\)</span> vale <code>1</code> se na posição <span class="math inline">\(i\)</span> aparece a letra relativa à posição <span class="math inline">\(j\)</span>.</p>
+<p>Assim,</p>
+<pre><code>g3kvjg</code></pre>
+<p>vira isso: (substituí <code>0</code> por <code>'.'</code> para ficar mais fácil de ver)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> &quot;imgs/receita/captcha48ec12131bab_g3kvjg.png&quot;</span> %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">read_captcha</span>(<span class="dt">ans_in_path =</span> <span class="ot">TRUE</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">first</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">with</span>(y)
+m[m ==<span class="st"> </span><span class="dv">0</span>] &lt;-<span class="st"> &#39;.&#39;</span>
+<span class="kw">as_tibble</span>(m) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">rownames_to_column</span>(<span class="st">&#39;posicao&#39;</span>)</code></pre></div>
+<p>Isso para uma imagem. Vamos precisar de uma terceira dimensão, que são as “linhas” de nossa resposta (uma para cada CAPTCHA).</p>
+<p>Nosso <code>y</code> final é um array de dimensões <span class="math inline">\(n \times k \times p\)</span>. Achou estranho? Estamos só começando!</p>
+</div>
+<div id="explicativas" class="section level3">
+<h3><span class="header-section-number">6.5.2</span> Explicativas</h3>
+<p>Uma imagem nada mais é do que uma matriz de pixels. Cada elemento da matriz é um número entre zero e um indicando o quanto de cor há nesse pixel. Assim, zero significa preto (ausência de cor), e um significa branco (todas as cores). Valores intermediários dão escala de cinza. Para representar imagens com cores, é necessária uma terceira dimensão de tamanho 3, indicando os pesos de <code>R</code> (<em>red</em>) <code>G</code> (<em>green</em>) e <code>B</code> (<em>blue</em>), mas não faremos isso.</p>
+<p>Assim, nossa base de dados de explicativas é um array de dimensões</p>
+<p><span class="math display">\[
+n \times h \times w \times 1
+\]</span></p>
+<p>em que <span class="math inline">\(h\)</span> e <span class="math inline">\(w\)</span> são a altura e a largura da imagem, respectivamente.</p>
+<!-- ----------------------------------------------------------------------- -->
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="segmentacao.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="redes-neurais-com-keras.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/yihui/bookdown-crc/edit/master/05-model.Rmd",
+"text": "Edit"
+},
+"download": ["bookdown.pdf"],
+"toc": {
+"collapse": "none"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
