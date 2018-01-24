@@ -22,7 +22,9 @@ Imports: esaj,
     tensorflow,
     decryptr,
     dje,
-    survminer
+    survminer,
+    fuzzyjoin,
+    broom
 Remotes: courtsbr/esaj,
     courtsbr/dje,
     abjur/abjTemplates,
